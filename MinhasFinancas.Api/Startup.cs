@@ -14,6 +14,7 @@ using MinhasFinancas.Application.Interface;
 using MinhasFinancas.Application.Services;
 using MinhasFinancas.Domain.Cliente.Commands;
 using MinhasFinancas.Domain.Core.Shared;
+using MinhasFinancas.Domain.Financas.Commands;
 using MinhasFinancas.Domain.Interface;
 using MinhasFinancas.Infra.CrossCutting;
 using MinhasFinancas.Infra.Data;
@@ -41,8 +42,6 @@ namespace MinhasFinancas.Api
 
             //Mediatr
             services.AddMediatR(typeof(Assembly).GetTypeInfo().Assembly);
-            services.AddMediatR(typeof(NewUsuarioCommand).GetTypeInfo().Assembly);
-            services.AddMediatR(typeof(NewLoginCommand).GetTypeInfo().Assembly);
 
             //Register
             InitializeContainer(services);
@@ -107,14 +106,21 @@ namespace MinhasFinancas.Api
         {
             //Application
             services.AddScoped<IUsuarioAppServiceHandler, UsuarioAppServiceHandler>();
+            services.AddScoped<IMinhasFinancasAppServiceHandler, MinhasFinancasAppServiceHandler>();
             services.AddScoped<ITokenBuilder, TokenBuilder>();
             services.AddScoped<ITokenService, TokenService>();
 
             //Domain
             services.AddScoped<IBusHandler, BusHandler>();
+            services.AddMediatR(typeof(NewUsuarioCommand).GetTypeInfo().Assembly);
+            services.AddMediatR(typeof(NewLoginCommand).GetTypeInfo().Assembly);
+            services.AddMediatR(typeof(NewMovimentoFinanceiroCommand).GetTypeInfo().Assembly);
+            services.AddMediatR(typeof(UpdateMovimentoFinanceiroCommand).GetTypeInfo().Assembly);
 
             //Infra
             services.AddScoped<IUsuarioRepository, UsuarioRepository>();
+            services.AddScoped<IMovimentoFinanceiroRepository, MovimentoFinanceiroRepository>();
+            services.AddScoped<IMovimentoFinanceiroQueryHandler, MovimentoFinanceiroQueryRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
         }
 

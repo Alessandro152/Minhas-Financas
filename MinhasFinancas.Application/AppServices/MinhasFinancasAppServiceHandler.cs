@@ -12,9 +12,9 @@ namespace MinhasFinancas.Application.AppServices
     public class MinhasFinancasAppServiceHandler : IMinhasFinancasAppServiceHandler
     {
         private readonly IBusHandler _bus;
-        private readonly IFinancasQueryHandler<MovimentoFinanceiroViewModel> _queryHandler;
+        private readonly IMovimentoFinanceiroQueryHandler _queryHandler;
 
-        public MinhasFinancasAppServiceHandler(IBusHandler bus, IFinancasQueryHandler<MovimentoFinanceiroViewModel> queryHandler)
+        public MinhasFinancasAppServiceHandler(IBusHandler bus, IMovimentoFinanceiroQueryHandler queryHandler)
         {
             _bus = bus;
             _queryHandler = queryHandler;
