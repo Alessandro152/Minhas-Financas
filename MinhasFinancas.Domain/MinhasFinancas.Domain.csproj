@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Financas\Commands\" />
+    <Folder Include="Financas\Handlers\" />
+    <Folder Include="Financas\Validations\" />
+    <Folder Include="Cliente\Validations\" />
+    <Folder Include="ValueObjects\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MediatR" Version="10.0.1" />
+    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="10.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MinhasFinancas.Domain.Core\MinhasFinancas.Domain.Core.csproj" />
+  </ItemGroup>
+
+</Project>
