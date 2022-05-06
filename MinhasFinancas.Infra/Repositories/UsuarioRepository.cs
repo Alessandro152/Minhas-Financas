@@ -28,5 +28,19 @@ namespace MinhasFinancas.Infra.Repositories
 
             return Task.FromResult(true);
         }
+
+        public Task<bool> GravarLogin(Login loginEntity)
+        {
+            try
+            {
+                _context.Login.Add(loginEntity);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+
+            return Task.FromResult(true);
+        }
     }
 }

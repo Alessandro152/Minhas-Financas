@@ -10,10 +10,12 @@ namespace MinhasFinancas.Application.AppServices
     public class UsuarioAppServiceHandler : IUsuarioAppServiceHandler
     {
         private readonly IBusHandler _bus;
+        private readonly IUsuarioQueryRepository _queryHandler;
 
-        public UsuarioAppServiceHandler(IBusHandler bus)
+        public UsuarioAppServiceHandler(IBusHandler bus, IUsuarioQueryRepository queryHandler)
         {
             _bus = bus;
+            _queryHandler = queryHandler;
         }
 
         public async Task<bool> CadastrarUsuario(UsuarioViewModel usuario)
@@ -33,11 +35,11 @@ namespace MinhasFinancas.Application.AppServices
         {
             try
             {
-                return default; //await _queryHandler.Logar(dados).ConfigureAwait(false);
+                return await _queryHandler.Logar(dados).ConfigureAwait(false);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+                throw ex;
             }
         }
     }

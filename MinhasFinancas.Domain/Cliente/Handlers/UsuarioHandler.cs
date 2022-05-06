@@ -44,6 +44,11 @@ namespace MinhasFinancas.Domain.Cliente.Handlers
         {
             try
             {
+                var loginEntity = new Login(request.EMail, request.Password, request.ClienteId);
+                var result = await _repo.GravarLogin(loginEntity).ConfigureAwait(false);
+
+                if (!result) return false;
+
                 return true;
             }
             catch (Exception)

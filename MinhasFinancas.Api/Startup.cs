@@ -119,6 +119,7 @@ namespace MinhasFinancas.Api
 
             //Infra
             services.AddScoped<IUsuarioRepository, UsuarioRepository>();
+            services.AddScoped<IUsuarioQueryRepository, UsuarioQueryRepository>();
             services.AddScoped<IMovimentoFinanceiroRepository, MovimentoFinanceiroRepository>();
             services.AddScoped<IMovimentoFinanceiroQueryHandler, MovimentoFinanceiroQueryRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();

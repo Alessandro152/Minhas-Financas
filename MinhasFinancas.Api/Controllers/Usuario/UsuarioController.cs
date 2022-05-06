@@ -26,8 +26,6 @@ namespace MinhasFinancas.Api.Controllers.Usuario
         [Route("acesso")]
         public async Task<ActionResult<dynamic>> Login([FromQuery] LoginViewModel dados)
         {
-            if (!ModelState.IsValid) return BadRequest();
-
             var user = await _usuarioAppService.Login(dados).ConfigureAwait(false);
 
             if (user is null)
@@ -48,11 +46,6 @@ namespace MinhasFinancas.Api.Controllers.Usuario
         [Route("cadastro")]
         public async Task<ActionResult<bool>> CadastrarUsuario([FromBody] UsuarioViewModel dados)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(new { Message = "Não deu certo a inclusão do cadastro" });
-            }
-
             var result = await _usuarioAppService.CadastrarUsuario(dados).ConfigureAwait(false);
 
             if (!result)
