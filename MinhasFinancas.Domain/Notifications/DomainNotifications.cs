@@ -7,17 +7,16 @@ namespace MinhasFinancas.Domain.Notifications
     {
         public DomainNotifications()
         {
-
+            Message = new List<string>();
         }
 
-        public List<string> Notifications { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+        public List<string> Message { get; }
 
-        public List<string> AddNotification()
+        public bool HasError => Message.Count == 0;
+
+        public void AddMessage(string message)
         {
-            return new List<string>
-            {
-
-            };
+            Message.Add(message);
         }
     }
 }

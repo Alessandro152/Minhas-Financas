@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using MinhasFinancas.Application.Interface;
 using MinhasFinancas.Application.QueryStack.ViewModel;
 using MinhasFinancas.Infra.Interface;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace MinhasFinancas.Api.Controllers.Usuario
@@ -48,10 +49,18 @@ namespace MinhasFinancas.Api.Controllers.Usuario
         {
             var result = await _usuarioAppService.CadastrarUsuario(dados).ConfigureAwait(false);
 
-            if (!result)
+            if (!result.HasError)
             {
                 _uow.Rollback();
-                return BadRequest($"Falha ao cadastrar o usuário.");
+
+                var message = new StringBuilder();
+
+                foreach (var item in result.ErrorMessage)
+                {
+                    message.Append(item);
+                }
+
+                return BadRequest($"Falha ao cadastrar o usuário. - {message}");
             }
 
             _uow.Commit();

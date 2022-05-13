@@ -1,7 +1,6 @@
 ﻿using MediatR;
 using MinhasFinancas.Domain.Core.Shared;
 using MinhasFinancas.Domain.Interface;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace MinhasFinancas.Infra.CrossCutting
@@ -20,11 +19,9 @@ namespace MinhasFinancas.Infra.CrossCutting
             _mediator.Send(message);
         }
 
-        public async Task<bool> SendCommand<TResult, TCommand>(TCommand message) where TCommand : Command
+        public async Task<dynamic> SendCommand<TResult, TCommand>(TCommand message) where TCommand : Command
         {
-            var result = await _mediator.Send(message).ConfigureAwait(false);
-
-            return result.Success;
+            return await _mediator.Send(message).ConfigureAwait(false);
         }
     }
 }

@@ -1,14 +1,16 @@
 ﻿using MediatR;
+using MinhasFinancas.Domain.Core.Shared;
 using MinhasFinancas.Domain.Entidades;
 using MinhasFinancas.Domain.Financas.Commands;
 using MinhasFinancas.Domain.Interface;
 using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace MinhasFinancas.Domain.Financas.Handlers
 {
-    public class MovimentoFinanceiroHandler : IRequestHandler<NewMovimentoFinanceiroCommand, bool>, IRequestHandler<UpdateMovimentoFinanceiroCommand, bool>
+    public class MovimentoFinanceiroHandler : IRequestHandler<NewMovimentoFinanceiroCommand, Result>, IRequestHandler<UpdateMovimentoFinanceiroCommand, Result>
     {
         private readonly IMovimentoFinanceiroRepository _financasRepositorio;
 
@@ -17,9 +19,9 @@ namespace MinhasFinancas.Domain.Financas.Handlers
             _financasRepositorio = financasRepositorio;
         }
 
-        public async Task<bool> Handle(NewMovimentoFinanceiroCommand request, CancellationToken cancellationToken)
+        public async Task<Result> Handle(NewMovimentoFinanceiroCommand request, CancellationToken cancellationToken)
         {
-            if (request is null) return false;
+            if (request is null) return new Result { HasError = true, ErrorMessage = new List<string> { "Command nula" } };
 
             try
             {
@@ -33,7 +35,7 @@ namespace MinhasFinancas.Domain.Financas.Handlers
                     //TODO - Implementar domain notification
                 }
 
-                return true;
+                return new Result { HasError = false };
             }
             catch (Exception ex)
             {
@@ -41,7 +43,7 @@ namespace MinhasFinancas.Domain.Financas.Handlers
             }
         }
 
-        public Task<bool> Handle(UpdateMovimentoFinanceiroCommand request, CancellationToken cancellationToken)
+        public Task<Result> Handle(UpdateMovimentoFinanceiroCommand request, CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
         }

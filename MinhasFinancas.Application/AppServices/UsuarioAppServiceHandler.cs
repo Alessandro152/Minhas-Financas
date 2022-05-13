@@ -3,6 +3,7 @@ using MinhasFinancas.Application.QueryStack.ViewModel;
 using MinhasFinancas.Domain.Cliente.Commands;
 using MinhasFinancas.Domain.Interface;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace MinhasFinancas.Application.AppServices
@@ -11,19 +12,28 @@ namespace MinhasFinancas.Application.AppServices
     {
         private readonly IBusHandler _bus;
         private readonly IUsuarioQueryRepository _queryHandler;
+        private readonly IApplicationAdapter _applicationAdapter;
+        private readonly IDomainNotification _notification;
 
-        public UsuarioAppServiceHandler(IBusHandler bus, IUsuarioQueryRepository queryHandler)
+        public UsuarioAppServiceHandler(IBusHandler bus, 
+                                        IUsuarioQueryRepository queryHandler, 
+                                        IApplicationAdapter applicationAdapter,
+                                        IDomainNotification notification)
         {
             _bus = bus;
             _queryHandler = queryHandler;
+            _applicationAdapter = applicationAdapter;
+            _notification = notification;
         }
 
-        public async Task<bool> CadastrarUsuario(UsuarioViewModel usuario)
+        public async Task<ResultViewModel> CadastrarUsuario(UsuarioViewModel usuario)
         {
             try
             {
                 var command = new NewUsuarioCommand(usuario.Nome, usuario.Email, usuario.PassWord);
-                return await _bus.SendCommand<bool, NewUsuarioCommand>(command).ConfigureAwait(false);
+                var result = await _bus.SendCommand<dynamic, NewUsuarioCommand>(command).ConfigureAwait(false);
+
+                return _applicationAdapter.RetornarDomainResult(result);
             }
             catch (Exception ex)
             {

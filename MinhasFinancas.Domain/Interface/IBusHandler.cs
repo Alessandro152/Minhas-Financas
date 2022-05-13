@@ -7,6 +7,6 @@ namespace MinhasFinancas.Domain.Interface
     {
         void SendCommand<TCommand>(TCommand message) where TCommand : Command;
 
-        Task<bool> SendCommand<TResult, TCommand>(TCommand message) where TCommand : Command;
+        Task<dynamic> SendCommand<TResult, TCommand>(TCommand message) where TCommand : Command;
     }
 }

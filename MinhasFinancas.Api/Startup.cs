@@ -8,6 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using MinhasFinancas.Application.Adapter;
 using MinhasFinancas.Application.AppServices;
 using MinhasFinancas.Application.Builders;
 using MinhasFinancas.Application.Interface;
@@ -16,6 +17,7 @@ using MinhasFinancas.Domain.Cliente.Commands;
 using MinhasFinancas.Domain.Core.Shared;
 using MinhasFinancas.Domain.Financas.Commands;
 using MinhasFinancas.Domain.Interface;
+using MinhasFinancas.Domain.Notifications;
 using MinhasFinancas.Infra.CrossCutting;
 using MinhasFinancas.Infra.Data;
 using MinhasFinancas.Infra.Interface;
@@ -109,9 +111,11 @@ namespace MinhasFinancas.Api
             services.AddScoped<IMinhasFinancasAppServiceHandler, MinhasFinancasAppServiceHandler>();
             services.AddScoped<ITokenBuilder, TokenBuilder>();
             services.AddScoped<ITokenService, TokenService>();
+            services.AddScoped<IApplicationAdapter, ApplicationAdapter>();
 
             //Domain
             services.AddScoped<IBusHandler, BusHandler>();
+            services.AddScoped<IDomainNotification, DomainNotifications>();
             services.AddMediatR(typeof(NewUsuarioCommand).GetTypeInfo().Assembly);
             services.AddMediatR(typeof(NewLoginCommand).GetTypeInfo().Assembly);
             services.AddMediatR(typeof(NewMovimentoFinanceiroCommand).GetTypeInfo().Assembly);

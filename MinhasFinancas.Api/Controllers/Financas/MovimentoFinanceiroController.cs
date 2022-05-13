@@ -80,7 +80,7 @@ namespace MinhasFinancas.Api.Controllers.Financas
             {
                 var result = await _appServiceHandler.GravarMovimentoFinanceiro(dados).ConfigureAwait(false);
 
-                if (!result)
+                if (result.HasError)
                 {
                     _uow.Rollback();
                     return BadRequest(new { Message = $"Falha ao gravar o movimento." });
@@ -107,7 +107,7 @@ namespace MinhasFinancas.Api.Controllers.Financas
 
             var result = await _appServiceHandler.AtualizarMovimentoFinanceiro(dados).ConfigureAwait(false);
 
-            if (!result)
+            if (result.HasError)
             {
                 _uow.Rollback();
                 return BadRequest(new { Message = $"Falha ao atualizar o movimento." });

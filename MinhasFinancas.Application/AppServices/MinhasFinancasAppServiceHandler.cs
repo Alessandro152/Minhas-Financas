@@ -13,11 +13,13 @@ namespace MinhasFinancas.Application.AppServices
     {
         private readonly IBusHandler _bus;
         private readonly IMovimentoFinanceiroQueryHandler _queryHandler;
+        private readonly IApplicationAdapter _adapter;
 
-        public MinhasFinancasAppServiceHandler(IBusHandler bus, IMovimentoFinanceiroQueryHandler queryHandler)
+        public MinhasFinancasAppServiceHandler(IBusHandler bus, IMovimentoFinanceiroQueryHandler queryHandler, IApplicationAdapter adapter)
         {
             _bus = bus;
             _queryHandler = queryHandler;
+            _adapter = adapter;
         }
 
         public async Task<IEnumerable<MovimentoFinanceiroViewModel>> AllDespesas(DateTime data)
@@ -44,13 +46,13 @@ namespace MinhasFinancas.Application.AppServices
             }
         }
 
-        public async Task<bool> AtualizarMovimentoFinanceiro(MovimentoFinanceiroViewModel dados)
+        public async Task<ResultViewModel> AtualizarMovimentoFinanceiro(MovimentoFinanceiroViewModel dados)
         {
             try
             {
                 var command = new UpdateMovimentoFinanceiroCommand(dados.Id, dados.Valor, dados.Titulo, dados.Data, dados.Tipo, dados.ClienteId);
                 _bus.SendCommand(command);
-                return true;
+                return default;
             }
             catch (Exception)
             {
@@ -58,12 +60,14 @@ namespace MinhasFinancas.Application.AppServices
             }
         }
 
-        public async Task<bool> GravarMovimentoFinanceiro(MovimentoFinanceiroViewModel dados)
+        public async Task<ResultViewModel> GravarMovimentoFinanceiro(MovimentoFinanceiroViewModel dados)
         {
             try
             {
                 var command = new NewMovimentoFinanceiroCommand(dados.Valor, dados.Titulo, dados.Data, dados.Tipo, dados.ClienteId);
-                return await _bus.SendCommand<bool, NewMovimentoFinanceiroCommand>(command).ConfigureAwait(false);
+                var result = await _bus.SendCommand<bool, NewMovimentoFinanceiroCommand>(command).ConfigureAwait(false);
+
+                return _adapter.RetornarDomainResult(result);
             }
             catch (Exception)
             {

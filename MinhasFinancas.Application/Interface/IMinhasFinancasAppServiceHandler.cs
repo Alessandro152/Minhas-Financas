@@ -9,11 +9,11 @@ namespace MinhasFinancas.Application.Interface
     {
         Task<IEnumerable<MovimentoFinanceiroViewModel>> AllReceitas(DateTime data);
 
-        Task<bool> GravarMovimentoFinanceiro(MovimentoFinanceiroViewModel dados);
+        Task<ResultViewModel> GravarMovimentoFinanceiro(MovimentoFinanceiroViewModel dados);
 
         Task<IEnumerable<MovimentoFinanceiroViewModel>> AllDespesas(DateTime data);
 
-        Task<bool> AtualizarMovimentoFinanceiro(MovimentoFinanceiroViewModel dados);
+        Task<ResultViewModel> AtualizarMovimentoFinanceiro(MovimentoFinanceiroViewModel dados);
 
         Task<bool> ExcluirMovimentoFinanceiro(IEnumerable<Guid> id);
 

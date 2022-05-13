@@ -15,19 +15,21 @@ namespace MinhasFinancas.Domain.Cliente.Handlers
     {
         private readonly IUsuarioRepository _repo;
         private readonly IBusHandler _busHandler;
+        private readonly IDomainNotification _notification;
 
         private readonly UsuarioValidation _validation;
 
-        public UsuarioHandler(IUsuarioRepository repo, IBusHandler busHandler)
+        public UsuarioHandler(IUsuarioRepository repo, IBusHandler busHandler, IDomainNotification notification)
         {
             _repo = repo;
             _busHandler = busHandler;
+            _notification = notification;
             _validation = new UsuarioValidation();
         }
 
         public async Task<Result> Handle(NewUsuarioCommand message, CancellationToken cancellationToken)
         {
-            if (message is null) return new Result { HasError = true, ErrorMessage = new List<string> { "Command Nula "} };
+            if (message is null) return new Result { HasError = true, ErrorMessage = new List<string> { "Command Nula " } };
 
             try
             {
@@ -35,7 +37,12 @@ namespace MinhasFinancas.Domain.Cliente.Handlers
 
                 if (!validationResult.IsValid)
                 {
-                    return new Result { ErrorMessage = new List<string> { validationResult.Errors.ToString() } };
+                    foreach (var item in validationResult.Errors)
+                    {
+                        _notification.AddMessage(item.ErrorMessage);
+                    }
+
+                    return new Result { ErrorMessage = _notification.Message };
                 }
 
                 var userEntity = new Usuario(message.Nome, message.Email, message.PassWord);
@@ -47,9 +54,9 @@ namespace MinhasFinancas.Domain.Cliente.Handlers
                 };
 
                 var loginCommand = new NewLoginCommand(message.Email, message.PassWord, userEntity.Id);
-                var resultCommand = await _busHandler.SendCommand<Result, NewLoginCommand>(loginCommand).ConfigureAwait(false);
+                var resultCommand = await _busHandler.SendCommand<dynamic, NewLoginCommand>(loginCommand).ConfigureAwait(false);
 
-                return new Result { HasError = false};
+                return new Result { HasError = false };
 
             }
             catch (Exception ex)
