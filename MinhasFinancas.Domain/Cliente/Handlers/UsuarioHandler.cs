@@ -1,55 +1,73 @@
 ﻿using MediatR;
 using MinhasFinancas.Domain.Cliente.Commands;
+using MinhasFinancas.Domain.Cliente.Validations;
+using MinhasFinancas.Domain.Core.Shared;
 using MinhasFinancas.Domain.Entidades;
 using MinhasFinancas.Domain.Interface;
 using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace MinhasFinancas.Domain.Cliente.Handlers
 {
-    public class UsuarioHandler : IRequestHandler<NewUsuarioCommand, bool>, IRequestHandler<NewLoginCommand, bool>
+    public class UsuarioHandler : IRequestHandler<NewUsuarioCommand, Result>, IRequestHandler<NewLoginCommand, Result>
     {
         private readonly IUsuarioRepository _repo;
         private readonly IBusHandler _busHandler;
+
+        private readonly UsuarioValidation _validation;
 
         public UsuarioHandler(IUsuarioRepository repo, IBusHandler busHandler)
         {
             _repo = repo;
             _busHandler = busHandler;
+            _validation = new UsuarioValidation();
         }
 
-        public async Task<bool> Handle(NewUsuarioCommand message, CancellationToken cancellationToken)
+        public async Task<Result> Handle(NewUsuarioCommand message, CancellationToken cancellationToken)
         {
-            if (message is null) return false;
+            if (message is null) return new Result { HasError = true, ErrorMessage = new List<string> { "Command Nula "} };
 
             try
             {
+                var validationResult = _validation.Validate(message);
+
+                if (!validationResult.IsValid)
+                {
+                    return new Result { ErrorMessage = new List<string> { validationResult.Errors.ToString() } };
+                }
+
                 var userEntity = new Usuario(message.Nome, message.Email, message.PassWord);
                 var result = await _repo.CadastrarUsuario(userEntity).ConfigureAwait(false);
 
-                if (!result) return false; //TODO - Criar domain notification;
+                if (!result)
+                {
+                    return new Result { ErrorMessage = new List<string> { $"Falha ao cadastrar o usuário - {userEntity}" } };
+                };
 
                 var loginCommand = new NewLoginCommand(message.Email, message.PassWord, userEntity.Id);
-                return await _busHandler.SendCommand<bool, NewLoginCommand>(loginCommand).ConfigureAwait(false);
+                var resultCommand = await _busHandler.SendCommand<Result, NewLoginCommand>(loginCommand).ConfigureAwait(false);
+
+                return new Result { HasError = false};
+
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                //TODO - Não lançar exception e sim domain notification
-                throw;
+                return new Result { HasError = true, ErrorMessage = new List<string> { ex.Message } };
             }
         }
 
-        public async Task<bool> Handle(NewLoginCommand request, CancellationToken cancellationToken)
+        public async Task<Result> Handle(NewLoginCommand request, CancellationToken cancellationToken)
         {
             try
             {
                 var loginEntity = new Login(request.EMail, request.Password, request.ClienteId);
                 var result = await _repo.GravarLogin(loginEntity).ConfigureAwait(false);
 
-                if (!result) return false;
+                //if (!result) return false;
 
-                return true;
+                return new Result { HasError = false };
             }
             catch (Exception)
             {

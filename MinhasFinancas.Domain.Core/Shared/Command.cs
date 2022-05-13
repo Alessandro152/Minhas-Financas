@@ -2,7 +2,7 @@
 
 namespace MinhasFinancas.Domain.Core.Shared
 {
-    public class Command : IRequest<bool>
+    public class Command : IRequest<Result>
     {
     }
 }

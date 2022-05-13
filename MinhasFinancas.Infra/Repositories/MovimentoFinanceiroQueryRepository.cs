@@ -1,6 +1,5 @@
 ﻿using MinhasFinancas.Application.Interface;
 using MinhasFinancas.Application.QueryStack.ViewModel;
-using MinhasFinancas.Domain.Entidades;
 using MinhasFinancas.Infra.Data;
 using System;
 using System.Collections.Generic;
