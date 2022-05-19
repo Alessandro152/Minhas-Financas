@@ -8,10 +8,9 @@ namespace MinhasFinancas.Domain.Cliente.Validations
     {
         public UsuarioValidation()
         {
-            Validate();
         }
 
-        private void Validate()
+        public void Validate()
         {
             RuleFor(c => c.Nome)
                 .NotEmpty()
@@ -19,20 +18,6 @@ namespace MinhasFinancas.Domain.Cliente.Validations
                 .MinimumLength(3)
                 .MaximumLength(50)
                 .WithMessage(DomainResource.UsuarioNomeValidationError);
-
-            RuleFor(c => c.Email)
-                .NotEmpty()
-                .NotNull()
-                .EmailAddress()
-                .WithMessage(DomainResource.UsuarioEmailValidationError);
-
-            RuleFor(c => c.PassWord)
-                .NotEmpty()
-                .NotNull()
-                .MinimumLength(6)
-                .MaximumLength(6)
-                .WithMessage(DomainResource.UsuarioSenhaValidationError);
-
         }
     }
 }

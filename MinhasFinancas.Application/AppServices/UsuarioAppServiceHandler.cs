@@ -3,7 +3,6 @@ using MinhasFinancas.Application.QueryStack.ViewModel;
 using MinhasFinancas.Domain.Cliente.Commands;
 using MinhasFinancas.Domain.Interface;
 using System;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace MinhasFinancas.Application.AppServices
@@ -24,6 +23,21 @@ namespace MinhasFinancas.Application.AppServices
             _queryHandler = queryHandler;
             _applicationAdapter = applicationAdapter;
             _notification = notification;
+        }
+
+        public async Task<ResultViewModel> AlterarCadastroUsuario(UsuarioViewModel dados)
+        {
+            try
+            {
+                var command = new UpdateUsuarioCommand(dados.Id, dados.Nome, dados.Email, dados.PassWord);
+                var result = await _bus.SendCommand<dynamic, UpdateUsuarioCommand>(command).ConfigureAwait(false);
+
+                return _applicationAdapter.RetornarDomainResult(result);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         public async Task<ResultViewModel> CadastrarUsuario(UsuarioViewModel usuario)

@@ -49,7 +49,7 @@ namespace MinhasFinancas.Api.Controllers.Usuario
         {
             var result = await _usuarioAppService.CadastrarUsuario(dados).ConfigureAwait(false);
 
-            if (!result.HasError)
+            if (result.HasError)
             {
                 _uow.Rollback();
 
@@ -69,9 +69,26 @@ namespace MinhasFinancas.Api.Controllers.Usuario
 
         [HttpPut]
         [Authorize]
-        public bool AlterarCadastro([FromBody] UsuarioViewModel dados)
+        public async Task<ActionResult<bool>> AlterarCadastro([FromBody] UsuarioViewModel dados)
         {
-            return true;
+            var result = await _usuarioAppService.AlterarCadastroUsuario(dados).ConfigureAwait(false);
+
+            if (result.HasError)
+            {
+                _uow.Rollback();
+
+                var message = new StringBuilder();
+
+                foreach (var item in result.ErrorMessage)
+                {
+                    message.Append(item);
+                }
+
+                return BadRequest($"Falha ao cadastrar o usuário. - {message}");
+            }
+
+            _uow.Commit();
+            return Ok(result);
         }
 
         [HttpDelete]

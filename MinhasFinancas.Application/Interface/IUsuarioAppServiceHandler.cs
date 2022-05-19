@@ -8,5 +8,7 @@ namespace MinhasFinancas.Application.Interface
         Task<ResultViewModel> CadastrarUsuario(UsuarioViewModel usuario);
 
         Task<UsuarioViewModel> Login(LoginViewModel dados);
+
+        Task<ResultViewModel> AlterarCadastroUsuario(UsuarioViewModel dados);
     }
 }

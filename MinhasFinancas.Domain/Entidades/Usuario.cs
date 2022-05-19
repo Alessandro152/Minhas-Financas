@@ -1,4 +1,5 @@
 ﻿using MinhasFinancas.Domain.Core.Shared;
+using MinhasFinancas.Domain.ValueObjects;
 using System;
 
 namespace MinhasFinancas.Domain.Entidades
@@ -14,14 +15,26 @@ namespace MinhasFinancas.Domain.Entidades
         {
             Id = Guid.NewGuid();
             Nome = nome;
-            Email = email;
-            PassWord = password;
+            LoginVO = new LoginVO
+            {
+                Email = email,
+                Password = password
+            };
+        }
+
+        public Usuario(Guid id, string nome, string email, string password)
+        {
+            Id = id;
+            Nome = nome;
+            LoginVO = new LoginVO
+            {
+                Email = email,
+                Password = password
+            };
         }
 
         public string Nome { get; private set; }
 
-        public string Email { get; private set; }
-
-        public string PassWord { get; private set; }
+        public LoginVO LoginVO { get; set; }
     }
 }

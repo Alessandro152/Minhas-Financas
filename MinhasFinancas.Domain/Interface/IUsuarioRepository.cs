@@ -8,5 +8,7 @@ namespace MinhasFinancas.Domain.Interface
         Task<bool> CadastrarUsuario(Usuario dados);
 
         Task<bool> GravarLogin(Login loginEntity);
+
+        Task<bool> AlterarCadastroUsuario(Usuario entity);
     }
 }

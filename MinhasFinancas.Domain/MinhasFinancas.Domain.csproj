@@ -6,7 +6,6 @@
 
   <ItemGroup>
     <Folder Include="Financas\Validations\" />
-    <Folder Include="ValueObjects\" />
   </ItemGroup>
 
   <ItemGroup>

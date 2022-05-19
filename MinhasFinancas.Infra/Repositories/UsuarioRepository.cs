@@ -15,6 +15,20 @@ namespace MinhasFinancas.Infra.Repositories
             _context = context;
         }
 
+        public Task<bool> AlterarCadastroUsuario(Usuario entity)
+        {
+            try
+            {
+                _context.Usuarios.Update(entity);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+
+            return Task.FromResult(true);
+        }
+
         public Task<bool> CadastrarUsuario(Usuario entity)
         {
             try

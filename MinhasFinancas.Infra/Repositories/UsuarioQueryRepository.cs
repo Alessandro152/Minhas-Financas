@@ -16,7 +16,7 @@ namespace MinhasFinancas.Infra.Repositories
             _context = context;
         }
 
-        public async Task<UsuarioViewModel> Logar(LoginViewModel login)
+        public Task<UsuarioViewModel> Logar(LoginViewModel login)
         {
             if (login is null) return default;
 
@@ -24,16 +24,16 @@ namespace MinhasFinancas.Infra.Repositories
             {
                 var result = _context.Login.Where(x => x.EMail == login.Email && x.PassWord == login.PassWord).FirstOrDefault();
 
-                if(result != null)
+                if (result != null)
                 {
                     var user = _context.Usuarios.Where(x => x.Id == result.ClienteId).FirstOrDefault();
 
-                    return new UsuarioViewModel
+                    return Task.FromResult(new UsuarioViewModel
                     {
                         Id = user.Id,
                         Nome = user.Nome,
-                        Email = user.Email
-                    };
+                        Email = user.LoginVO.Email
+                    });
                 }
             }
             catch (Exception ex)
