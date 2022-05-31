@@ -25,11 +25,11 @@ namespace MinhasFinancas.Application.AppServices
             _notification = notification;
         }
 
-        public async Task<ResultViewModel> AlterarCadastroUsuario(UsuarioViewModel dados)
+        public async Task<ResultViewModel> AlterarCadastroUsuario(CadastroViewModel dados)
         {
             try
             {
-                var command = new UpdateUsuarioCommand(dados.Id, dados.Nome, dados.Email, dados.PassWord);
+                var command = new UpdateUsuarioCommand(dados.UsuarioId, dados.UsuarioNome, dados.UsuarioEmail, dados.UsuarioSenha);
                 var result = await _bus.SendCommand<dynamic, UpdateUsuarioCommand>(command).ConfigureAwait(false);
 
                 return _applicationAdapter.RetornarDomainResult(result);
@@ -40,14 +40,14 @@ namespace MinhasFinancas.Application.AppServices
             }
         }
 
-        public async Task<ResultViewModel> CadastrarUsuario(UsuarioViewModel usuario)
+        public async Task<dynamic> CadastrarUsuario(CadastroViewModel usuario)
         {
             try
             {
-                var command = new NewUsuarioCommand(usuario.Nome, usuario.Email, usuario.PassWord);
-                var result = await _bus.SendCommand<dynamic, NewUsuarioCommand>(command).ConfigureAwait(false);
+                var command = new NewUsuarioCommand(usuario.UsuarioNome, usuario.UsuarioEmail, usuario.UsuarioSenha);
+                return await _bus.SendCommand<dynamic, NewUsuarioCommand>(command).ConfigureAwait(false);
 
-                return _applicationAdapter.RetornarDomainResult(result);
+                //return _applicationAdapter.RetornarDomainResult(result);
             }
             catch (Exception ex)
             {

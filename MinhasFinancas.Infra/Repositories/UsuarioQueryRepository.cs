@@ -32,7 +32,7 @@ namespace MinhasFinancas.Infra.Repositories
                     {
                         Id = user.Id,
                         Nome = user.Nome,
-                        Email = user.LoginVO.Email
+                        Email = user.Login.Email
                     });
                 }
             }

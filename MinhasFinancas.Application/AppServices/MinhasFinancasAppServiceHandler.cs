@@ -65,9 +65,7 @@ namespace MinhasFinancas.Application.AppServices
             try
             {
                 var command = new NewMovimentoFinanceiroCommand(dados.Valor, dados.Titulo, dados.Data, dados.Tipo, dados.ClienteId);
-                var result = await _bus.SendCommand<bool, NewMovimentoFinanceiroCommand>(command).ConfigureAwait(false);
-
-                return _adapter.RetornarDomainResult(result);
+                return await _bus.SendCommand<dynamic, NewMovimentoFinanceiroCommand>(command).ConfigureAwait(false);
             }
             catch (Exception)
             {

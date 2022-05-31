@@ -11,30 +11,22 @@ namespace MinhasFinancas.Domain.Entidades
 
         }
 
-        public Usuario(string nome, string email, string password)
+        public Usuario(string nome, LoginVO login)
         {
             Id = Guid.NewGuid();
             Nome = nome;
-            LoginVO = new LoginVO
-            {
-                Email = email,
-                Password = password
-            };
+            Login = login;
         }
 
-        public Usuario(Guid id, string nome, string email, string password)
+        public Usuario(Guid id, string nome, LoginVO login)
         {
             Id = id;
             Nome = nome;
-            LoginVO = new LoginVO
-            {
-                Email = email,
-                Password = password
-            };
+            Login = login;
         }
 
         public string Nome { get; private set; }
 
-        public LoginVO LoginVO { get; set; }
+        public LoginVO Login { get; set; }
     }
 }

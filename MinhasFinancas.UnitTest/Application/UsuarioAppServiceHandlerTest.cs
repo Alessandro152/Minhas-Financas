@@ -3,6 +3,7 @@ using MinhasFinancas.Application.AppServices;
 using MinhasFinancas.Application.Interface;
 using MinhasFinancas.Application.QueryStack.ViewModel;
 using MinhasFinancas.Domain.Cliente.Commands;
+using MinhasFinancas.Domain.Entidades;
 using MinhasFinancas.Domain.Interface;
 using Moq;
 using System.Collections.Generic;
@@ -34,13 +35,13 @@ namespace MinhasFinancas.UnitTest.Application
 
             yield return new[]
             {
-                new UsuarioViewModel { Nome = faker.Random.Words(), Email = faker.Random.Words(), PassWord = faker.Random.Words() }
+                new CadastroViewModel { UsuarioNome = faker.Random.Words(), UsuarioEmail = faker.Random.Words(), UsuarioSenha = faker.Random.Words() }
             };
         }
 
         [Theory]
         [MemberData(nameof(CreateUser))]
-        public void ShouldSignInUserWithSuccess(UsuarioViewModel usuario)
+        public void ShouldSignInUserWithSuccess(CadastroViewModel usuario)
         {
             _bus.Setup(s => s.SendCommand<dynamic, NewUsuarioCommand>(It.IsAny<NewUsuarioCommand>()));
             _applicationAdapter.Setup(s => s.RetornarDomainResult(It.IsAny<object>())).Returns(new ResultViewModel { });

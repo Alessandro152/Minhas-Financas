@@ -14,7 +14,6 @@ using MinhasFinancas.Application.Builders;
 using MinhasFinancas.Application.Interface;
 using MinhasFinancas.Application.Services;
 using MinhasFinancas.Domain.Cliente.Commands;
-using MinhasFinancas.Domain.Core.Shared;
 using MinhasFinancas.Domain.Financas.Commands;
 using MinhasFinancas.Domain.Interface;
 using MinhasFinancas.Domain.Notifications;

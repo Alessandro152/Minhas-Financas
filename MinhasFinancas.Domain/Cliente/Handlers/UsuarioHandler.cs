@@ -4,6 +4,7 @@ using MinhasFinancas.Domain.Cliente.Validations;
 using MinhasFinancas.Domain.Core.Shared;
 using MinhasFinancas.Domain.Entidades;
 using MinhasFinancas.Domain.Interface;
+using MinhasFinancas.Domain.ValueObjects;
 using System;
 using System.Collections.Generic;
 using System.Threading;
@@ -49,7 +50,12 @@ namespace MinhasFinancas.Domain.Cliente.Handlers
                     return new Result { HasError = true, ErrorMessage = _notification.Message };
                 }
 
-                var entity = new Usuario(message.Nome, message.Email, message.PassWord);
+                // Gerar o value object
+                var valueObject = new LoginVO(message.Email, message.PassWord);
+
+                // Gerar a entidade
+                var entity = new Usuario(message.Nome, valueObject);
+
                 var result = await _repo.CadastrarUsuario(entity).ConfigureAwait(false);
 
                 if (!result)
@@ -71,7 +77,7 @@ namespace MinhasFinancas.Domain.Cliente.Handlers
                 return new Result { HasError = true, ErrorMessage = new List<string> { ex.Message } };
             }
 
-            return new Result { HasError = false };
+            return default;
         }
 
         public async Task<Result> Handle(NewLoginCommand message, CancellationToken cancellationToken)
@@ -114,7 +120,12 @@ namespace MinhasFinancas.Domain.Cliente.Handlers
 
             try
             {
-                var entity = new Usuario(message.ClienteId, message.Nome, message.Email, message.Password);
+                // Gerar o value object
+                var valueObject = new LoginVO(message.Email, message.Password);
+
+                // Gerar a entidade
+                var entity = new Usuario(message.ClienteId, message.Nome, valueObject);
+
                 var result = await _repo.AlterarCadastroUsuario(entity).ConfigureAwait(false);
 
                 if (!result)

@@ -33,7 +33,7 @@ namespace MinhasFinancas.Infra.Repositories
         {
             try
             {
-                _context.Usuarios.Add(entity);
+                _context.Usuarios.AddAsync(entity);
             }
             catch (Exception ex)
             {
@@ -47,7 +47,7 @@ namespace MinhasFinancas.Infra.Repositories
         {
             try
             {
-                _context.Login.Add(loginEntity);
+                _context.Login.AddAsync(loginEntity);
             }
             catch (Exception ex)
             {

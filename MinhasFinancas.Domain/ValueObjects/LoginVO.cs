@@ -2,8 +2,19 @@
 {
     public class LoginVO
     {
-        public string Email { get; set; }
+        public LoginVO()
+        {
 
-        public string Password { get; set; }
+        }
+
+        public LoginVO(string email, string passWord)
+        {
+            Email = email;
+            Password = passWord;
+        }
+
+        public string Email { get; private set; }
+
+        public string Password { get; private set; }
     }
 }

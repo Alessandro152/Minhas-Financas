@@ -45,7 +45,7 @@ namespace MinhasFinancas.Api.Controllers.Usuario
 
         [HttpPost]
         [Route("cadastro")]
-        public async Task<ActionResult<bool>> CadastrarUsuario([FromBody] UsuarioViewModel dados)
+        public async Task<ActionResult<dynamic>> CadastrarUsuario([FromBody] CadastroViewModel dados)
         {
             var result = await _usuarioAppService.CadastrarUsuario(dados).ConfigureAwait(false);
 
@@ -69,7 +69,7 @@ namespace MinhasFinancas.Api.Controllers.Usuario
 
         [HttpPut]
         [Authorize]
-        public async Task<ActionResult<bool>> AlterarCadastro([FromBody] UsuarioViewModel dados)
+        public async Task<ActionResult<dynamic>> AlterarCadastro([FromBody] CadastroViewModel dados)
         {
             var result = await _usuarioAppService.AlterarCadastroUsuario(dados).ConfigureAwait(false);
 
@@ -84,7 +84,7 @@ namespace MinhasFinancas.Api.Controllers.Usuario
                     message.Append(item);
                 }
 
-                return BadRequest($"Falha ao cadastrar o usuário. - {message}");
+                return BadRequest($"Falha ao alterar o usuário. - {message}");
             }
 
             _uow.Commit();
