@@ -22,6 +22,7 @@ using MinhasFinancas.Infra.Data;
 using MinhasFinancas.Infra.Interface;
 using MinhasFinancas.Infra.Repositories;
 using MinhasFinancas.Infra.Service;
+using System;
 using System.Reflection;
 using System.Text;
 
@@ -42,7 +43,7 @@ namespace MinhasFinancas.Api
             services.AddControllers();
 
             //Mediatr
-            services.AddMediatR(typeof(Assembly).GetTypeInfo().Assembly);
+            services.AddMediatR(AppDomain.CurrentDomain.GetAssemblies());
 
             //Register
             InitializeContainer(services);
@@ -105,27 +106,7 @@ namespace MinhasFinancas.Api
 
         private void InitializeContainer(IServiceCollection services)
         {
-            //Application
-            services.AddScoped<IUsuarioAppServiceHandler, UsuarioAppServiceHandler>();
-            services.AddScoped<IMinhasFinancasAppServiceHandler, MinhasFinancasAppServiceHandler>();
-            services.AddScoped<ITokenBuilder, TokenBuilder>();
-            services.AddScoped<ITokenService, TokenService>();
-            services.AddScoped<IApplicationAdapter, ApplicationAdapter>();
-
-            //Domain
-            services.AddScoped<IBusHandler, BusHandler>();
-            services.AddScoped<IDomainNotification, DomainNotifications>();
-            services.AddMediatR(typeof(NewUsuarioCommand).GetTypeInfo().Assembly);
-            services.AddMediatR(typeof(NewLoginCommand).GetTypeInfo().Assembly);
-            services.AddMediatR(typeof(NewMovimentoFinanceiroCommand).GetTypeInfo().Assembly);
-            services.AddMediatR(typeof(UpdateMovimentoFinanceiroCommand).GetTypeInfo().Assembly);
-
-            //Infra
-            services.AddScoped<IUsuarioRepository, UsuarioRepository>();
-            services.AddScoped<IUsuarioQueryRepository, UsuarioQueryRepository>();
-            services.AddScoped<IMovimentoFinanceiroRepository, MovimentoFinanceiroRepository>();
-            services.AddScoped<IMovimentoFinanceiroQueryHandler, MovimentoFinanceiroQueryRepository>();
-            services.AddScoped<IUnitOfWork, UnitOfWork>();
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

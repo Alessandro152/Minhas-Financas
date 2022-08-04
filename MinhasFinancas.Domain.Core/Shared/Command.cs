@@ -1,8 +1,9 @@
-﻿using MediatR;
+﻿using FluentResults;
+using MediatR;
 
 namespace MinhasFinancas.Domain.Core.Shared
 {
-    public class Command : IRequest<Result>
+    public abstract class Command : IRequest<Result>
     {
     }
 }

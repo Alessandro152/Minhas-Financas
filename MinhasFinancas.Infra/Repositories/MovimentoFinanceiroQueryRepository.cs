@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace MinhasFinancas.Infra.Repositories
 {
-    public class MovimentoFinanceiroQueryRepository : IMovimentoFinanceiroQueryHandler
+    public class MovimentoFinanceiroQueryRepository : IMovimentoFinanceiroQueryRepository
     {
         private readonly DataContext _context;
 

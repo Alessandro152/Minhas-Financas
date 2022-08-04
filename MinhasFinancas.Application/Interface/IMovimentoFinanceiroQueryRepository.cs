@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace MinhasFinancas.Application.Interface
 {
-    public interface IMovimentoFinanceiroQueryHandler
+    public interface IMovimentoFinanceiroQueryRepository
     {
         Task<IEnumerable<MovimentoFinanceiroViewModel>> GetAll(DateTime data, int tipo);
 

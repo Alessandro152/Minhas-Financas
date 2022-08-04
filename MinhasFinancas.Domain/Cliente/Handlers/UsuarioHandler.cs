@@ -1,44 +1,34 @@
-﻿using MediatR;
+﻿using FluentResults;
+using MediatR;
 using MinhasFinancas.Domain.Cliente.Commands;
-using MinhasFinancas.Domain.Cliente.Validations;
-using MinhasFinancas.Domain.Core.Shared;
 using MinhasFinancas.Domain.Entidades;
 using MinhasFinancas.Domain.Interface;
 using MinhasFinancas.Domain.ValueObjects;
 using System;
-using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace MinhasFinancas.Domain.Cliente.Handlers
 {
     public class UsuarioHandler : IRequestHandler<NewUsuarioCommand, Result>, 
-                                  IRequestHandler<NewLoginCommand, Result>,
                                   IRequestHandler<UpdateUsuarioCommand, Result>
     {
-        private readonly IUsuarioRepository _repo;
-        private readonly IBusHandler _busHandler;
+        private readonly IUsuarioRepository _usuarioRepository;
         private readonly IDomainNotification _notification;
 
-        private readonly UsuarioValidation _validation;
-        private readonly LoginValidation _loginValidation;
-
-        public UsuarioHandler(IUsuarioRepository repo, IBusHandler busHandler, IDomainNotification notification)
+        public UsuarioHandler(IUsuarioRepository usuarioRepository, IDomainNotification notification)
         {
-            _repo = repo;
-            _busHandler = busHandler;
+            _usuarioRepository = usuarioRepository;
             _notification = notification;
-            _validation = new UsuarioValidation();
-            _loginValidation = new LoginValidation();
         }
 
         public async Task<Result> Handle(NewUsuarioCommand message, CancellationToken cancellationToken)
         {
-            if (message is null) return new Result { HasError = true, ErrorMessage = new List<string> { "Command Nula " } };
+            if (message is null) return Result.Fail("Command Nula");
 
             try
             {
-                var validationResult = _validation.Validate(message);
+                var validationResult = message.IsValid();
 
                 if (!validationResult.IsValid)
                 {
@@ -47,76 +37,30 @@ namespace MinhasFinancas.Domain.Cliente.Handlers
                         _notification.AddMessage(item.ErrorMessage);
                     }
 
-                    return new Result { HasError = true, ErrorMessage = _notification.Message };
+                    return Result.Fail(_notification.Message);
                 }
 
-                // Gerar o value object
+                //Gerar ValueObject
                 var valueObject = new LoginVO(message.Email, message.PassWord);
 
                 // Gerar a entidade
-                var entity = new Usuario(message.Nome, valueObject);
+                var usuario = new Usuario(Guid.NewGuid(), message.Nome, valueObject);
+                await _usuarioRepository.CadastrarUsuario(usuario);
 
-                var result = await _repo.CadastrarUsuario(entity).ConfigureAwait(false);
+                var login = new Login(message.Email, message.PassWord, usuario.Id);
+                await _usuarioRepository.CadastrarUsuario(usuario);
 
-                if (!result)
-                {
-                    return new Result { ErrorMessage = new List<string> { $"Falha ao cadastrar o usuário - {entity}" } };
-                };
-
-                var loginCommand = new NewLoginCommand(message.Email, message.PassWord, entity.Id);
-                var resultCommand = await _busHandler.SendCommand<dynamic, NewLoginCommand>(loginCommand).ConfigureAwait(false);
-
-                if (resultCommand.HasError)
-                {
-                    return new Result { HasError = resultCommand.HasError, ErrorMessage = resultCommand.ErrorMessage };
-                }
-
+                return Result.Ok();
             }
             catch (Exception ex)
             {
-                return new Result { HasError = true, ErrorMessage = new List<string> { ex.Message } };
-            }
-
-            return default;
-        }
-
-        public async Task<Result> Handle(NewLoginCommand message, CancellationToken cancellationToken)
-        {
-            if (message is null) return new Result { HasError = true, ErrorMessage = new List<string> { "Command Nula " } };
-
-            try
-            {
-                var validationResult = _loginValidation.Validate(message);
-
-                if (!validationResult.IsValid)
-                {
-                    foreach (var item in validationResult.Errors)
-                    {
-                        _notification.AddMessage(item.ErrorMessage);
-                    }
-
-                    return new Result { HasError = true, ErrorMessage = _notification.Message };
-                }
-
-                var entity = new Login(message.EMail, message.Password, message.ClienteId);
-                var result = await _repo.GravarLogin(entity).ConfigureAwait(false);
-
-                if (!result)
-                {
-                    return new Result { ErrorMessage = new List<string> { $"Falha ao cadastrar o usuário - {entity}" } };
-                };
-
-                return new Result { HasError = false };
-            }
-            catch (Exception ex)
-            {
-                return new Result { HasError = true, ErrorMessage = new List<string> { ex.Message } };
+                return Result.Fail($"Falha ao gravar o usuário. {ex.Message}");
             }
         }
 
         public async Task<Result> Handle(UpdateUsuarioCommand message, CancellationToken cancellationToken)
         {
-            if (message is null) return new Result { HasError = true, ErrorMessage = new List<string> { "Command Nula " } };
+            if (message is null) return Result.Fail("Command Nula ");
 
             try
             {
@@ -124,21 +68,15 @@ namespace MinhasFinancas.Domain.Cliente.Handlers
                 var valueObject = new LoginVO(message.Email, message.Password);
 
                 // Gerar a entidade
-                var entity = new Usuario(message.ClienteId, message.Nome, valueObject);
+                var usuario = new Usuario(message.ClienteId, message.Nome, valueObject);
+                var result = await _usuarioRepository.AlterarCadastroUsuario(usuario);
 
-                var result = await _repo.AlterarCadastroUsuario(entity).ConfigureAwait(false);
-
-                if (!result)
-                {
-                    return new Result { ErrorMessage = new List<string> { $"Falha ao cadastrar o usuário - {entity}" } };
-                };
+                return Result.Ok();
             }
             catch (Exception ex)
             {
-                return new Result { HasError = true, ErrorMessage = new List<string> { ex.Message } };
+                return Result.Fail($"Falha ao gravar o usuário. {ex.Message}");
             }
-
-            return new Result { HasError = false };
         }
     }
 }

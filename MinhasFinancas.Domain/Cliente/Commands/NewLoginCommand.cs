@@ -1,4 +1,6 @@
-﻿using MinhasFinancas.Domain.Core.Shared;
+﻿using FluentValidation.Results;
+using MinhasFinancas.Domain.Cliente.Validations;
+using MinhasFinancas.Domain.Core.Shared;
 using System;
 
 namespace MinhasFinancas.Domain.Cliente.Commands
@@ -20,5 +22,10 @@ namespace MinhasFinancas.Domain.Cliente.Commands
         public string Password { get; }
 
         public Guid ClienteId { get; }
+
+        public ValidationResult IsValid()
+        {
+            return new LoginValidation().Validate(this);
+        }
     }
 }

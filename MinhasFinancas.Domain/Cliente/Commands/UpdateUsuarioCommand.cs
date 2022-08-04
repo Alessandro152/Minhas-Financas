@@ -1,4 +1,6 @@
-﻿using MinhasFinancas.Domain.Core.Shared;
+﻿using FluentValidation.Results;
+using MinhasFinancas.Domain.Cliente.Validations;
+using MinhasFinancas.Domain.Core.Shared;
 using System;
 
 namespace MinhasFinancas.Domain.Cliente.Commands

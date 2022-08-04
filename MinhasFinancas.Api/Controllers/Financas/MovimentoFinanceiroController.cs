@@ -13,10 +13,10 @@ namespace MinhasFinancas.Api.Controllers.Financas
     [Route("financas")]
     public class MovimentoFinanceiroController : ControllerBase
     {
-        private readonly IMinhasFinancasAppServiceHandler _appServiceHandler;
+        private readonly IMinhasFinancasAppService _appServiceHandler;
         private readonly IUnitOfWork _uow;
 
-        public MovimentoFinanceiroController(IMinhasFinancasAppServiceHandler appServiceHandler, IUnitOfWork uow)
+        public MovimentoFinanceiroController(IMinhasFinancasAppService appServiceHandler, IUnitOfWork uow)
         {
             _appServiceHandler = appServiceHandler;
             _uow = uow;

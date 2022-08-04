@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using MinhasFinancas.Application.Interface;
 using MinhasFinancas.Application.QueryStack.ViewModel;
-using MinhasFinancas.Infra.Interface;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -12,19 +11,16 @@ namespace MinhasFinancas.Api.Controllers.Usuario
     [Route("cliente")]
     public class UsuarioController : ControllerBase
     {
-        private readonly IUsuarioAppServiceHandler _usuarioAppService;
-        private readonly IUnitOfWork _uow;
+        private readonly IUsuarioAppService _usuarioAppService;
         private readonly ITokenService _tokenService;
 
-        public UsuarioController(IUsuarioAppServiceHandler usuarioAppService, IUnitOfWork uow, ITokenService tokenService)
+        public UsuarioController(IUsuarioAppService usuarioAppService, ITokenService tokenService)
         {
             _usuarioAppService = usuarioAppService;
-            _uow = uow;
             _tokenService = tokenService;
         }
 
-        [HttpGet]
-        [Route("acesso")]
+        [HttpGet("acesso")]
         public async Task<ActionResult<dynamic>> Login([FromQuery] LoginViewModel dados)
         {
             var user = await _usuarioAppService.Login(dados).ConfigureAwait(false);
@@ -36,59 +32,38 @@ namespace MinhasFinancas.Api.Controllers.Usuario
 
             var token = _tokenService.GenerateToken(user);
 
-            return new
+            return Ok(new
             {
                 user,
                 token
-            };
+            });
         }
 
-        [HttpPost]
-        [Route("cadastro")]
+        [HttpPost("cadastrarUsuario")]
         public async Task<ActionResult<dynamic>> CadastrarUsuario([FromBody] CadastroViewModel dados)
         {
-            var result = await _usuarioAppService.CadastrarUsuario(dados).ConfigureAwait(false);
+            var result = await _usuarioAppService.CadastrarUsuario(dados);
 
-            if (result.HasError)
+            if (result.IsFailed)
             {
-                _uow.Rollback();
-
-                var message = new StringBuilder();
-
-                foreach (var item in result.ErrorMessage)
-                {
-                    message.Append(item);
-                }
-
-                return BadRequest($"Falha ao cadastrar o usuário. - {message}");
+                return BadRequest(result.Errors);
             }
 
-            _uow.Commit();
-            return Ok(result);
+            return Ok();
         }
 
-        [HttpPut]
+        [HttpPut("alterarUsuario")]
         [Authorize]
         public async Task<ActionResult<dynamic>> AlterarCadastro([FromBody] CadastroViewModel dados)
         {
             var result = await _usuarioAppService.AlterarCadastroUsuario(dados).ConfigureAwait(false);
 
-            if (result.HasError)
+            if (result.IsFailed)
             {
-                _uow.Rollback();
-
-                var message = new StringBuilder();
-
-                foreach (var item in result.ErrorMessage)
-                {
-                    message.Append(item);
-                }
-
-                return BadRequest($"Falha ao alterar o usuário. - {message}");
+                return BadRequest($"Falha ao alterar o usuário. - {result.Errors}");
             }
 
-            _uow.Commit();
-            return Ok(result);
+            return Ok();
         }
 
         [HttpDelete]

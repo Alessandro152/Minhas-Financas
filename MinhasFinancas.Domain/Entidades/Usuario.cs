@@ -6,16 +6,10 @@ namespace MinhasFinancas.Domain.Entidades
 {
     public class Usuario : Base
     {
+        //EF
         public Usuario()
         {
 
-        }
-
-        public Usuario(string nome, LoginVO login)
-        {
-            Id = Guid.NewGuid();
-            Nome = nome;
-            Login = login;
         }
 
         public Usuario(Guid id, string nome, LoginVO login)
@@ -27,6 +21,6 @@ namespace MinhasFinancas.Domain.Entidades
 
         public string Nome { get; private set; }
 
-        public LoginVO Login { get; set; }
+        public LoginVO Login { get; private set; }
     }
 }

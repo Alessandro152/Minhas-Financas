@@ -1,5 +1,5 @@
-﻿using MediatR;
-using MinhasFinancas.Domain.Core.Shared;
+﻿using FluentResults;
+using MediatR;
 using MinhasFinancas.Domain.Entidades;
 using MinhasFinancas.Domain.Financas.Commands;
 using MinhasFinancas.Domain.Interface;
@@ -10,7 +10,8 @@ using System.Threading.Tasks;
 
 namespace MinhasFinancas.Domain.Financas.Handlers
 {
-    public class MovimentoFinanceiroHandler : IRequestHandler<NewMovimentoFinanceiroCommand, Result>, IRequestHandler<UpdateMovimentoFinanceiroCommand, Result>
+    public class MovimentoFinanceiroHandler : IRequestHandler<NewMovimentoFinanceiroCommand, Result>, 
+                                              IRequestHandler<UpdateMovimentoFinanceiroCommand, Result>
     {
         private readonly IMovimentoFinanceiroRepository _financasRepositorio;
 

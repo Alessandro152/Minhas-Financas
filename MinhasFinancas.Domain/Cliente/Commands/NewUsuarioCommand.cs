@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using FluentValidation.Results;
+using MinhasFinancas.Domain.Cliente.Validations;
 using MinhasFinancas.Domain.Core.Shared;
 
 namespace MinhasFinancas.Domain.Cliente.Commands
@@ -17,5 +18,10 @@ namespace MinhasFinancas.Domain.Cliente.Commands
         public string Email { get; }
 
         public string PassWord { get; }
+
+        public ValidationResult IsValid()
+        {
+            return new UsuarioValidation().Validate(this);
+        }
     }
 }
