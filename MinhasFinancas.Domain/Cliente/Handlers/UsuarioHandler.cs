@@ -1,9 +1,9 @@
 ﻿using FluentResults;
 using MediatR;
 using MinhasFinancas.Domain.Cliente.Commands;
+using MinhasFinancas.Domain.Core.ValueObjects;
 using MinhasFinancas.Domain.Entidades;
 using MinhasFinancas.Domain.Interface;
-using MinhasFinancas.Domain.ValueObjects;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -15,11 +15,13 @@ namespace MinhasFinancas.Domain.Cliente.Handlers
     {
         private readonly IUsuarioRepository _usuarioRepository;
         private readonly IDomainNotification _notification;
+        private readonly IRepositoryAdapter _repositoryAdapter;
 
-        public UsuarioHandler(IUsuarioRepository usuarioRepository, IDomainNotification notification)
+        public UsuarioHandler(IUsuarioRepository usuarioRepository, IDomainNotification notification, IRepositoryAdapter repositoryAdapter)
         {
             _usuarioRepository = usuarioRepository;
             _notification = notification;
+            _repositoryAdapter = repositoryAdapter;
         }
 
         public async Task<Result> Handle(NewUsuarioCommand message, CancellationToken cancellationToken)
@@ -40,11 +42,24 @@ namespace MinhasFinancas.Domain.Cliente.Handlers
                     return Result.Fail(_notification.Message);
                 }
 
+                //Verificar se o usuário já está cadastrado
+                if (await _repositoryAdapter.GetUsuario(message.Email))
+                {
+                    Result.Fail($"Usuário já cadastrado");
+                }
+
+                //Verificar se as credenciais de login já existem
+                if (await _repositoryAdapter.GetLogin(message.Email, message.PassWord))
+                {
+                    Result.Fail($"Credenciais de acesso {message.Email} {message.PassWord} já existem");
+                }
+
                 //Gerar ValueObject
-                var valueObject = new LoginVO(message.Email, message.PassWord);
+                var loginVO = new LoginVO(message.Email, message.PassWord);
+                var enderecoVO = new EnderecoVO(message.Cidade, message.UF);
 
                 // Gerar a entidade
-                var usuario = new Usuario(Guid.NewGuid(), message.Nome, valueObject);
+                var usuario = new Usuario(Guid.NewGuid(), message.Nome, enderecoVO, loginVO);
                 await _usuarioRepository.CadastrarUsuario(usuario);
 
                 var login = new Login(message.Email, message.PassWord, usuario.Id);
@@ -65,10 +80,11 @@ namespace MinhasFinancas.Domain.Cliente.Handlers
             try
             {
                 // Gerar o value object
-                var valueObject = new LoginVO(message.Email, message.Password);
+                var loginVO = new LoginVO(message.Email, message.Password);
+                var enderecoVO = new EnderecoVO(message.Cidade, message.UF);
 
                 // Gerar a entidade
-                var usuario = new Usuario(message.ClienteId, message.Nome, valueObject);
+                var usuario = new Usuario(message.ClienteId, message.Nome, enderecoVO, loginVO);
                 var result = await _usuarioRepository.AlterarCadastroUsuario(usuario);
 
                 return Result.Ok();

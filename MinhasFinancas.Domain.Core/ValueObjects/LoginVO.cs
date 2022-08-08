@@ -1,4 +1,4 @@
-﻿namespace MinhasFinancas.Domain.ValueObjects
+﻿namespace MinhasFinancas.Domain.Core.ValueObjects
 {
     public class LoginVO
     {

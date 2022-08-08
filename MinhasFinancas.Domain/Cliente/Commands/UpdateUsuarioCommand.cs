@@ -1,6 +1,4 @@
-﻿using FluentValidation.Results;
-using MinhasFinancas.Domain.Cliente.Validations;
-using MinhasFinancas.Domain.Core.Shared;
+﻿using MinhasFinancas.Domain.Core.Shared;
 using System;
 
 namespace MinhasFinancas.Domain.Cliente.Commands
@@ -15,12 +13,12 @@ namespace MinhasFinancas.Domain.Cliente.Commands
             Password = password;
         }
 
-        public Guid ClienteId { get; set; }
+        public Guid ClienteId { get; }
 
-        public string Nome { get; set; }
+        public string Nome { get; }
 
-        public string Email { get; set; }
+        public string Email { get; }
 
-        public string Password { get; set; }
+        public string Password { get; }
     }
 }

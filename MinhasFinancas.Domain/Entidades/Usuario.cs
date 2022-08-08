@@ -1,5 +1,5 @@
 ﻿using MinhasFinancas.Domain.Core.Shared;
-using MinhasFinancas.Domain.ValueObjects;
+using MinhasFinancas.Domain.Core.ValueObjects;
 using System;
 
 namespace MinhasFinancas.Domain.Entidades
@@ -12,14 +12,17 @@ namespace MinhasFinancas.Domain.Entidades
 
         }
 
-        public Usuario(Guid id, string nome, LoginVO login)
+        public Usuario(Guid id, string nome, EnderecoVO endereco, LoginVO login)
         {
             Id = id;
             Nome = nome;
+            Endereco = endereco;
             Login = login;
         }
 
         public string Nome { get; private set; }
+
+        public EnderecoVO Endereco { get; private set; }
 
         public LoginVO Login { get; private set; }
     }

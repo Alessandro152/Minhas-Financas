@@ -6,14 +6,20 @@ namespace MinhasFinancas.Domain.Cliente.Commands
 {
     public class NewUsuarioCommand : Command
     {
-        public NewUsuarioCommand(string nome, string email, string passWord)
+        public NewUsuarioCommand(string nome, string cidade, string Uf, string email, string senha)
         {
             Nome = nome;
+            Cidade = cidade;
+            UF = Uf;
             Email = email;
-            PassWord = passWord;
+            PassWord = senha;
         }
 
         public string Nome { get; }
+
+        public string Cidade { get; set; }
+
+        public string UF { get; set; }
 
         public string Email { get; }
 

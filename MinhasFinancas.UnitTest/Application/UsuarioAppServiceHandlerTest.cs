@@ -35,7 +35,7 @@ namespace MinhasFinancas.UnitTest.Application
 
             yield return new[]
             {
-                new CadastroViewModel { UsuarioNome = faker.Random.Words(), UsuarioEmail = faker.Random.Words(), UsuarioSenha = faker.Random.Words() }
+                new CadastroViewModel { Nome = faker.Random.Words(), Email = faker.Random.Words(), Senha = faker.Random.Words() }
             };
         }
 

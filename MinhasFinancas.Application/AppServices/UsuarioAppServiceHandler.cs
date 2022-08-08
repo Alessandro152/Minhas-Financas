@@ -19,12 +19,12 @@ namespace MinhasFinancas.Application.AppServices
             _queryHandler = queryHandler;
         }
 
-        public async Task AlterarCadastroUsuario(CadastroViewModel dados)
+        public async Task<Result> AlterarCadastroUsuario(CadastroViewModel dados)
         {
             try
             {
-                var command = new UpdateUsuarioCommand(dados.UsuarioId, dados.UsuarioNome, dados.UsuarioEmail, dados.UsuarioSenha);
-                _bus.SendCommand(command);
+                var command = new UpdateUsuarioCommand(dados.Id, dados.Nome, dados.Email, dados.Senha);
+                return await _bus.SendCommand<Result, UpdateUsuarioCommand>(command);
             }
             catch (Exception ex)
             {
@@ -36,8 +36,8 @@ namespace MinhasFinancas.Application.AppServices
         {
             try
             {
-                var command = new NewUsuarioCommand(usuario.UsuarioNome, usuario.UsuarioEmail, usuario.UsuarioSenha);
-                return await _bus.SendCommand<Result, NewUsuarioCommand>(command).ConfigureAwait(false);
+                var command = new NewUsuarioCommand(usuario.Nome, usuario.Cidade, usuario.UF, usuario.Email, usuario.Senha);
+                return await _bus.SendCommand<Result, NewUsuarioCommand>(command);
             }
             catch (Exception ex)
             {
