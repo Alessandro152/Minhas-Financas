@@ -35,13 +35,13 @@ namespace MinhasFinancas.UnitTest.Application
 
             yield return new[]
             {
-                new CadastroViewModel { Nome = faker.Random.Words(), Email = faker.Random.Words(), Senha = faker.Random.Words() }
+                new NewCadastroViewModel { Nome = faker.Random.Words(), Email = faker.Random.Words(), Senha = faker.Random.Words() }
             };
         }
 
         [Theory]
         [MemberData(nameof(CreateUser))]
-        public void ShouldSignInUserWithSuccess(CadastroViewModel usuario)
+        public void ShouldSignInUserWithSuccess(NewCadastroViewModel usuario)
         {
             _bus.Setup(s => s.SendCommand<dynamic, NewUsuarioCommand>(It.IsAny<NewUsuarioCommand>()));
             _applicationAdapter.Setup(s => s.RetornarDomainResult(It.IsAny<object>())).Returns(new ResultViewModel { });

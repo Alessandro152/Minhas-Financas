@@ -5,17 +5,14 @@ using System;
 
 namespace MinhasFinancas.Domain.Cliente.Commands
 {
-    public class NewLoginCommand : Command
+    public class NewUsuarioLoginCommand : Command
     {
-        public NewLoginCommand(string eMail, string passWord, Guid clienteId)
+        public NewUsuarioLoginCommand(string eMail, string passWord, Guid clienteId)
         {
-            Id = Guid.NewGuid();
             EMail = eMail;
             Password = passWord;
             ClienteId = clienteId;
         }
-
-        public Guid Id { get; }
 
         public string EMail { get; }
 

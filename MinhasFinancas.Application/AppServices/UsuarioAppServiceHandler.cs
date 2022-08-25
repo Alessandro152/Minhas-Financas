@@ -1,7 +1,7 @@
 ﻿using FluentResults;
 using MinhasFinancas.Application.Interface;
 using MinhasFinancas.Application.QueryStack.ViewModel;
-using MinhasFinancas.Domain.Cliente.Commands;
+using MinhasFinancas.Domain.Commands.Usuarios;
 using System;
 using System.Threading.Tasks;
 
@@ -10,21 +10,24 @@ namespace MinhasFinancas.Application.AppServices
     public class UsuarioAppServiceHandler : IUsuarioAppService
     {
         private readonly IBusHandler _bus;
-        private readonly IUsuarioQueryRepository _queryHandler;
+        private readonly IUsuarioQueryRepository _usuarioQueryRepository;
+        private readonly ITokenService _tokenService;
 
-        public UsuarioAppServiceHandler(IBusHandler bus, 
-                                        IUsuarioQueryRepository queryHandler)
+        public UsuarioAppServiceHandler(IBusHandler bus,
+                                        ITokenService tokenService,
+                                        IUsuarioQueryRepository usuarioQueryRepository)
         {
             _bus = bus;
-            _queryHandler = queryHandler;
+            _tokenService = tokenService;
+            _usuarioQueryRepository = usuarioQueryRepository;
         }
 
-        public async Task<Result> AlterarCadastroUsuario(CadastroViewModel dados)
+        public async Task<Result> AlterarCadastroUsuario(Guid usuarioId, NewCadastroViewModel request)
         {
             try
             {
-                var command = new UpdateUsuarioCommand(dados.Id, dados.Nome, dados.Email, dados.Senha);
-                return await _bus.SendCommand<Result, UpdateUsuarioCommand>(command);
+                var command = new UpdateUsuarioCommand(usuarioId, request.Nome, request.Email);
+                return await _bus.SendCommand(command);
             }
             catch (Exception ex)
             {
@@ -32,12 +35,12 @@ namespace MinhasFinancas.Application.AppServices
             }
         }
 
-        public async Task<Result> CadastrarUsuario(CadastroViewModel usuario)
+        public async Task<Result> CadastrarUsuario(NewCadastroViewModel usuario)
         {
             try
             {
-                var command = new NewUsuarioCommand(usuario.Nome, usuario.Cidade, usuario.UF, usuario.Email, usuario.Senha);
-                return await _bus.SendCommand<Result, NewUsuarioCommand>(command);
+                var command = new NewUsuarioCommand(usuario.Nome, usuario.Email);
+                return await _bus.SendCommand(command);
             }
             catch (Exception ex)
             {
@@ -45,11 +48,18 @@ namespace MinhasFinancas.Application.AppServices
             }
         }
 
-        public async Task<UsuarioViewModel> Login(LoginViewModel dados)
+        public async Task<UsuarioCredencialViewModel> Login(LoginViewModel dados)
         {
             try
             {
-                return await _queryHandler.Logar(dados).ConfigureAwait(false);
+                var usuario = await _usuarioQueryRepository.Logar(dados);
+                if (usuario is null) return default;
+
+                return new UsuarioCredencialViewModel
+                {
+                    Usuario = usuario,
+                    Token = _tokenService.GenerateToken(usuario)
+                };
             }
             catch (Exception ex)
             {

@@ -1,12 +1,19 @@
 ﻿using FluentValidation;
-using MinhasFinancas.Domain.Cliente.Commands;
+using MinhasFinancas.Domain.Commands.Abstract;
 using MinhasFinancas.Domain.Resources;
 
-namespace MinhasFinancas.Domain.Cliente.Validations
+namespace MinhasFinancas.Domain.Commands.Usuarios.Validations
 {
-    public class UsuarioValidation : AbstractValidator<NewUsuarioCommand>
+    public abstract class UsuarioValidation<T> : AbstractValidator<T> where T : UsuarioCommand
     {
-        public UsuarioValidation()
+        protected void ValidarId()
+        {
+            RuleFor(c => c.UsuarioId)
+                .NotNull()
+                .WithMessage("");
+        }
+
+        protected void ValidarNome()
         {
             RuleFor(c => c.Nome)
                 .NotEmpty()
@@ -14,19 +21,15 @@ namespace MinhasFinancas.Domain.Cliente.Validations
                 .MinimumLength(3)
                 .MaximumLength(50)
                 .WithMessage(DomainResource.UsuarioNomeValidationError);
+        }
 
+        protected void ValidarEmail()
+        {
             RuleFor(c => c.Email)
                 .NotNull()
                 .NotEmpty()
                 .EmailAddress()
                 .WithMessage(DomainResource.UsuarioEmailValidationError);
-
-            RuleFor(c => c.PassWord)
-                .NotNull()
-                .NotEmpty()
-                .MinimumLength(6)
-                .MaximumLength(6)
-                .WithMessage(DomainResource.UsuarioSenhaValidationError);
         }
     }
 }

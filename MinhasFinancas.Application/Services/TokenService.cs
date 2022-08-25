@@ -1,6 +1,5 @@
 ﻿using MinhasFinancas.Application.Interface;
 using MinhasFinancas.Application.QueryStack.ViewModel;
-using System;
 
 namespace MinhasFinancas.Application.Services
 {
@@ -14,15 +13,6 @@ namespace MinhasFinancas.Application.Services
         }
 
         public string GenerateToken(UsuarioViewModel login)
-        {
-            try
-            {
-                return _tokenBuilder.GenerateToken(login);
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
+            => _tokenBuilder.GenerateToken(login);
     }
 }

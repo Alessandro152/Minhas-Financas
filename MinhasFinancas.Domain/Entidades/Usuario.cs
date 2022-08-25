@@ -1,29 +1,21 @@
 ﻿using MinhasFinancas.Domain.Core.Shared;
-using MinhasFinancas.Domain.Core.ValueObjects;
 using System;
 
 namespace MinhasFinancas.Domain.Entidades
 {
-    public class Usuario : Base
+    public class Usuario : Entidade
     {
-        //EF
-        public Usuario()
-        {
+        protected Usuario(){}
 
-        }
-
-        public Usuario(Guid id, string nome, EnderecoVO endereco, LoginVO login)
+        public Usuario(Guid id, string nome, string email)
         {
             Id = id;
             Nome = nome;
-            Endereco = endereco;
-            Login = login;
+            Email = email;
         }
 
-        public string Nome { get; private set; }
+        public string Nome { get; }
 
-        public EnderecoVO Endereco { get; private set; }
-
-        public LoginVO Login { get; private set; }
+        public string Email { get; }
     }
 }

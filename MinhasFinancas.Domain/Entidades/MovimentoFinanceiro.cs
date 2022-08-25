@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MinhasFinancas.Domain.Entidades
 {
-    public class MovimentoFinanceiro : Base
+    public class MovimentoFinanceiro : Entidade
     {
         //Constructor for EFCore
         public MovimentoFinanceiro()

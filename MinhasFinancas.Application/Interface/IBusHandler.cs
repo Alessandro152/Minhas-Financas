@@ -6,8 +6,8 @@ namespace MinhasFinancas.Application.Interface
 {
     public interface IBusHandler
     {
-        void SendCommand<TCommand>(TCommand message) where TCommand : Command;
+        Task<Result> SendCommand<TCommand>(TCommand message) where TCommand : Command;
 
-        Task<Result> SendCommand<TResult, TCommand>(TCommand message) where TCommand : Command;
+        Task<bool> SendCommand<TCommand, TResult>(TCommand message) where TCommand : Command;
     }
 }

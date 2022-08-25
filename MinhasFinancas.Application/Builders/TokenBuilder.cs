@@ -20,28 +20,21 @@ namespace MinhasFinancas.Application.Builders
 
         public string GenerateToken(UsuarioViewModel usuario)
         {
-            try
-            {
-                var key = Encoding.ASCII.GetBytes(Setting.Secret);
+            var key = Encoding.ASCII.GetBytes(Setting.Secret);
 
-                var token = _tokenHandler.CreateToken(new SecurityTokenDescriptor
+            var token = _tokenHandler.CreateToken(new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(new[]
                 {
-                    Subject = new ClaimsIdentity(new[]
-                    {
                         new Claim(ClaimTypes.Name, usuario.Id.ToString()),
                         new Claim(ClaimTypes.Name, usuario.Nome),
                         new Claim(ClaimTypes.Email, usuario.Email)
-                    }),
-                    Expires = DateTime.UtcNow.AddHours(2),
-                    SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
-                });
+                }),
+                Expires = DateTime.UtcNow.AddHours(2),
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+            });
 
-                return _tokenHandler.WriteToken(token);
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
+            return _tokenHandler.WriteToken(token);
         }
     }
 }

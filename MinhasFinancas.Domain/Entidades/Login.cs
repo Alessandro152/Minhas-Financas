@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MinhasFinancas.Domain.Entidades
 {
-    public class Login : Base
+    public class Login : Entidade
     {
         public Login()
         {

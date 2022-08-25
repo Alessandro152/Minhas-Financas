@@ -1,49 +1,46 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using FluentResults;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MinhasFinancas.Application.Interface;
 using MinhasFinancas.Application.QueryStack.ViewModel;
-using System.Text;
+using System;
 using System.Threading.Tasks;
 
 namespace MinhasFinancas.Api.Controllers.Usuario
 {
     [ApiController]
     [Route("cliente")]
+    [Authorize]
     public class UsuarioController : ControllerBase
     {
         private readonly IUsuarioAppService _usuarioAppService;
-        private readonly ITokenService _tokenService;
 
-        public UsuarioController(IUsuarioAppService usuarioAppService, ITokenService tokenService)
+        public UsuarioController(IUsuarioAppService usuarioAppService)
         {
             _usuarioAppService = usuarioAppService;
-            _tokenService = tokenService;
         }
 
+        /// <summary>
+        /// Realiza o login do usuário
+        /// </summary>
         [HttpGet("acesso")]
-        public async Task<ActionResult<dynamic>> Login([FromQuery] LoginViewModel dados)
+        [ProducesResponseType(typeof(UsuarioCredencialViewModel), 200)]
+        [ProducesResponseType(typeof(UsuarioCredencialViewModel), 404)]
+        [AllowAnonymous]
+        public async Task<IActionResult> Login([FromQuery] LoginViewModel request)
         {
-            var user = await _usuarioAppService.Login(dados).ConfigureAwait(false);
+            if (await _usuarioAppService.Login(request) is null) return NotFound();
 
-            if (user is null)
-            {
-                return NotFound();
-            }
-
-            var token = _tokenService.GenerateToken(user);
-
-            return Ok(new
-            {
-                user,
-                token
-            });
+            return Ok();
         }
 
         [HttpPost("cadastrarUsuario")]
-        public async Task<ActionResult<dynamic>> CadastrarUsuario([FromBody] CadastroViewModel dados)
+        [ProducesResponseType(typeof(Result), 201)]
+        [ProducesResponseType(typeof(Result), 400)]
+        [AllowAnonymous]
+        public async Task<IActionResult> CadastrarUsuario([FromBody] NewCadastroViewModel request)
         {
-            var result = await _usuarioAppService.CadastrarUsuario(dados);
-
+            var result = await _usuarioAppService.CadastrarUsuario(request);
             if (result.IsFailed)
             {
                 return BadRequest(result.Errors);
@@ -52,12 +49,12 @@ namespace MinhasFinancas.Api.Controllers.Usuario
             return Ok();
         }
 
-        [HttpPut("alterarUsuario")]
-        [Authorize]
-        public async Task<ActionResult<dynamic>> AlterarCadastro([FromBody] CadastroViewModel dados)
+        [HttpPatch("alterarUsuario")]
+        [ProducesResponseType(typeof(Result), 200)]
+        [ProducesResponseType(typeof(Result), 400)]
+        public async Task<IActionResult> AlterarCadastro(Guid usuarioId, [FromBody] NewCadastroViewModel request)
         {
-            var result = await _usuarioAppService.AlterarCadastroUsuario(dados).ConfigureAwait(false);
-
+            var result = await _usuarioAppService.AlterarCadastroUsuario(usuarioId, request).ConfigureAwait(false);
             if (result.IsFailed)
             {
                 return BadRequest($"Falha ao alterar o usuário. - {result.Errors}");
@@ -67,10 +64,9 @@ namespace MinhasFinancas.Api.Controllers.Usuario
         }
 
         [HttpDelete]
-        [Authorize]
-        public bool ExcluirCadastroUsuario(int Id)
+        public async Task<IActionResult> ExcluirCadastroUsuario(Guid Id)
         {
-            return true;
+            return Ok();
         }
     }
 }
