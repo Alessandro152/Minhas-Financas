@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 
 namespace MinhasFinancas.Application.AppServices
 {
-    public class UsuarioAppServiceHandler : IUsuarioAppService
+    public class UsuarioAppService : IUsuarioAppService
     {
         private readonly IBusHandler _bus;
         private readonly IUsuarioQueryRepository _usuarioQueryRepository;
         private readonly ITokenService _tokenService;
 
-        public UsuarioAppServiceHandler(IBusHandler bus,
+        public UsuarioAppService(IBusHandler bus,
                                         ITokenService tokenService,
                                         IUsuarioQueryRepository usuarioQueryRepository)
         {
@@ -27,7 +27,13 @@ namespace MinhasFinancas.Application.AppServices
             try
             {
                 var command = new UpdateUsuarioCommand(usuarioId, request.Nome, request.Email);
-                return await _bus.SendCommand(command);
+                var x = await _bus.SendCommand(command);
+                if (x.IsSuccess)
+                {
+                    //TODO - gerenciar com unit of work commitar ou rollback
+                }
+
+                return x.ToResult();
             }
             catch (Exception ex)
             {
@@ -40,7 +46,9 @@ namespace MinhasFinancas.Application.AppServices
             try
             {
                 var command = new NewUsuarioCommand(usuario.Nome, usuario.Email);
-                return await _bus.SendCommand(command);
+                var x = await _bus.SendCommand(command);
+
+                return x.ToResult();
             }
             catch (Exception ex)
             {

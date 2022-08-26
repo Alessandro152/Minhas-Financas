@@ -1,6 +1,7 @@
 ﻿using FluentResults;
 using MediatR;
 using MinhasFinancas.Domain.Commands.Usuarios;
+using MinhasFinancas.Domain.Core.Shared;
 using MinhasFinancas.Domain.Entidades;
 using MinhasFinancas.Domain.Interface;
 using System;
@@ -9,8 +10,8 @@ using System.Threading.Tasks;
 
 namespace MinhasFinancas.Domain.Cliente.Handlers
 {
-    public class UsuarioHandler : IRequestHandler<NewUsuarioCommand, Result<Usuario>>,
-                                  IRequestHandler<UpdateUsuarioCommand, Result>
+    public class UsuarioHandler : IRequestHandler<NewUsuarioCommand, Result<Entidade>>,
+                                  IRequestHandler<UpdateUsuarioCommand, Result<Entidade>>
     {
         private readonly IUsuarioRepository _usuarioRepository;
         private readonly IDomainNotification _notification;
@@ -23,17 +24,17 @@ namespace MinhasFinancas.Domain.Cliente.Handlers
             _repositoryAdapter = repositoryAdapter;
         }
 
-        public async Task<Result<Usuario>> Handle(NewUsuarioCommand message, CancellationToken cancellationToken)
+        public async Task<Result<Entidade>> Handle(NewUsuarioCommand message, CancellationToken cancellationToken)
         {
-            if (message is null) return Result.Fail("Command Nula");
+            if (message is null) return default;
 
             var validation = message.IsValid();
 
             if (!validation.IsValid)
             {
-                foreach (var item in validation.Errors)
+                foreach (var erro in validation.Errors)
                 {
-                    _notification.AddMessage(item.ErrorMessage);
+                    _notification.AddMessage(erro.ErrorMessage);
                 }
 
                 return Result.Fail(_notification.Message);
@@ -44,19 +45,19 @@ namespace MinhasFinancas.Domain.Cliente.Handlers
             var usuario = new Usuario(Guid.NewGuid(), message.Nome, message.Email);
             await _usuarioRepository.CadastrarUsuario(usuario);
 
-            return Result.Ok(usuario);
+            return usuario;
         }
 
-        public async Task<Result> Handle(UpdateUsuarioCommand message, CancellationToken cancellationToken)
+        public async Task<Result<Entidade>> Handle(UpdateUsuarioCommand message, CancellationToken cancellationToken)
         {
             if (message is null) return Result.Fail("Command Nula ");
             var validation = message.IsValid();
 
             if (!validation.IsValid)
             {
-                foreach (var item in validation.Errors)
+                foreach (var erro in validation.Errors)
                 {
-                    _notification.AddMessage(item.ErrorMessage);
+                    _notification.AddMessage(erro.ErrorMessage);
                 }
 
                 return Result.Fail(_notification.Message);

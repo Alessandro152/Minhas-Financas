@@ -24,7 +24,7 @@ namespace MinhasFinancas.CrossCutting.Ioc
         public static void Injector(this IServiceCollection services)
         {
             //Application
-            services.AddScoped<IUsuarioAppService, UsuarioAppServiceHandler>();
+            services.AddScoped<IUsuarioAppService, UsuarioAppService>();
             services.AddScoped<IMinhasFinancasAppService, MinhasFinancasAppServiceHandler>();
             services.AddScoped<ITokenBuilder, TokenBuilder>();
             services.AddScoped<ITokenService, TokenService>();

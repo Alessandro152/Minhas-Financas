@@ -1,11 +1,11 @@
-﻿using FluentValidation.Results;
-using MinhasFinancas.Domain.Cliente.Validations;
-using MinhasFinancas.Domain.Core.Shared;
+﻿using FluentResults;
+using FluentValidation.Results;
+using MediatR;
 using System;
 
 namespace MinhasFinancas.Domain.Cliente.Commands
 {
-    public class NewUsuarioLoginCommand : Command
+    public class NewUsuarioLoginCommand : IRequest<Result>
     {
         public NewUsuarioLoginCommand(string eMail, string passWord, Guid clienteId)
         {

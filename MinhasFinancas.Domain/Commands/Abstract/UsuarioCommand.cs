@@ -1,9 +1,8 @@
-﻿using MinhasFinancas.Domain.Core.Shared;
-using System;
+﻿using System;
 
 namespace MinhasFinancas.Domain.Commands.Abstract
 {
-    public abstract class UsuarioCommand : Command
+    public abstract class UsuarioCommand
     {
         public Guid UsuarioId { get; protected set; }
 

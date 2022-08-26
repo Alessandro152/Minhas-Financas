@@ -34,6 +34,9 @@ namespace MinhasFinancas.Api.Controllers.Usuario
             return Ok();
         }
 
+        /// <summary>
+        /// Realiza o cadastro de um novo usuário
+        /// </summary>
         [HttpPost("cadastrarUsuario")]
         [ProducesResponseType(typeof(Result), 201)]
         [ProducesResponseType(typeof(Result), 400)]
@@ -49,6 +52,9 @@ namespace MinhasFinancas.Api.Controllers.Usuario
             return Ok();
         }
 
+        /// <summary>
+        /// Altera o cadastro do usuário
+        /// </summary>
         [HttpPatch("alterarUsuario")]
         [ProducesResponseType(typeof(Result), 200)]
         [ProducesResponseType(typeof(Result), 400)]

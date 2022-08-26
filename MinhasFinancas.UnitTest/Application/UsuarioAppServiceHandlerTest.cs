@@ -17,7 +17,7 @@ namespace MinhasFinancas.UnitTest.Application
         private readonly Mock<IUsuarioQueryRepository> _queryHandler;
         private readonly Mock<IApplicationAdapter> _applicationAdapter;
         private Mock<IDomainNotification> _notification;
-        private readonly UsuarioAppServiceHandler _usuarioAppService;
+        private readonly UsuarioAppService _usuarioAppService;
 
         public UsuarioAppServiceHandlerTest()
         {

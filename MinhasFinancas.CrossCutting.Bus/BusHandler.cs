@@ -1,14 +1,13 @@
-﻿using System;
+﻿using FluentResults;
+using MediatR;
+using MinhasFinancas.Application.Interface;
+using MinhasFinancas.Domain.Core.Shared;
+using System.Threading.Tasks;
 
 namespace MinhasFinancas.CrossCutting.Bus
 {
-    public class BusHandler : IBusHandler
+    public sealed class BusHandler : IBusHandler
     {
-        public BusHandler()
-        {
-
-        }
-
         private readonly IMediator _mediator;
 
         public BusHandler(IMediator mediator)
@@ -16,14 +15,10 @@ namespace MinhasFinancas.CrossCutting.Bus
             _mediator = mediator;
         }
 
-        public void SendCommand<TCommand>(TCommand message) where TCommand : Command
-        {
-            _mediator.Send(message);
-        }
+        public async Task<Result<Entidade>> SendCommand<TCommand>(TCommand message) where TCommand : IRequest<Result<Entidade>>
+            => await _mediator.Send(message);
 
-        public async Task<dynamic> SendCommand<TResult, TCommand>(TCommand message) where TCommand : Command
-        {
-            return await _mediator.Send(message).ConfigureAwait(false);
-        }
+        public async Task<bool> SendCommand<TCommand, TResult>(TCommand message) where TCommand : IRequest<bool>
+            => await _mediator.Send(message);
     }
 }
