@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MinhasFinancas.Application\MinhasFinancas.Application.csproj" />
+    <ProjectReference Include="..\MinhasFinancas.CrossCutting.Bus\MinhasFinancas.CrossCutting.Bus.csproj" />
     <ProjectReference Include="..\MinhasFinancas.Infra\MinhasFinancas.Infra.csproj" />
   </ItemGroup>
 

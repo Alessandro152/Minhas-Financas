@@ -8,13 +8,13 @@ namespace MinhasFinancas.Application.Interface
 {
     public interface IMinhasFinancasAppService
     {
-        Task<Result> GravarMovimentoFinanceiro(MovimentoFinanceiroViewModel dados);
+        Task<Result> GravarMovimentoFinanceiro(NewMovimentoFinanceiroViewModel dados);
 
-        Task<Result> AtualizarMovimentoFinanceiro(MovimentoFinanceiroViewModel dados);
+        Task<Result> AtualizarMovimentoFinanceiro(UpdateMovimentoFinanceiroViewModel dados);
 
-        Task<IEnumerable<MovimentoFinanceiroViewModel>> AllReceitas(DateTime data);
+        Task<IEnumerable<UpdateMovimentoFinanceiroViewModel>> AllReceitas(DateTime data);
 
-        Task<IEnumerable<MovimentoFinanceiroViewModel>> AllDespesas(DateTime data);
+        Task<IEnumerable<UpdateMovimentoFinanceiroViewModel>> AllDespesas(DateTime data);
 
         Task<bool> ExcluirMovimentoFinanceiro(IEnumerable<Guid> id);
 

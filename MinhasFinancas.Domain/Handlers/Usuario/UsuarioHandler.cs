@@ -5,22 +5,21 @@ using MinhasFinancas.Domain.Core.Shared;
 using MinhasFinancas.Domain.Entidades;
 using MinhasFinancas.Domain.Interface;
 using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace MinhasFinancas.Domain.Cliente.Handlers
 {
     public class UsuarioHandler : IRequestHandler<NewUsuarioCommand, Result<Entidade>>,
-                                  IRequestHandler<UpdateUsuarioCommand, Result<Entidade>>
+                                  IRequestHandler<UpdateUsuarioCommand, Result<bool>>
     {
         private readonly IUsuarioRepository _usuarioRepository;
-        private readonly IDomainNotification _notification;
         private readonly IRepositoryAdapter _repositoryAdapter;
 
-        public UsuarioHandler(IUsuarioRepository usuarioRepository, IDomainNotification notification, IRepositoryAdapter repositoryAdapter)
+        public UsuarioHandler(IUsuarioRepository usuarioRepository, IRepositoryAdapter repositoryAdapter)
         {
             _usuarioRepository = usuarioRepository;
-            _notification = notification;
             _repositoryAdapter = repositoryAdapter;
         }
 
@@ -29,15 +28,9 @@ namespace MinhasFinancas.Domain.Cliente.Handlers
             if (message is null) return default;
 
             var validation = message.IsValid();
-
             if (!validation.IsValid)
             {
-                foreach (var erro in validation.Errors)
-                {
-                    _notification.AddMessage(erro.ErrorMessage);
-                }
-
-                return Result.Fail(_notification.Message);
+                return Result.Fail(validation.Errors.Select(s => s.ErrorMessage));
             }
 
             if (await _repositoryAdapter.GetUsuario(message.Email)) Result.Fail($"Usuário já cadastrado");
@@ -48,27 +41,19 @@ namespace MinhasFinancas.Domain.Cliente.Handlers
             return usuario;
         }
 
-        public async Task<Result<Entidade>> Handle(UpdateUsuarioCommand message, CancellationToken cancellationToken)
+        public async Task<Result<bool>> Handle(UpdateUsuarioCommand message, CancellationToken cancellationToken)
         {
-            if (message is null) return Result.Fail("Command Nula ");
+            if (message is null) return Result.Fail(new Error("A command está nula"));
             var validation = message.IsValid();
 
             if (!validation.IsValid)
             {
-                foreach (var erro in validation.Errors)
-                {
-                    _notification.AddMessage(erro.ErrorMessage);
-                }
-
-                return Result.Fail(_notification.Message);
+                return Result.Fail(validation.Errors.Select(s => s.ErrorMessage));
             }
 
-            if (await _repositoryAdapter.GetUsuario(message.Email)) Result.Fail($"Usuário já cadastrado");
-
-            var usuario = new Usuario(message.UsuarioId, message.Nome, message.Email);
-            await _usuarioRepository.AlterarCadastroUsuario(usuario);
-
-            return Result.Ok();
+            return await _usuarioRepository.AlterarCadastroUsuario(new Usuario(message.UsuarioId, 
+                                                                               message.Nome, 
+                                                                               message.Email));
         }
     }
 }

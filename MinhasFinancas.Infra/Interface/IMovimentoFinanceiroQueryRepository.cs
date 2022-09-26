@@ -7,7 +7,7 @@ namespace MinhasFinancas.Application.Interface
 {
     public interface IMovimentoFinanceiroQueryRepository
     {
-        Task<IEnumerable<MovimentoFinanceiroViewModel>> GetAll(DateTime data, int tipo);
+        Task<IEnumerable<UpdateMovimentoFinanceiroViewModel>> GetAll(DateTime data, int tipo);
 
         Task<bool> ExcluirMovimento(IEnumerable<Guid> id);
 

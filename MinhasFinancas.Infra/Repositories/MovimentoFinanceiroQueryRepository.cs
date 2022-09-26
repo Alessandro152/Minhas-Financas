@@ -1,4 +1,5 @@
-﻿using MinhasFinancas.Application.Interface;
+﻿using Microsoft.EntityFrameworkCore;
+using MinhasFinancas.Application.Interface;
 using MinhasFinancas.Application.QueryStack.ViewModel;
 using MinhasFinancas.Infra.Data;
 using System;
@@ -17,74 +18,54 @@ namespace MinhasFinancas.Infra.Repositories
             _context = context;
         }
 
-        public Task<bool> ExcluirMovimento(IEnumerable<Guid> id)
+        public async Task<bool> ExcluirMovimento(IEnumerable<Guid> id)
         {
-            try
+            foreach (var item in id)
             {
-                foreach (var item in id)
+                var result = await _context.Valores.Where(x => x.Id == item).FirstOrDefaultAsync();
+
+                if (result != null)
                 {
-                    var result = _context.Valores.Where(x => x.Id == item).FirstOrDefault();
-
-                    if (result != null)
-                    {
-                        _context.Valores.Remove(result);
-                    }
+                    _context.Valores.Remove(result);
                 }
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-
-            return Task.FromResult(true);
-        }
-
-        public async Task<bool> ExcluirMovimento(DateTime data)
-        {
-            try
-            {
-                var result = _context.Valores.Where(x => x.Data.ToShortDateString() == data.ToShortDateString()).AsEnumerable();
-
-                if (result.Any())
-                {
-                    foreach (var item in result)
-                    {
-                        _context.Valores.Remove(item);
-                    }
-                }
-            }
-            catch (Exception)
-            {
-                throw;
             }
 
             return true;
         }
 
-        public async Task<IEnumerable<MovimentoFinanceiroViewModel>> GetAll(DateTime data, int tipo)
+        public async Task<bool> ExcluirMovimento(DateTime data)
         {
-            var lista = new List<MovimentoFinanceiroViewModel>();
-            try
-            {
-                var result = _context.Valores.Where(x => (x.Data.ToShortDateString() == data.ToShortDateString()) && (x.Tipo == tipo)).AsEnumerable();
 
-                if (result.Any())
+            var result = _context.Valores.Where(x => x.Data.ToShortDateString() == data.ToShortDateString()).AsEnumerable();
+
+            if (result.Any())
+            {
+                foreach (var item in result)
                 {
-                    foreach (var item in result)
-                    {
-                        lista.Add(new MovimentoFinanceiroViewModel
-                        {
-                            Id = item.Id,
-                            Valor = item.Valor,
-                            Titulo = item.Titulo,
-                            Data = item.Data
-                        });
-                    }
+                    _context.Valores.Remove(item);
                 }
             }
-            catch (Exception ex)
+
+            return true;
+        }
+
+        public async Task<IEnumerable<UpdateMovimentoFinanceiroViewModel>> GetAll(DateTime data, int tipo)
+        {
+            var lista = new List<UpdateMovimentoFinanceiroViewModel>();
+            var result = await _context.Valores.Where(x => (x.Data.ToShortDateString() == data.ToShortDateString()) && (x.Tipo == tipo)).ToArrayAsync();
+
+            if (result.Any())
             {
-                throw ex;
+                foreach (var item in result)
+                {
+                    lista.Add(new UpdateMovimentoFinanceiroViewModel
+                    {
+                        Id = item.Id,
+                        Valor = item.Valor,
+                        Titulo = item.Titulo,
+                        Data = item.Data
+                    });
+                }
             }
 
             return lista;

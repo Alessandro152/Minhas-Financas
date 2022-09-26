@@ -1,8 +1,8 @@
-﻿using MinhasFinancas.Application.QueryStack.ViewModel;
+﻿using MinhasFinancas.ViewModel.ViewModels;
 
 namespace MinhasFinancas.Application.Interface
 {
-    public interface ITokenService
+    public interface ITokenAppService
     {
         string GenerateToken(UsuarioViewModel login);
     }

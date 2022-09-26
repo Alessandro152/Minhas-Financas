@@ -1,6 +1,6 @@
-﻿namespace MinhasFinancas.Application.QueryStack.ViewModel
+﻿namespace MinhasFinancas.ViewModel.ViewModels
 {
-    public class NewCadastroViewModel
+    public class UpdateUsuarioViewModel
     {
         public string Nome { get; set; }
 

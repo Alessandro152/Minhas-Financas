@@ -1,5 +1,5 @@
 ﻿using FluentResults;
-using MinhasFinancas.Application.QueryStack.ViewModel;
+using MinhasFinancas.ViewModel.ViewModels;
 using System;
 using System.Threading.Tasks;
 
@@ -7,10 +7,10 @@ namespace MinhasFinancas.Application.Interface
 {
     public interface IUsuarioAppService
     {
-        Task<Result> CadastrarUsuario(NewCadastroViewModel usuario);
+        Task<Result> CadastrarUsuario(NewUsuarioViewModel usuario);
 
         Task<UsuarioCredencialViewModel> Login(LoginViewModel dados);
 
-        Task<Result> AlterarCadastroUsuario(Guid id, NewCadastroViewModel dados);
+        Task<Result<bool>> AlterarCadastroUsuario(Guid id, UpdateUsuarioViewModel dados);
     }
 }

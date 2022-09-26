@@ -1,13 +1,14 @@
 ﻿using MinhasFinancas.Application.Interface;
 using MinhasFinancas.Application.QueryStack.ViewModel;
+using MinhasFinancas.ViewModel.ViewModels;
 
 namespace MinhasFinancas.Application.Services
 {
-    public class TokenService : ITokenService
+    public class TokenAppService : ITokenAppService
     {
         private readonly ITokenBuilder _tokenBuilder;
 
-        public TokenService(ITokenBuilder tokenBuilder)
+        public TokenAppService(ITokenBuilder tokenBuilder)
         {
             _tokenBuilder = tokenBuilder;
         }

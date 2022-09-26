@@ -10,6 +10,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MinhasFinancas.Domain\MinhasFinancas.Domain.csproj" />
+    <ProjectReference Include="..\MinhasFinancas.Infra\MinhasFinancas.Infra.csproj" />
+    <ProjectReference Include="..\MinhasFinancas.ViewModel\MinhasFinancas.ViewModel.csproj" />
   </ItemGroup>
 
 </Project>

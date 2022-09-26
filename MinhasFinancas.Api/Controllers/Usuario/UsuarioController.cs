@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MinhasFinancas.Application.Interface;
-using MinhasFinancas.Application.QueryStack.ViewModel;
+using MinhasFinancas.ViewModel.ViewModels;
 using System;
 using System.Threading.Tasks;
 
@@ -41,7 +41,7 @@ namespace MinhasFinancas.Api.Controllers.Usuario
         [ProducesResponseType(typeof(Result), 201)]
         [ProducesResponseType(typeof(Result), 400)]
         [AllowAnonymous]
-        public async Task<IActionResult> CadastrarUsuario([FromBody] NewCadastroViewModel request)
+        public async Task<IActionResult> CadastrarUsuario([FromBody] NewUsuarioViewModel request)
         {
             var result = await _usuarioAppService.CadastrarUsuario(request);
             if (result.IsFailed)
@@ -56,17 +56,17 @@ namespace MinhasFinancas.Api.Controllers.Usuario
         /// Altera o cadastro do usuário
         /// </summary>
         [HttpPatch("alterarUsuario")]
-        [ProducesResponseType(typeof(Result), 200)]
+        [ProducesResponseType(typeof(Result<bool>), 200)]
         [ProducesResponseType(typeof(Result), 400)]
-        public async Task<IActionResult> AlterarCadastro(Guid usuarioId, [FromBody] NewCadastroViewModel request)
+        public async Task<IActionResult> AlterarCadastro(Guid usuarioId, [FromBody] UpdateUsuarioViewModel request)
         {
-            var result = await _usuarioAppService.AlterarCadastroUsuario(usuarioId, request).ConfigureAwait(false);
+            var result = await _usuarioAppService.AlterarCadastroUsuario(usuarioId, request);
             if (result.IsFailed)
             {
-                return BadRequest($"Falha ao alterar o usuário. - {result.Errors}");
+                return BadRequest(result.Errors);
             }
 
-            return Ok();
+            return Ok(result.Value);
         }
 
         [HttpDelete]

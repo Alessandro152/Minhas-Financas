@@ -3,12 +3,11 @@ using FluentValidation.Results;
 using MediatR;
 using MinhasFinancas.Domain.Commands.Abstract;
 using MinhasFinancas.Domain.Commands.Usuarios.Validations;
-using MinhasFinancas.Domain.Core.Shared;
 using System;
 
 namespace MinhasFinancas.Domain.Commands.Usuarios
 {
-    public class UpdateUsuarioCommand : UsuarioCommand, IRequest<Result<Entidade>>
+    public class UpdateUsuarioCommand : UsuarioCommand, IRequest<Result<bool>>
     {
         public UpdateUsuarioCommand(Guid usuarioId, string nome, string email)
         {

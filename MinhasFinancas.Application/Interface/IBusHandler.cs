@@ -9,6 +9,6 @@ namespace MinhasFinancas.Application.Interface
     {
         Task<Result<Entidade>> SendCommand<TCommand>(TCommand message) where TCommand : IRequest<Result<Entidade>>;
 
-        Task<bool> SendCommand<TCommand, TResult>(TCommand message) where TCommand : IRequest<bool>;
+        Task<Result<bool>> SendCommand<TCommand, TResult>(TCommand message) where TCommand : IRequest<Result<bool>>;
     }
 }

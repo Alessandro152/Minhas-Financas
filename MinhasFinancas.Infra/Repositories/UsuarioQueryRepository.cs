@@ -1,8 +1,7 @@
-﻿using MinhasFinancas.Application.Interface;
-using MinhasFinancas.Application.QueryStack.ViewModel;
+﻿using Microsoft.EntityFrameworkCore;
 using MinhasFinancas.Infra.Data;
-using System;
-using System.Collections.Generic;
+using MinhasFinancas.Infra.Interface;
+using MinhasFinancas.ViewModel.ViewModels;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -17,39 +16,25 @@ namespace MinhasFinancas.Infra.Repositories
             _context = context;
         }
 
-        public async Task<bool> Get(string email)
-        {
-            return _context.Usuarios.Any(x => x.Login.Email == email);
-        }
+        public async Task<bool> GetLogin(string email, string passWord)
+            => await _context.Usuarios.AnyAsync(x => x.Email == email);
 
-        public Task<bool> GetLogin(string email, string passWord)
-        {
-            return _context.Usuarios.Any(x => x.Login.Email == email && x.Login.Password == passWord);
-        }
-
-        public Task<UsuarioViewModel> Logar(LoginViewModel login)
+        public async Task<UsuarioViewModel> Logar(LoginViewModel login)
         {
             if (login is null) return default;
 
-            try
-            {
-                var result = _context.Login.Where(x => x.EMail == login.Email && x.PassWord == login.PassWord).FirstOrDefault();
+            var result = await _context.Login.Where(x => x.EMail == login.Email && x.PassWord == login.PassWord).FirstOrDefaultAsync();
 
-                if (result != null)
+            if (result != null)
+            {
+                var user = await _context.Usuarios.Where(x => x.Id == result.ClienteId).FirstOrDefaultAsync();
+
+                return new UsuarioViewModel
                 {
-                    var user = _context.Usuarios.Where(x => x.Id == result.ClienteId).FirstOrDefault();
-
-                    return Task.FromResult(new UsuarioViewModel
-                    {
-                        Id = user.Id,
-                        Nome = user.Nome,
-                        Email = user.Login.Email
-                    });
-                }
-            }
-            catch (Exception ex)
-            {
-                throw ex;
+                    Id = user.Id,
+                    Nome = user.Nome,
+                    Email = user.Email
+                };
             }
 
             return default;

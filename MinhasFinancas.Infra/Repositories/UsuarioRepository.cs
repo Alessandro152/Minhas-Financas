@@ -1,7 +1,6 @@
 ﻿using MinhasFinancas.Domain.Entidades;
 using MinhasFinancas.Domain.Interface;
 using MinhasFinancas.Infra.Data;
-using System;
 using System.Threading.Tasks;
 
 namespace MinhasFinancas.Infra.Repositories
@@ -15,46 +14,22 @@ namespace MinhasFinancas.Infra.Repositories
             _context = context;
         }
 
-        public Task<bool> AlterarCadastroUsuario(Usuario entity)
+        public async Task<bool> AlterarCadastroUsuario(Usuario entity)
         {
-            try
-            {
-                _context.Usuarios.Update(entity);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-
-            return Task.FromResult(true);
+            _context.Usuarios.Update(entity);
+            return await _context.SaveChangesAsync() > 0;
         }
 
-        public Task<bool> CadastrarUsuario(Usuario entity)
+        public async Task<bool> CadastrarUsuario(Usuario entity)
         {
-            try
-            {
-                _context.Usuarios.AddAsync(entity);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-
-            return Task.FromResult(true);
+            await _context.Usuarios.AddAsync(entity);
+            return await _context.SaveChangesAsync() > 0;
         }
 
-        public Task<bool> GravarLogin(Login loginEntity)
+        public async Task<bool> GravarLogin(Login loginEntity)
         {
-            try
-            {
-                _context.Login.AddAsync(loginEntity);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-
-            return Task.FromResult(true);
+            await _context.Login.AddAsync(loginEntity);
+            return await _context.SaveChangesAsync() > 0;
         }
     }
 }

@@ -25,7 +25,7 @@ namespace MinhasFinancas.Api.Controllers.Financas
         [HttpGet]
         [Route("allReceitas")]
         [Authorize]
-        public async Task<ActionResult<MovimentoFinanceiroViewModel>> AllReceitas([FromQuery] DateTime data)
+        public async Task<ActionResult<UpdateMovimentoFinanceiroViewModel>> AllReceitas([FromQuery] DateTime data)
         {
             try
             {
@@ -47,7 +47,7 @@ namespace MinhasFinancas.Api.Controllers.Financas
         [HttpGet]
         [Route("allDespesas")]
         [Authorize]
-        public async Task<ActionResult<MovimentoFinanceiroViewModel>> AllDespesas([FromQuery] DateTime data)
+        public async Task<ActionResult<UpdateMovimentoFinanceiroViewModel>> AllDespesas([FromQuery] DateTime data)
         {
             try
             {
@@ -69,7 +69,7 @@ namespace MinhasFinancas.Api.Controllers.Financas
         [HttpPost]
         [Route("salvarMovimento")]
         [Authorize]
-        public async Task<ActionResult<bool>> GravarMovimentoFinanceiro([FromBody] MovimentoFinanceiroViewModel dados)
+        public async Task<ActionResult<bool>> GravarMovimentoFinanceiro([FromBody] UpdateMovimentoFinanceiroViewModel dados)
         {
             if (!ModelState.IsValid)
             {
@@ -98,7 +98,7 @@ namespace MinhasFinancas.Api.Controllers.Financas
         [HttpPut]
         [Route("atualizarMovimento")]
         [Authorize]
-        public async Task<ActionResult<bool>> AtualizarMovimentoFinanceiro([FromBody] MovimentoFinanceiroViewModel dados)
+        public async Task<ActionResult<bool>> AtualizarMovimentoFinanceiro([FromBody] UpdateMovimentoFinanceiroViewModel dados)
         {
             if (!ModelState.IsValid)
             {

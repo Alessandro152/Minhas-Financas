@@ -18,7 +18,7 @@ namespace MinhasFinancas.CrossCutting.Bus
         public async Task<Result<Entidade>> SendCommand<TCommand>(TCommand message) where TCommand : IRequest<Result<Entidade>>
             => await _mediator.Send(message);
 
-        public async Task<bool> SendCommand<TCommand, TResult>(TCommand message) where TCommand : IRequest<bool>
+        public async Task<Result<bool>> SendCommand<TCommand, TResult>(TCommand message) where TCommand : IRequest<Result<bool>>
             => await _mediator.Send(message);
     }
 }

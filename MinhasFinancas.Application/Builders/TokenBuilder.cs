@@ -2,6 +2,7 @@
 using MinhasFinancas.Application.Interface;
 using MinhasFinancas.Application.QueryStack.ViewModel;
 using MinhasFinancas.Application.Services;
+using MinhasFinancas.ViewModel.ViewModels;
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -26,9 +27,8 @@ namespace MinhasFinancas.Application.Builders
             {
                 Subject = new ClaimsIdentity(new[]
                 {
-                        new Claim(ClaimTypes.Name, usuario.Id.ToString()),
-                        new Claim(ClaimTypes.Name, usuario.Nome),
-                        new Claim(ClaimTypes.Email, usuario.Email)
+                    new Claim(ClaimTypes.Name, usuario.Nome),
+                    new Claim(ClaimTypes.Email, usuario.Email)
                 }),
                 Expires = DateTime.UtcNow.AddHours(2),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)

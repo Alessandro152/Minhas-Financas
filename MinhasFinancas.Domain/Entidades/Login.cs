@@ -1,29 +1,27 @@
 ﻿using MinhasFinancas.Domain.Core.Shared;
 using System;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MinhasFinancas.Domain.Entidades
 {
     public class Login : Entidade
     {
-        public Login()
+        protected Login()
         {
 
         }
 
-        public Login(string email, string password, Guid clienteId)
+        public Login(Guid id, string email, string password, Guid clienteId)
         {
-            Id = Guid.NewGuid();
+            Id = id;
             EMail = email;
             PassWord = password;
             ClienteId = clienteId;
         }
 
-        public string EMail { get; private set; }
+        public string EMail { get; }
 
-        public string PassWord { get; private set; }
+        public string PassWord { get; }
 
-        [ForeignKey("clienteId")]
-        public Guid ClienteId { get; private set; }
+        public Guid ClienteId { get; }
     }
 }

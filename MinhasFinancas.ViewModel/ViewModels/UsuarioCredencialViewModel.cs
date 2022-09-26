@@ -1,4 +1,4 @@
-﻿namespace MinhasFinancas.Application.QueryStack.ViewModel
+﻿namespace MinhasFinancas.ViewModel.ViewModels
 {
     public class UsuarioCredencialViewModel
     {

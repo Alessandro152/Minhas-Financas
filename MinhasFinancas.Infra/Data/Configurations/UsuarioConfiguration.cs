@@ -7,7 +7,7 @@ namespace MinhasFinancas.Infra.Data.Configurations
     public class UsuarioConfiguration : IEntityTypeConfiguration<Usuario>
     {
         public void Configure(EntityTypeBuilder<Usuario> builder)
-        {
+        {   
             builder
                 .Property(p => p.Id)
                 .ValueGeneratedNever();
@@ -19,17 +19,8 @@ namespace MinhasFinancas.Infra.Data.Configurations
                 .HasMaxLength(50)
                 .IsRequired();
 
-            builder.OwnsOne(v => v.Login, p =>
-            {
-                p.Property(p => p.Email)
+            builder.Property(p => p.Email)
                 .IsRequired();
-
-                p.Property(p => p.Password)
-                .HasMaxLength(6)
-                .IsRequired();
-            });
-
-            builder.HasOne<Login>();
         }
     }
 }

@@ -1,5 +1,5 @@
-﻿using MinhasFinancas.Application.Interface;
-using MinhasFinancas.Domain.Interface;
+﻿using MinhasFinancas.Domain.Interface;
+using MinhasFinancas.Infra.Interface;
 using System.Threading.Tasks;
 
 namespace MinhasFinancas.Infra.Adapter
