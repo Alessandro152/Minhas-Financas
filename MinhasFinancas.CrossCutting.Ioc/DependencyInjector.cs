@@ -11,7 +11,6 @@ using MinhasFinancas.Domain.Core.Shared;
 using MinhasFinancas.Domain.Financas.Commands;
 using MinhasFinancas.Domain.Handlers.Financas;
 using MinhasFinancas.Domain.Interface;
-using MinhasFinancas.Domain.Notifications;
 using MinhasFinancas.Infra.Adapter;
 using MinhasFinancas.Infra.Interface;
 using MinhasFinancas.Infra.Repositories;
@@ -34,7 +33,6 @@ namespace Microsoft.Extensions.DependencyInjection
 
             //Domain
             services.AddScoped<IBusHandler, BusHandler>();
-            services.AddScoped<IDomainNotification, DomainNotifications>();
             services.AddScoped<IRequestHandler<NewUsuarioCommand, Result<Entidade>>, UsuarioHandler>();
             services.AddScoped<IRequestHandler<UpdateUsuarioCommand, Result<bool>>, UsuarioHandler>();
             services.AddScoped<IRequestHandler<NewMovimentoFinanceiroCommand, Result<Entidade>>, MovimentoFinanceiroHandler>();

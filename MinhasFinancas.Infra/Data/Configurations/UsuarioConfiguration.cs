@@ -21,6 +21,10 @@ namespace MinhasFinancas.Infra.Data.Configurations
 
             builder.Property(p => p.Email)
                 .IsRequired();
+
+            builder.HasOne(a => a.Login)
+                .WithOne(b => b.Usuario)
+                .HasForeignKey<Login>(b => b.ClienteId);
         }
     }
 }

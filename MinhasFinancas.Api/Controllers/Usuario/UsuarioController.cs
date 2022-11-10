@@ -38,8 +38,8 @@ namespace MinhasFinancas.Api.Controllers.Usuario
         /// Realiza o cadastro de um novo usuário
         /// </summary>
         [HttpPost("cadastrarUsuario")]
-        [ProducesResponseType(typeof(Result), 201)]
-        [ProducesResponseType(typeof(Result), 400)]
+        [ProducesResponseType(typeof(Result<Guid>), 201)]
+        [ProducesResponseType(typeof(Result<IError>), 400)]
         [AllowAnonymous]
         public async Task<IActionResult> CadastrarUsuario([FromBody] NewUsuarioViewModel request)
         {
@@ -49,7 +49,7 @@ namespace MinhasFinancas.Api.Controllers.Usuario
                 return BadRequest(result.Errors);
             }
 
-            return Ok();
+            return Ok(result.Value);
         }
 
         /// <summary>
@@ -57,7 +57,7 @@ namespace MinhasFinancas.Api.Controllers.Usuario
         /// </summary>
         [HttpPatch("alterarUsuario")]
         [ProducesResponseType(typeof(Result<bool>), 200)]
-        [ProducesResponseType(typeof(Result), 400)]
+        [ProducesResponseType(typeof(Result<IError>), 400)]
         public async Task<IActionResult> AlterarCadastro(Guid usuarioId, [FromBody] UpdateUsuarioViewModel request)
         {
             var result = await _usuarioAppService.AlterarCadastroUsuario(usuarioId, request);
@@ -67,12 +67,6 @@ namespace MinhasFinancas.Api.Controllers.Usuario
             }
 
             return Ok(result.Value);
-        }
-
-        [HttpDelete]
-        public async Task<IActionResult> ExcluirCadastroUsuario(Guid Id)
-        {
-            return Ok();
         }
     }
 }

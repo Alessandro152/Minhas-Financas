@@ -24,6 +24,10 @@ namespace MinhasFinancas.Api
         {
             services.AddControllers();
 
+            services.AddCors();
+
+            services.AddMvc();
+
             services.Injector();
 
             services.AddDbContext<DataContext>(options => options.UseInMemoryDatabase("database"));
@@ -34,14 +38,14 @@ namespace MinhasFinancas.Api
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IApiVersionDescriptionProvider provider)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseSwaggerConfiguration();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
-
-            app.UseSwaggerConfiguration(provider);
 
             app.UseHttpsRedirection();
 
@@ -54,6 +58,13 @@ namespace MinhasFinancas.Api
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+            });
+
+            app.UseCors(c =>
+            {
+                c.AllowAnyHeader();
+                c.AllowAnyMethod();
+                c.AllowAnyOrigin();
             });
         }
     }

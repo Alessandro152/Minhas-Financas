@@ -1,5 +1,5 @@
 ﻿using FluentResults;
-using MinhasFinancas.Application.QueryStack.ViewModel;
+using MinhasFinancas.ViewModel.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -8,13 +8,13 @@ namespace MinhasFinancas.Application.Interface
 {
     public interface IMinhasFinancasAppService
     {
-        Task<Result> GravarMovimentoFinanceiro(NewMovimentoFinanceiroViewModel dados);
+        Task<Result<MovimentoFinanceiroViewModel>> GravarMovimentoFinanceiro(NewMovimentoFinanceiroViewModel dados);
 
-        Task<Result> AtualizarMovimentoFinanceiro(UpdateMovimentoFinanceiroViewModel dados);
+        Task<Result<bool>> AtualizarMovimentoFinanceiro(UpdateMovimentoFinanceiroViewModel dados);
 
-        Task<IEnumerable<UpdateMovimentoFinanceiroViewModel>> AllReceitas(DateTime data);
+        Task<IEnumerable<MovimentoFinanceiroViewModel>> AllReceitas(DateTime data);
 
-        Task<IEnumerable<UpdateMovimentoFinanceiroViewModel>> AllDespesas(DateTime data);
+        Task<IEnumerable<MovimentoFinanceiroViewModel>> AllDespesas(DateTime data);
 
         Task<bool> ExcluirMovimentoFinanceiro(IEnumerable<Guid> id);
 

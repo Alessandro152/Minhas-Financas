@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MinhasFinancas.Application.Interface;
-using MinhasFinancas.Application.QueryStack.ViewModel;
 using MinhasFinancas.Infra.Interface;
+using MinhasFinancas.ViewModel.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -69,7 +69,7 @@ namespace MinhasFinancas.Api.Controllers.Financas
         [HttpPost]
         [Route("salvarMovimento")]
         [Authorize]
-        public async Task<ActionResult<bool>> GravarMovimentoFinanceiro([FromBody] UpdateMovimentoFinanceiroViewModel dados)
+        public async Task<ActionResult<bool>> GravarMovimentoFinanceiro([FromBody] NewMovimentoFinanceiroViewModel dados)
         {
             if (!ModelState.IsValid)
             {
@@ -80,7 +80,7 @@ namespace MinhasFinancas.Api.Controllers.Financas
             {
                 var result = await _appServiceHandler.GravarMovimentoFinanceiro(dados).ConfigureAwait(false);
 
-                if (result.HasError)
+                if (result.IsFailed)
                 {
                     _uow.Rollback();
                     return BadRequest(new { Message = $"Falha ao gravar o movimento." });
@@ -107,7 +107,7 @@ namespace MinhasFinancas.Api.Controllers.Financas
 
             var result = await _appServiceHandler.AtualizarMovimentoFinanceiro(dados).ConfigureAwait(false);
 
-            if (result.HasError)
+            if (result.IsFailed)
             {
                 _uow.Rollback();
                 return BadRequest(new { Message = $"Falha ao atualizar o movimento." });

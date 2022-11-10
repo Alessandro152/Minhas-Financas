@@ -1,19 +1,8 @@
-﻿using Bogus;
-using MinhasFinancas.Application.AppServices;
-using MinhasFinancas.Application.Interface;
-using MinhasFinancas.Application.QueryStack.ViewModel;
-using MinhasFinancas.Domain.Cliente.Commands;
-using MinhasFinancas.Domain.Entidades;
-using MinhasFinancas.Domain.Interface;
-using Moq;
-using System.Collections.Generic;
-using Xunit;
-
-namespace MinhasFinancas.UnitTest.Application
+﻿namespace MinhasFinancas.UnitTest.Application
 {
     public class UsuarioAppServiceHandlerTest
     {
-        private readonly Mock<IBusHandler> _bus;
+        /*private readonly Mock<IBusHandler> _bus;
         private readonly Mock<IUsuarioQueryRepository> _queryHandler;
         private readonly Mock<IApplicationAdapter> _applicationAdapter;
         private Mock<IDomainNotification> _notification;
@@ -50,6 +39,6 @@ namespace MinhasFinancas.UnitTest.Application
 
             _bus.Verify(v => v.SendCommand<dynamic, NewUsuarioCommand>(It.IsAny<NewUsuarioCommand>()), Times.Once());
             _applicationAdapter.Verify(v => v.RetornarDomainResult(It.IsAny<NewUsuarioCommand>()), Times.Once());
-        }
+        }*/
     }
 }

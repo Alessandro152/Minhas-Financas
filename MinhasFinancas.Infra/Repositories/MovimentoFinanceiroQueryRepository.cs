@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MinhasFinancas.Application.Interface;
-using MinhasFinancas.Application.QueryStack.ViewModel;
 using MinhasFinancas.Infra.Data;
+using MinhasFinancas.ViewModel.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;

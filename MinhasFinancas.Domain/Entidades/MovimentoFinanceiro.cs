@@ -1,4 +1,5 @@
 ﻿using MinhasFinancas.Domain.Core.Shared;
+using MinhasFinancas.Domain.Enum;
 using System;
 
 namespace MinhasFinancas.Domain.Entidades
@@ -10,7 +11,7 @@ namespace MinhasFinancas.Domain.Entidades
 
         }
 
-        public MovimentoFinanceiro(Guid id, decimal valor, string titulo, DateTime data, int tipo, Guid clienteId)
+        public MovimentoFinanceiro(Guid id, decimal valor, string titulo, DateTime data, TipoMovimentoEnum tipo, Guid clienteId)
         {
             Id = id;
             Valor = valor;
@@ -21,13 +22,9 @@ namespace MinhasFinancas.Domain.Entidades
         }
 
         public decimal Valor { get; }
-
         public string Titulo { get; }
-
         public DateTime Data { get; }
-
-        public int Tipo { get; }
-
+        public TipoMovimentoEnum Tipo { get; }
         public Guid ClienteId { get; }
     }
 }

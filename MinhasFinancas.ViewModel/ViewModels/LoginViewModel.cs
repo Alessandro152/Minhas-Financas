@@ -6,6 +6,6 @@ namespace MinhasFinancas.ViewModel.ViewModels
     {
         public string Email { get; set; }
 
-        public string PassWord { get; set; }
+        public string Password { get; set; }
     }
 }

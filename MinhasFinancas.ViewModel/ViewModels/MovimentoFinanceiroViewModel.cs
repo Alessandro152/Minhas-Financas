@@ -2,16 +2,11 @@
 
 namespace MinhasFinancas.ViewModel.ViewModels
 {
-    public class NewMovimentoFinanceiroViewModel
+    public class MovimentoFinanceiroViewModel
     {
         public decimal Valor { get; set; }
-
         public string Titulo { get; set; }
-
         public DateTime Data { get; set; }
-
         public int Tipo { get; set; }
-
-        public Guid ClienteId { get; set; }
     }
 }

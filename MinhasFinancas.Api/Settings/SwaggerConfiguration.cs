@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace MinhasFinancas.Api.Settings
 {
@@ -47,10 +48,12 @@ namespace MinhasFinancas.Api.Settings
                         new List<string>()
                     }
                 });
+
+                options.ResolveConflictingActions(apiDescriptions => apiDescriptions.First());
             });
         }
 
-        public static void UseSwaggerConfiguration(this IApplicationBuilder app, IApiVersionDescriptionProvider provider)
+        public static void UseSwaggerConfiguration(this IApplicationBuilder app)
         {
             if (app == null) throw new ArgumentNullException(nameof(app));
 
@@ -58,14 +61,8 @@ namespace MinhasFinancas.Api.Settings
 
             app.UseSwaggerUI(options =>
             {
-                string swaggerJsonBasePath = string.IsNullOrWhiteSpace(options.RoutePrefix) ? "." : "..";
-
-                foreach (var description in provider.ApiVersionDescriptions)
-                {
-                    options.SwaggerEndpoint(
-                    $"{swaggerJsonBasePath}/swagger/{description.GroupName}/swagger.json",
-                    description.GroupName.ToUpperInvariant());
-                }
+                options.SwaggerEndpoint(
+                $"/swagger/v1/swagger.json", "Minhas finanças");
             });
         }
     }

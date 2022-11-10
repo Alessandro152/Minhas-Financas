@@ -11,7 +11,7 @@ namespace MinhasFinancas.Domain.Commands.Abstract
 
         public DateTime Data { get; protected set; }
 
-        public TipoFinanceiroEnum Tipo { get; protected set; }
+        public TipoMovimentoEnum Tipo { get; protected set; }
 
         public Guid ClienteId { get; protected set; }
     }

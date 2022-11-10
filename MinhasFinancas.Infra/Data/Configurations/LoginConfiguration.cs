@@ -15,14 +15,12 @@ namespace MinhasFinancas.Infra.Data.Configurations
             builder
                 .HasKey(k => k.Id);
 
-            builder.Property(p => p.EMail)
+            builder.Property(p => p.Email)
                 .IsRequired();
 
-            builder.Property(p => p.PassWord)
+            builder.Property(p => p.Password)
                 .HasMaxLength(6)
                 .IsRequired();
-
-            builder.HasOne<Usuario>();
         }
     }
 }

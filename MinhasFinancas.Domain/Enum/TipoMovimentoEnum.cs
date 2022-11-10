@@ -1,6 +1,6 @@
 ﻿namespace MinhasFinancas.Domain.Enum
 {
-    public enum TipoFinanceiroEnum
+    public enum TipoMovimentoEnum
     {
         Receita = 1,
         Despesa = 2

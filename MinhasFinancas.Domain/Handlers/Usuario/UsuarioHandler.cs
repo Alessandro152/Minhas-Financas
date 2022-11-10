@@ -30,13 +30,16 @@ namespace MinhasFinancas.Domain.Cliente.Handlers
             var validation = message.IsValid();
             if (!validation.IsValid)
             {
-                return Result.Fail(validation.Errors.Select(s => s.ErrorMessage));
+                return Result.Fail<Entidade>(validation.Errors.Select(s => s.ErrorMessage));
             }
 
-            if (await _repositoryAdapter.GetUsuario(message.Email)) Result.Fail($"Usuário já cadastrado");
+            if (await _repositoryAdapter.GetUsuario(message.Email) != null)
+            {
+                Result.Fail($"Usuário já cadastrado");
+            }
 
             var usuario = new Usuario(Guid.NewGuid(), message.Nome, message.Email);
-            await _usuarioRepository.CadastrarUsuario(usuario);
+            await _usuarioRepository.InsertAsync(usuario);
 
             return usuario;
         }
@@ -44,16 +47,17 @@ namespace MinhasFinancas.Domain.Cliente.Handlers
         public async Task<Result<bool>> Handle(UpdateUsuarioCommand message, CancellationToken cancellationToken)
         {
             if (message is null) return Result.Fail(new Error("A command está nula"));
+            
             var validation = message.IsValid();
-
             if (!validation.IsValid)
             {
                 return Result.Fail(validation.Errors.Select(s => s.ErrorMessage));
             }
 
-            return await _usuarioRepository.AlterarCadastroUsuario(new Usuario(message.UsuarioId, 
-                                                                               message.Nome, 
-                                                                               message.Email));
+            await _usuarioRepository.UpdateAsync(new Usuario(message.UsuarioId, 
+                                                             message.Nome, 
+                                                             message.Email));
+            return true;
         }
     }
 }

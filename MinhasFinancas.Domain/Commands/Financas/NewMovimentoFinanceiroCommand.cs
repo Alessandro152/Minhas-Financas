@@ -9,7 +9,7 @@ namespace MinhasFinancas.Domain.Financas.Commands
 {
     public class NewMovimentoFinanceiroCommand : FinancasCommand, IRequest<Result<Entidade>>
     {
-        public NewMovimentoFinanceiroCommand(decimal valor, string titulo, DateTime data, TipoFinanceiroEnum tipo, Guid clienteId)
+        public NewMovimentoFinanceiroCommand(decimal valor, string titulo, DateTime data, TipoMovimentoEnum tipo, Guid clienteId)
         {
             Valor = valor;
             Titulo = titulo;

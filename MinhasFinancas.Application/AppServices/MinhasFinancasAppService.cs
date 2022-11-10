@@ -1,9 +1,8 @@
 ﻿using FluentResults;
 using MinhasFinancas.Application.Interface;
-using MinhasFinancas.Application.QueryStack.Enum;
-using MinhasFinancas.Application.QueryStack.ViewModel;
 using MinhasFinancas.Domain.Enum;
 using MinhasFinancas.Domain.Financas.Commands;
+using MinhasFinancas.ViewModel.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -21,20 +20,25 @@ namespace MinhasFinancas.Application.AppServices
             _movimentoFinanceiroQueryRepository = queryHandler;
         }
 
-        public async Task<IEnumerable<UpdateMovimentoFinanceiroViewModel>> AllDespesas(DateTime data)
-            => await _movimentoFinanceiroQueryRepository.GetAll(data, (int)ETipo.Desconto).ConfigureAwait(false);
+        public async Task<IEnumerable<MovimentoFinanceiroViewModel>> AllDespesas(DateTime data)
+            => await _movimentoFinanceiroQueryRepository.GetAll(data, (int)TipoMovimentoEnum.Despesa);
 
-        public async Task<IEnumerable<UpdateMovimentoFinanceiroViewModel>> AllReceitas(DateTime data)
-            => await _movimentoFinanceiroQueryRepository.GetAll(data, (int)ETipo.Provento).ConfigureAwait(false);
+        public async Task<IEnumerable<MovimentoFinanceiroViewModel>> AllReceitas(DateTime data)
+            => await _movimentoFinanceiroQueryRepository.GetAll(data, (int)TipoMovimentoEnum.Receita);
 
-        public async Task<Result> AtualizarMovimentoFinanceiro(UpdateMovimentoFinanceiroViewModel request)
+        public async Task<Result<bool>> AtualizarMovimentoFinanceiro(UpdateMovimentoFinanceiroViewModel request)
         {
             try
             {
-                var command = new UpdateMovimentoFinanceiroCommand(request.Id, request.Valor, request.Titulo, request.Data, (TipoFinanceiroEnum)request.Tipo, request.ClienteId);
+                var command = new UpdateMovimentoFinanceiroCommand(request.Id, 
+                                                                   request.Valor, 
+                                                                   request.Titulo, 
+                                                                   request.Data, 
+                                                                   request.Tipo, 
+                                                                   request.ClienteId);
                 var result = await _bus.SendCommand(command);
 
-                return result.ToResult();
+                return result.ToResult<bool>();
             }
             catch (Exception)
             {
@@ -42,18 +46,21 @@ namespace MinhasFinancas.Application.AppServices
             }
         }
 
-        public async Task<Result> GravarMovimentoFinanceiro(NewMovimentoFinanceiroViewModel request)
+        public async Task<Result<MovimentoFinanceiroViewModel>> GravarMovimentoFinanceiro(NewMovimentoFinanceiroViewModel request)
         {
             try
             {
-                var command = new NewMovimentoFinanceiroCommand(request.Valor, request.Titulo, request.Data, (TipoFinanceiroEnum)request.Tipo, request.ClienteId);
+                var command = new NewMovimentoFinanceiroCommand(request.Valor, 
+                                                                request.Titulo, 
+                                                                request.Data, 
+                                                                (TipoMovimentoEnum)request.Tipo, 
+                                                                request.ClienteId);
                 var result = await _bus.SendCommand(command);
 
-                return result.ToResult();
+                return result.ToResult<MovimentoFinanceiroViewModel>();
             }
             catch (Exception)
             {
-
                 throw;
             }
         }
@@ -62,7 +69,7 @@ namespace MinhasFinancas.Application.AppServices
         {
             try
             {
-                return await _movimentoFinanceiroQueryRepository.ExcluirMovimento(id).ConfigureAwait(false);
+                return await _movimentoFinanceiroQueryRepository.ExcluirMovimento(id);
             }
             catch (Exception)
             {
@@ -74,7 +81,7 @@ namespace MinhasFinancas.Application.AppServices
         {
             try
             {
-                return await _movimentoFinanceiroQueryRepository.ExcluirMovimento(data).ConfigureAwait(false);
+                return await _movimentoFinanceiroQueryRepository.ExcluirMovimento(data);
             }
             catch (Exception)
             {

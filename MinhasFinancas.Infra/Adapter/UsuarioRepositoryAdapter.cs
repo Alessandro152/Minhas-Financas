@@ -1,4 +1,5 @@
-﻿using MinhasFinancas.Domain.Interface;
+﻿using MinhasFinancas.Domain.Entidades;
+using MinhasFinancas.Domain.Interface;
 using MinhasFinancas.Infra.Interface;
 using System.Threading.Tasks;
 
@@ -18,9 +19,7 @@ namespace MinhasFinancas.Infra.Adapter
             return await _usuarioQueryRepository.GetLogin(email, passWord);
         }
 
-        public async Task<bool> GetUsuario(string email)
-        {
-            return await _usuarioQueryRepository.Get(email);
-        }
+        public async Task<Usuario> GetUsuario(string email)
+            => await _usuarioQueryRepository.GetUsuario(email);
     }
 }

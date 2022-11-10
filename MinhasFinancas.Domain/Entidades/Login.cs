@@ -1,5 +1,6 @@
 ﻿using MinhasFinancas.Domain.Core.Shared;
 using System;
+using System.Collections.Generic;
 
 namespace MinhasFinancas.Domain.Entidades
 {
@@ -10,18 +11,18 @@ namespace MinhasFinancas.Domain.Entidades
 
         }
 
-        public Login(Guid id, string email, string password, Guid clienteId)
+        public Login(Guid id, string email, string password)
         {
             Id = id;
-            EMail = email;
-            PassWord = password;
-            ClienteId = clienteId;
+            Email = email;
+            Password = password;
         }
 
-        public string EMail { get; }
+        public string Email { get; }
+        public string Password { get; }
 
-        public string PassWord { get; }
-
+        //Relacionamento
         public Guid ClienteId { get; }
+        public Usuario Usuario { get; }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using MinhasFinancas.Domain.Enum;
 using System;
 
-namespace MinhasFinancas.Application.QueryStack.ViewModel
+namespace MinhasFinancas.ViewModel.ViewModels
 {
     public class UpdateMovimentoFinanceiroViewModel
     {
@@ -13,7 +13,7 @@ namespace MinhasFinancas.Application.QueryStack.ViewModel
 
         public DateTime Data { get; set; }
 
-        public TipoFinanceiroEnum Tipo { get; set; }
+        public TipoMovimentoEnum Tipo { get; set; }
 
         public Guid ClienteId { get; set; }
     }

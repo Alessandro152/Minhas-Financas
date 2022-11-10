@@ -1,6 +1,5 @@
 ﻿using Microsoft.IdentityModel.Tokens;
 using MinhasFinancas.Application.Interface;
-using MinhasFinancas.Application.QueryStack.ViewModel;
 using MinhasFinancas.Application.Services;
 using MinhasFinancas.ViewModel.ViewModels;
 using System;

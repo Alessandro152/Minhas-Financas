@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using MinhasFinancas.Domain.Entidades;
 using MinhasFinancas.Infra.Data;
 using MinhasFinancas.Infra.Interface;
 using MinhasFinancas.ViewModel.ViewModels;
@@ -16,24 +17,25 @@ namespace MinhasFinancas.Infra.Repositories
             _context = context;
         }
 
+        public async Task<Usuario> GetUsuario(string email)
+            => await _context.Usuarios.FirstOrDefaultAsync(x => x.Email == email);
+
         public async Task<bool> GetLogin(string email, string passWord)
             => await _context.Usuarios.AnyAsync(x => x.Email == email);
 
-        public async Task<UsuarioViewModel> Logar(LoginViewModel login)
+        public async Task<UsuarioViewModel> Logar(LoginViewModel request)
         {
-            if (login is null) return default;
-
-            var result = await _context.Login.Where(x => x.EMail == login.Email && x.PassWord == login.PassWord).FirstOrDefaultAsync();
-
+            if (request is null) return default;
+            var result = await _context.Login.Where(x => x.Email == request.Email && x.Password == request.Password)
+                                             .Include(x => x.Usuario)
+                                             .FirstOrDefaultAsync();
             if (result != null)
             {
-                var user = await _context.Usuarios.Where(x => x.Id == result.ClienteId).FirstOrDefaultAsync();
-
                 return new UsuarioViewModel
                 {
-                    Id = user.Id,
-                    Nome = user.Nome,
-                    Email = user.Email
+                    Id = result.Usuario.Id,
+                    Nome = result.Usuario.Nome,
+                    Email = result.Usuario.Email
                 };
             }
 

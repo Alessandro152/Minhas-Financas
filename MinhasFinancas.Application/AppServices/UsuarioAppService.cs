@@ -42,15 +42,15 @@ namespace MinhasFinancas.Application.AppServices
             }
         }
 
-        public async Task<Result> CadastrarUsuario(NewUsuarioViewModel usuario)
+        public async Task<Result<Guid>> CadastrarUsuario(NewUsuarioViewModel usuario)
         {
             try
             {
-                var command = new NewUsuarioCommand(usuario.Nome, usuario.Email);
-                var x = await _bus.SendCommand(command);
+                var command = new NewUsuarioCommand(usuario.Nome, usuario.Email, usuario.Senha);
+                var result = await _bus.SendCommand(command);
 
                 //TODO - Tratar o controle de transacao aqui
-                return x.ToResult();
+                return result.ToResult<Guid>();
             }
             catch (Exception ex)
             {
@@ -59,11 +59,11 @@ namespace MinhasFinancas.Application.AppServices
             }
         }
 
-        public async Task<UsuarioCredencialViewModel> Login(LoginViewModel dados)
+        public async Task<UsuarioCredencialViewModel> Login(LoginViewModel request)
         {
             try
             {
-                var usuario = await _usuarioQueryRepository.Logar(dados);
+                var usuario = await _usuarioQueryRepository.Logar(request);
                 if (usuario is null) return default;
 
                 return new UsuarioCredencialViewModel

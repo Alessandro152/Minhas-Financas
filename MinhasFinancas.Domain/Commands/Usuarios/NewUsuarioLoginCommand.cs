@@ -19,10 +19,5 @@ namespace MinhasFinancas.Domain.Cliente.Commands
         public string Password { get; }
 
         public Guid ClienteId { get; }
-
-        public ValidationResult IsValid()
-        {
-            return new LoginValidation().Validate(this);
-        }
     }
 }

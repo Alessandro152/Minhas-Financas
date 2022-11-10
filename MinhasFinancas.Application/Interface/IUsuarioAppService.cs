@@ -7,7 +7,7 @@ namespace MinhasFinancas.Application.Interface
 {
     public interface IUsuarioAppService
     {
-        Task<Result> CadastrarUsuario(NewUsuarioViewModel usuario);
+        Task<Result<Guid>> CadastrarUsuario(NewUsuarioViewModel usuario);
 
         Task<UsuarioCredencialViewModel> Login(LoginViewModel dados);
 

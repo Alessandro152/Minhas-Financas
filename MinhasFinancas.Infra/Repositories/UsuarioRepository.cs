@@ -14,22 +14,10 @@ namespace MinhasFinancas.Infra.Repositories
             _context = context;
         }
 
-        public async Task<bool> AlterarCadastroUsuario(Usuario entity)
-        {
-            _context.Usuarios.Update(entity);
-            return await _context.SaveChangesAsync() > 0;
-        }
+        public async Task UpdateAsync(Usuario entity)
+            => _context.Usuarios.Update(entity);
 
-        public async Task<bool> CadastrarUsuario(Usuario entity)
-        {
-            await _context.Usuarios.AddAsync(entity);
-            return await _context.SaveChangesAsync() > 0;
-        }
-
-        public async Task<bool> GravarLogin(Login loginEntity)
-        {
-            await _context.Login.AddAsync(loginEntity);
-            return await _context.SaveChangesAsync() > 0;
-        }
+        public async Task InsertAsync(Usuario entity)
+            => await _context.Usuarios.AddAsync(entity);
     }
 }
