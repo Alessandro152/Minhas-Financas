@@ -12,9 +12,9 @@ namespace MinhasFinancas.Application.Interface
 
         Task<Result<bool>> AtualizarMovimentoFinanceiro(UpdateMovimentoFinanceiroViewModel dados);
 
-        Task<IEnumerable<MovimentoFinanceiroViewModel>> AllReceitas(DateTime data);
+        Task<IEnumerable<MovimentoFinanceiroViewModel>> GetAllReceitas(DateTime data);
 
-        Task<IEnumerable<MovimentoFinanceiroViewModel>> AllDespesas(DateTime data);
+        Task<IEnumerable<MovimentoFinanceiroViewModel>> GetAllDespesas(DateTime data);
 
         Task<bool> ExcluirMovimentoFinanceiro(IEnumerable<Guid> id);
 

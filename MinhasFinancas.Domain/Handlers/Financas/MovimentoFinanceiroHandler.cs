@@ -26,7 +26,7 @@ namespace MinhasFinancas.Domain.Handlers.Financas
 
             var entity = new MovimentoFinanceiro(Guid.NewGuid(), request.Valor, request.Titulo, request.Data, request.Tipo, request.ClienteId);
 
-            var result = await _financasRepositorio.GravarMovimentoFinanceiro(entity).ConfigureAwait(false);
+            var result = await _financasRepositorio.GravarMovimentoFinanceiro(entity);
 
             if (!result)
             {

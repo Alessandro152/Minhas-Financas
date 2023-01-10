@@ -25,21 +25,20 @@ namespace MinhasFinancas.Domain.Cliente.Handlers
 
         public async Task<Result<Entidade>> Handle(NewUsuarioCommand message, CancellationToken cancellationToken)
         {
-            if (message is null) return default;
+            if (message is null) return Result.Fail(new Error("A command está nula"));
 
             var validation = message.IsValid();
             if (!validation.IsValid)
-            {
                 return Result.Fail<Entidade>(validation.Errors.Select(s => s.ErrorMessage));
-            }
 
             if (await _repositoryAdapter.GetUsuario(message.Email) != null)
-            {
-                Result.Fail($"Usuário já cadastrado");
-            }
+                Result.Fail($"Usuário com e-mail {message.Email} já cadastrado");
 
+            var login = new Login(Guid.NewGuid(), message.Email, message.Senha);
             var usuario = new Usuario(Guid.NewGuid(), message.Nome, message.Email);
+
             await _usuarioRepository.InsertAsync(usuario);
+            await _usuarioRepository.InsertAsync(login);
 
             return usuario;
         }
@@ -50,9 +49,7 @@ namespace MinhasFinancas.Domain.Cliente.Handlers
             
             var validation = message.IsValid();
             if (!validation.IsValid)
-            {
                 return Result.Fail(validation.Errors.Select(s => s.ErrorMessage));
-            }
 
             await _usuarioRepository.UpdateAsync(new Usuario(message.UsuarioId, 
                                                              message.Nome, 

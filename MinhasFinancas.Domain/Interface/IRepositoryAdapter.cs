@@ -6,7 +6,6 @@ namespace MinhasFinancas.Domain.Interface
     public interface IRepositoryAdapter
     {
         Task<Usuario> GetUsuario(string email);
-
         Task<bool> GetLogin(string email, string passWord);
     }
 }

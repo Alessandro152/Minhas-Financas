@@ -22,7 +22,7 @@ namespace MinhasFinancas.Domain.Entidades
         public string Password { get; }
 
         //Relacionamento
-        public Guid ClienteId { get; }
-        public Usuario Usuario { get; }
+        public Guid UsuarioId { get; private set; }
+        public Usuario Usuario { get; private set; }
     }
 }

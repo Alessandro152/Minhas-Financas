@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MinhasFinancas.Domain.Entidades;
-using MinhasFinancas.Infra.Data.Configurations;
+using System.Reflection;
 
 namespace MinhasFinancas.Infra.Data
 {
@@ -10,15 +10,11 @@ namespace MinhasFinancas.Infra.Data
         {
         }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            modelBuilder.ApplyConfiguration(new UsuarioConfiguration());
-        }
-
         public DbSet<Login> Login { get; set; }
-
         public DbSet<Usuario> Usuarios { get; set; }
-
         public DbSet<MovimentoFinanceiro> Valores { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+            => modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
     }
 }

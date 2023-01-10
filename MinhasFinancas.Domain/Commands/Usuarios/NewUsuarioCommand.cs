@@ -9,15 +9,14 @@ namespace MinhasFinancas.Domain.Commands.Usuarios
 {
     public class NewUsuarioCommand : UsuarioCommand, IRequest<Result<Entidade>>
     {
-        public NewUsuarioCommand(string nome, string email)
+        public NewUsuarioCommand(string nome, string email, string senha)
         {
             Nome = nome;
             Email = email;
+            Senha = senha;
         }
 
         public ValidationResult IsValid()
-        {
-            return new NewUsuarioValidation().Validate(this);
-        }
+            => new NewUsuarioValidation().Validate(this);
     }
 }

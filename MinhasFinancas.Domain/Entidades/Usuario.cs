@@ -12,13 +12,11 @@ namespace MinhasFinancas.Domain.Entidades
             Id = id;
             Nome = nome;
             Email = email;
-            Login = new Login(Guid.NewGuid(), email, "");
         }
 
         public string Nome { get; }
         public string Email { get; }
 
-
-        public Login Login { get; }
+        public Login Login { get; private set; }
     }
 }

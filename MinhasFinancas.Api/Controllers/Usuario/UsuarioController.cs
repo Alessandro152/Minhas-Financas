@@ -9,8 +9,9 @@ using System.Threading.Tasks;
 namespace MinhasFinancas.Api.Controllers.Usuario
 {
     [ApiController]
-    [Route("cliente")]
+    [Route("api/cliente")]
     [Authorize]
+    [Produces("application/json")]
     public class UsuarioController : ControllerBase
     {
         private readonly IUsuarioAppService _usuarioAppService;
@@ -27,11 +28,14 @@ namespace MinhasFinancas.Api.Controllers.Usuario
         [ProducesResponseType(typeof(UsuarioCredencialViewModel), 200)]
         [ProducesResponseType(typeof(UsuarioCredencialViewModel), 404)]
         [AllowAnonymous]
-        public async Task<IActionResult> Login([FromQuery] LoginViewModel request)
+        public async Task<IActionResult> Login([FromRoute] LoginViewModel request)
         {
-            if (await _usuarioAppService.Login(request) is null) return NotFound();
+            var result = await _usuarioAppService.Login(request);
+            
+            if(result is null)
+                return NotFound();
 
-            return Ok();
+            return Ok(result);
         }
 
         /// <summary>
@@ -45,9 +49,7 @@ namespace MinhasFinancas.Api.Controllers.Usuario
         {
             var result = await _usuarioAppService.CadastrarUsuario(request);
             if (result.IsFailed)
-            {
                 return BadRequest(result.Errors);
-            }
 
             return Ok(result.Value);
         }
@@ -62,9 +64,7 @@ namespace MinhasFinancas.Api.Controllers.Usuario
         {
             var result = await _usuarioAppService.AlterarCadastroUsuario(usuarioId, request);
             if (result.IsFailed)
-            {
                 return BadRequest(result.Errors);
-            }
 
             return Ok(result.Value);
         }

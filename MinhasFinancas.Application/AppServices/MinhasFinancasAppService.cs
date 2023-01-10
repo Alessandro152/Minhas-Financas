@@ -20,10 +20,10 @@ namespace MinhasFinancas.Application.AppServices
             _movimentoFinanceiroQueryRepository = queryHandler;
         }
 
-        public async Task<IEnumerable<MovimentoFinanceiroViewModel>> AllDespesas(DateTime data)
+        public async Task<IEnumerable<MovimentoFinanceiroViewModel>> GetAllDespesas(DateTime data)
             => await _movimentoFinanceiroQueryRepository.GetAll(data, (int)TipoMovimentoEnum.Despesa);
 
-        public async Task<IEnumerable<MovimentoFinanceiroViewModel>> AllReceitas(DateTime data)
+        public async Task<IEnumerable<MovimentoFinanceiroViewModel>> GetAllReceitas(DateTime data)
             => await _movimentoFinanceiroQueryRepository.GetAll(data, (int)TipoMovimentoEnum.Receita);
 
         public async Task<Result<bool>> AtualizarMovimentoFinanceiro(UpdateMovimentoFinanceiroViewModel request)

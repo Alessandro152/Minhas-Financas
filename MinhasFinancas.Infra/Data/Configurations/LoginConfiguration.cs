@@ -8,19 +8,17 @@ namespace MinhasFinancas.Infra.Data.Configurations
     {
         public void Configure(EntityTypeBuilder<Login> builder)
         {
-            builder
-                .Property(p => p.Id)
-                .ValueGeneratedNever();
+            builder.Property(p => p.Id)
+                   .ValueGeneratedNever();
 
-            builder
-                .HasKey(k => k.Id);
+            builder.HasKey(k => k.Id);
 
             builder.Property(p => p.Email)
-                .IsRequired();
+                   .IsRequired();
 
             builder.Property(p => p.Password)
-                .HasMaxLength(6)
-                .IsRequired();
+                   .HasMaxLength(6)
+                   .IsRequired();
         }
     }
 }

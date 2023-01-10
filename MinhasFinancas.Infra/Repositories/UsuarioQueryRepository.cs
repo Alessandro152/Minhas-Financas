@@ -24,22 +24,14 @@ namespace MinhasFinancas.Infra.Repositories
             => await _context.Usuarios.AnyAsync(x => x.Email == email);
 
         public async Task<UsuarioViewModel> Logar(LoginViewModel request)
-        {
-            if (request is null) return default;
-            var result = await _context.Login.Where(x => x.Email == request.Email && x.Password == request.Password)
-                                             .Include(x => x.Usuario)
-                                             .FirstOrDefaultAsync();
-            if (result != null)
-            {
-                return new UsuarioViewModel
-                {
-                    Id = result.Usuario.Id,
-                    Nome = result.Usuario.Nome,
-                    Email = result.Usuario.Email
-                };
-            }
-
-            return default;
-        }
+            => await _context.Login.Where(x => x.Email == request.Email && x.Password == request.Password)
+                                   .Include(x => x.Usuario)
+                                   .Select(s => new UsuarioViewModel
+                                   {
+                                       Id = s.Id,
+                                       Nome = s.Usuario.Nome,
+                                       Email = s.Usuario.Email
+                                   })
+                                   .FirstOrDefaultAsync();
     }
 }

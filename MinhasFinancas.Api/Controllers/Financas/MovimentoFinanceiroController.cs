@@ -10,7 +10,8 @@ using System.Threading.Tasks;
 namespace MinhasFinancas.Api.Controllers.Financas
 {
     [Controller]
-    [Route("financas")]
+    [Route("api/financas")]
+    [Produces("application/json")]
     public class MovimentoFinanceiroController : ControllerBase
     {
         private readonly IMinhasFinancasAppService _appServiceHandler;
@@ -27,21 +28,12 @@ namespace MinhasFinancas.Api.Controllers.Financas
         [Authorize]
         public async Task<ActionResult<UpdateMovimentoFinanceiroViewModel>> AllReceitas([FromQuery] DateTime data)
         {
-            try
-            {
-                var result = await _appServiceHandler.AllReceitas(data.Date).ConfigureAwait(false);
+            var result = await _appServiceHandler.GetAllReceitas(data.Date);
 
-                if (result is null)
-                {
-                    return NotFound(new { Message = $"Receitas em {data} não encontrado." });
-                }
+            if (result is null)
+                return NotFound(new { Message = $"Receitas em {data} não encontrado." });
 
-                return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            return Ok(result);
         }
 
         [HttpGet]
@@ -49,21 +41,12 @@ namespace MinhasFinancas.Api.Controllers.Financas
         [Authorize]
         public async Task<ActionResult<UpdateMovimentoFinanceiroViewModel>> AllDespesas([FromQuery] DateTime data)
         {
-            try
-            {
-                var result = await _appServiceHandler.AllDespesas(data.Date).ConfigureAwait(false);
+            var result = await _appServiceHandler.GetAllDespesas(data.Date);
 
-                if (result is null)
-                {
-                    return NotFound(new { Message = $"Despesas em {data} não encontrado." });
-                }
+            if (result is null)
+                return NotFound(new { Message = $"Despesas em {data} não encontrado." });
 
-                return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            return Ok(result);
         }
 
         [HttpPost]
@@ -71,28 +54,16 @@ namespace MinhasFinancas.Api.Controllers.Financas
         [Authorize]
         public async Task<ActionResult<bool>> GravarMovimentoFinanceiro([FromBody] NewMovimentoFinanceiroViewModel dados)
         {
-            if (!ModelState.IsValid)
+            var result = await _appServiceHandler.GravarMovimentoFinanceiro(dados);
+
+            if (result.IsFailed)
             {
-                return BadRequest(dados);
+                _uow.Rollback();
+                return BadRequest(new { Message = $"Falha ao gravar o movimento." });
             }
 
-            try
-            {
-                var result = await _appServiceHandler.GravarMovimentoFinanceiro(dados).ConfigureAwait(false);
-
-                if (result.IsFailed)
-                {
-                    _uow.Rollback();
-                    return BadRequest(new { Message = $"Falha ao gravar o movimento." });
-                }
-
-                _uow.Commit();
-                return Ok();
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            _uow.Commit();
+            return Ok();
         }
 
         [HttpPut]
@@ -100,12 +71,7 @@ namespace MinhasFinancas.Api.Controllers.Financas
         [Authorize]
         public async Task<ActionResult<bool>> AtualizarMovimentoFinanceiro([FromBody] UpdateMovimentoFinanceiroViewModel dados)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(dados);
-            }
-
-            var result = await _appServiceHandler.AtualizarMovimentoFinanceiro(dados).ConfigureAwait(false);
+            var result = await _appServiceHandler.AtualizarMovimentoFinanceiro(dados);
 
             if (result.IsFailed)
             {
@@ -122,12 +88,7 @@ namespace MinhasFinancas.Api.Controllers.Financas
         [Authorize]
         public async Task<ActionResult<bool>> ExcluirMovimentoFinanceiro([FromQuery] IEnumerable<Guid> id)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(id);
-            }
-
-            var result = await _appServiceHandler.ExcluirMovimentoFinanceiro(id).ConfigureAwait(false);
+            var result = await _appServiceHandler.ExcluirMovimentoFinanceiro(id);
 
             if (!result)
             {
@@ -144,11 +105,6 @@ namespace MinhasFinancas.Api.Controllers.Financas
         [Authorize]
         public async Task<ActionResult<bool>> ExcluirMovimentoFinanceiro([FromQuery] DateTime data)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(data);
-            }
-
             var result = await _appServiceHandler.ExcluirMovimentoFinanceiro(data).ConfigureAwait(false);
 
             if (!result)

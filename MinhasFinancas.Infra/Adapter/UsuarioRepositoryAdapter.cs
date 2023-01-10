@@ -15,9 +15,7 @@ namespace MinhasFinancas.Infra.Adapter
         }
 
         public async Task<bool> GetLogin(string email, string passWord)
-        {
-            return await _usuarioQueryRepository.GetLogin(email, passWord);
-        }
+            => await _usuarioQueryRepository.GetLogin(email, passWord);
 
         public async Task<Usuario> GetUsuario(string email)
             => await _usuarioQueryRepository.GetUsuario(email);

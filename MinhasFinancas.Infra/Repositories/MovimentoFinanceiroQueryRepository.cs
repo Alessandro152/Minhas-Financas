@@ -52,7 +52,7 @@ namespace MinhasFinancas.Infra.Repositories
         public async Task<IEnumerable<UpdateMovimentoFinanceiroViewModel>> GetAll(DateTime data, int tipo)
         {
             var lista = new List<UpdateMovimentoFinanceiroViewModel>();
-            var result = await _context.Valores.Where(x => (x.Data.ToShortDateString() == data.ToShortDateString()) && (x.Tipo == tipo)).ToArrayAsync();
+            var result = await _context.Valores.Where(x => (x.Data.ToShortDateString() == data.ToShortDateString()) && ((int)x.Tipo == tipo)).ToArrayAsync();
 
             if (result.Any())
             {
@@ -69,6 +69,11 @@ namespace MinhasFinancas.Infra.Repositories
             }
 
             return lista;
+        }
+
+        Task<IEnumerable<MovimentoFinanceiroViewModel>> IMovimentoFinanceiroQueryRepository.GetAll(DateTime data, int tipo)
+        {
+            throw new NotImplementedException();
         }
     }
 }
