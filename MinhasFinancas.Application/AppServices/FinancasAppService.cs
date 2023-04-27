@@ -2,6 +2,7 @@
 using MinhasFinancas.Application.Interface;
 using MinhasFinancas.Domain.Enum;
 using MinhasFinancas.Domain.Financas.Commands;
+using MinhasFinancas.Infra.Interface;
 using MinhasFinancas.ViewModel.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -13,11 +14,15 @@ namespace MinhasFinancas.Application.AppServices
     {
         private readonly IBusHandler _bus;
         private readonly IFinancasQueryRepository _financasQueryRepository;
+        private readonly IUnitOfWork _uow;
 
-        public FinancasAppService(IBusHandler bus, IFinancasQueryRepository movimentoFinanceiroQueryRepository)
+        public FinancasAppService(IBusHandler bus, 
+                                  IFinancasQueryRepository movimentoFinanceiroQueryRepository, 
+                                  IUnitOfWork uow)
         {
             _bus = bus;
             _financasQueryRepository = movimentoFinanceiroQueryRepository;
+            _uow = uow;
         }
 
         public async Task<IAsyncEnumerable<MovimentoFinanceiroViewModel>> GetAllDespesas(DateTime data)
@@ -37,10 +42,18 @@ namespace MinhasFinancas.Application.AppServices
                                                                    request.Tipo);
                 var result = await _bus.SendCommand(command);
 
+                if (result.IsFailed)
+                {
+                    _uow.Rollback();
+                    return result.ToResult();
+                }
+
+                _uow.Commit();
                 return result.ToResult<bool>();
             }
             catch (Exception)
             {
+                _uow.Rollback();
                 throw;
             }
         }
@@ -54,12 +67,20 @@ namespace MinhasFinancas.Application.AppServices
                                                                 request.Data, 
                                                                 (TipoMovimentoEnum)request.Tipo, 
                                                                 Guid.Empty);
-                var result = await _bus.SendCommand(command);
 
+                var result = await _bus.SendCommand(command);
+                if (result.IsFailed)
+                {
+                    _uow.Rollback();
+                    return result.ToResult();
+                }
+
+                _uow.Commit();
                 return result.ToResult<MovimentoFinanceiroViewModel>();
             }
             catch (Exception)
             {
+                _uow.Rollback();
                 throw;
             }
         }

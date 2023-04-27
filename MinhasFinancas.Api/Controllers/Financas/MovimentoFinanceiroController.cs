@@ -16,12 +16,10 @@ namespace MinhasFinancas.Api.Controllers.Financas
     public class MovimentoFinanceiroController : ControllerBase
     {
         private readonly IFinancasAppService _appServiceHandler;
-        private readonly IUnitOfWork _uow;
 
-        public MovimentoFinanceiroController(IFinancasAppService appServiceHandler, IUnitOfWork uow)
+        public MovimentoFinanceiroController(IFinancasAppService appServiceHandler)
         {
             _appServiceHandler = appServiceHandler;
-            _uow = uow;
         }
 
         [HttpGet]
@@ -59,17 +57,13 @@ namespace MinhasFinancas.Api.Controllers.Financas
         [ProducesResponseType(typeof(NewMovimentoFinanceiroViewModel), 201)]
         [ProducesResponseType(typeof(Result<IError>), 400)]
         [Authorize]
-        public async Task<ActionResult<bool>> GravarMovimentoFinanceiro([FromBody] NewMovimentoFinanceiroViewModel dados)
+        public async Task<ActionResult<bool>> GravarMovimentoFinanceiro([FromBody] NewMovimentoFinanceiroViewModel request)
         {
-            var result = await _appServiceHandler.GravarMovimentoFinanceiro(dados);
+            var result = await _appServiceHandler.GravarMovimentoFinanceiro(request);
 
             if (result.IsFailed)
-            {
-                _uow.Rollback();
                 return BadRequest(result.Errors);
-            }
 
-            _uow.Commit();
             return Created("", result);
         }
 
@@ -83,13 +77,9 @@ namespace MinhasFinancas.Api.Controllers.Financas
             var result = await _appServiceHandler.AtualizarMovimentoFinanceiro(idMovimentoFinanceiro, dados);
 
             if (result.IsFailed)
-            {
-                _uow.Rollback();
                 return BadRequest(result.Errors);
-            }
 
-            _uow.Commit();
-            return Ok();
+            return Ok(result);
         }
     }
 }
