@@ -3,6 +3,7 @@ using MinhasFinancas.Domain.Entidades;
 using MinhasFinancas.Infra.Data;
 using MinhasFinancas.Infra.Interface;
 using MinhasFinancas.ViewModel.ViewModels;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -19,6 +20,9 @@ namespace MinhasFinancas.Infra.Repositories
 
         public async Task<Usuario> GetUsuario(string email)
             => await _context.Usuarios.FirstOrDefaultAsync(x => x.Email == email);
+
+        public async Task<Usuario> GetUsuarioById(Guid usuarioId)
+            => await _context.Usuarios.FirstOrDefaultAsync(x => x.Id == usuarioId);
 
         public async Task<bool> GetLogin(string email, string passWord)
             => await _context.Usuarios.AnyAsync(x => x.Email == email);

@@ -14,9 +14,17 @@ namespace MinhasFinancas.Domain.Entidades
             Email = email;
         }
 
-        public string Nome { get; }
-        public string Email { get; }
+        public string Nome { get; private set; }
+        public string Email { get; private set; }
+        public virtual Login Login { get; private set; }
 
-        public Login Login { get; private set; }
+        public void AddLogin(string email, string senha)
+            => Login = new Login(Guid.NewGuid(), email, senha, Id);
+
+        public void Editar(string nome, string email)
+        {
+            Nome = nome;
+            Email = email;
+        }
     }
 }

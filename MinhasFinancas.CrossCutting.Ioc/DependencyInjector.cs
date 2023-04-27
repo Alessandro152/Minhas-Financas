@@ -27,7 +27,7 @@ namespace Microsoft.Extensions.DependencyInjection
 
             //Application
             services.AddScoped<IUsuarioAppService, UsuarioAppService>();
-            services.AddScoped<IMinhasFinancasAppService, MinhasFinancasAppService>();
+            services.AddScoped<IFinancasAppService, FinancasAppService>();
             services.AddScoped<ITokenBuilder, TokenBuilder>();
             services.AddScoped<ITokenAppService, TokenAppService>();
 
@@ -42,7 +42,7 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddScoped<IUsuarioRepository, UsuarioRepository>();
             services.AddScoped<IUsuarioQueryRepository, UsuarioQueryRepository>();
             services.AddScoped<IMovimentoFinanceiroRepository, MovimentoFinanceiroRepository>();
-            services.AddScoped<IMovimentoFinanceiroQueryRepository, MovimentoFinanceiroQueryRepository>();
+            services.AddScoped<IFinancasQueryRepository, FinancasQueryRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IRepositoryAdapter, UsuarioRepositoryAdapter>();
 

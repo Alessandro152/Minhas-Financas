@@ -1,5 +1,6 @@
 ﻿using MinhasFinancas.Domain.Entidades;
 using MinhasFinancas.ViewModel.ViewModels;
+using System;
 using System.Threading.Tasks;
 
 namespace MinhasFinancas.Infra.Interface
@@ -11,5 +12,6 @@ namespace MinhasFinancas.Infra.Interface
         Task<bool> GetLogin(string email, string passWord);
 
         Task<Usuario> GetUsuario(string email);
+        Task<Usuario> GetUsuarioById(Guid usuarioId);
     }
 }

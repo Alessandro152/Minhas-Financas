@@ -4,21 +4,24 @@ using Microsoft.AspNetCore.Mvc;
 using MinhasFinancas.Application.Interface;
 using MinhasFinancas.ViewModel.ViewModels;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace MinhasFinancas.Api.Controllers.Usuario
 {
     [ApiController]
-    [Route("api/cliente")]
+    [Route("api/usuarios")]
     [Authorize]
     [Produces("application/json")]
     public class UsuarioController : ControllerBase
     {
         private readonly IUsuarioAppService _usuarioAppService;
+        private readonly IFinancasAppService _financasAppService;
 
-        public UsuarioController(IUsuarioAppService usuarioAppService)
+        public UsuarioController(IUsuarioAppService usuarioAppService, IFinancasAppService financasAppService)
         {
             _usuarioAppService = usuarioAppService;
+            _financasAppService = financasAppService;
         }
 
         /// <summary>
@@ -39,6 +42,26 @@ namespace MinhasFinancas.Api.Controllers.Usuario
         }
 
         /// <summary>
+        /// Retornar todos os lançamentos de um usuário
+        /// </summary>
+        /// <param name="usuarioId">id do usuário</param>
+        /// <returns>Uma Lista com todos os lançamentos financeiros do usuário</returns>
+        [HttpGet]
+        [Route("{usuarioId}/financas")]
+        [ProducesResponseType(typeof(IEnumerable<MovimentoFinanceiroViewModel>), 200)]
+        [ProducesResponseType(typeof(MovimentoFinanceiroViewModel), 404)]
+        [Authorize]
+        public async Task<ActionResult<MovimentoFinanceiroViewModel>> GetAllFinancas(Guid usuarioId)
+        {
+            var result = await _financasAppService.GetAllFinancas(usuarioId);
+
+            if (result is null)
+                return NotFound();
+
+            return Ok(result);
+        }
+
+        /// <summary>
         /// Realiza o cadastro de um novo usuário
         /// </summary>
         [HttpPost("cadastrarUsuario")]
@@ -51,13 +74,13 @@ namespace MinhasFinancas.Api.Controllers.Usuario
             if (result.IsFailed)
                 return BadRequest(result.Errors);
 
-            return Ok(result.Value);
+            return Created("", result.Value);
         }
 
         /// <summary>
         /// Altera o cadastro do usuário
         /// </summary>
-        [HttpPatch("alterarUsuario")]
+        [HttpPatch("{usuarioId}/editar")]
         [ProducesResponseType(typeof(Result<bool>), 200)]
         [ProducesResponseType(typeof(Result<IError>), 400)]
         public async Task<IActionResult> AlterarCadastro(Guid usuarioId, [FromBody] UpdateUsuarioViewModel request)

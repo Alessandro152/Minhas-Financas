@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using FluentResults;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MinhasFinancas.Application.Interface;
 using MinhasFinancas.Infra.Interface;
@@ -14,10 +15,10 @@ namespace MinhasFinancas.Api.Controllers.Financas
     [Produces("application/json")]
     public class MovimentoFinanceiroController : ControllerBase
     {
-        private readonly IMinhasFinancasAppService _appServiceHandler;
+        private readonly IFinancasAppService _appServiceHandler;
         private readonly IUnitOfWork _uow;
 
-        public MovimentoFinanceiroController(IMinhasFinancasAppService appServiceHandler, IUnitOfWork uow)
+        public MovimentoFinanceiroController(IFinancasAppService appServiceHandler, IUnitOfWork uow)
         {
             _appServiceHandler = appServiceHandler;
             _uow = uow;
@@ -25,8 +26,10 @@ namespace MinhasFinancas.Api.Controllers.Financas
 
         [HttpGet]
         [Route("allReceitas")]
+        [ProducesResponseType(typeof(IEnumerable<MovimentoFinanceiroViewModel>), 200)]
+        [ProducesResponseType(typeof(MovimentoFinanceiroViewModel), 404)]
         [Authorize]
-        public async Task<ActionResult<UpdateMovimentoFinanceiroViewModel>> AllReceitas([FromQuery] DateTime data)
+        public async Task<ActionResult<MovimentoFinanceiroViewModel>> AllReceitas([FromQuery] DateTime data)
         {
             var result = await _appServiceHandler.GetAllReceitas(data.Date);
 
@@ -38,6 +41,8 @@ namespace MinhasFinancas.Api.Controllers.Financas
 
         [HttpGet]
         [Route("allDespesas")]
+        [ProducesResponseType(typeof(IEnumerable<MovimentoFinanceiroViewModel>), 200)]
+        [ProducesResponseType(typeof(MovimentoFinanceiroViewModel), 404)]
         [Authorize]
         public async Task<ActionResult<UpdateMovimentoFinanceiroViewModel>> AllDespesas([FromQuery] DateTime data)
         {
@@ -51,6 +56,8 @@ namespace MinhasFinancas.Api.Controllers.Financas
 
         [HttpPost]
         [Route("salvarMovimento")]
+        [ProducesResponseType(typeof(NewMovimentoFinanceiroViewModel), 201)]
+        [ProducesResponseType(typeof(Result<IError>), 400)]
         [Authorize]
         public async Task<ActionResult<bool>> GravarMovimentoFinanceiro([FromBody] NewMovimentoFinanceiroViewModel dados)
         {
@@ -59,62 +66,30 @@ namespace MinhasFinancas.Api.Controllers.Financas
             if (result.IsFailed)
             {
                 _uow.Rollback();
-                return BadRequest(new { Message = $"Falha ao gravar o movimento." });
+                return BadRequest(result.Errors);
             }
 
             _uow.Commit();
-            return Ok();
+            return Created("", result);
         }
 
         [HttpPut]
-        [Route("atualizarMovimento")]
+        [Route("{idMovimentoFinanceiro}/atualizarMovimento")]
+        [ProducesResponseType(typeof(UpdateMovimentoFinanceiroViewModel), 200)]
+        [ProducesResponseType(typeof(Result<IError>), 400)]
         [Authorize]
-        public async Task<ActionResult<bool>> AtualizarMovimentoFinanceiro([FromBody] UpdateMovimentoFinanceiroViewModel dados)
+        public async Task<ActionResult<bool>> AtualizarMovimentoFinanceiro(Guid idMovimentoFinanceiro, [FromBody] UpdateMovimentoFinanceiroViewModel dados)
         {
-            var result = await _appServiceHandler.AtualizarMovimentoFinanceiro(dados);
+            var result = await _appServiceHandler.AtualizarMovimentoFinanceiro(idMovimentoFinanceiro, dados);
 
             if (result.IsFailed)
             {
                 _uow.Rollback();
-                return BadRequest(new { Message = $"Falha ao atualizar o movimento." });
+                return BadRequest(result.Errors);
             }
 
             _uow.Commit();
             return Ok();
-        }
-
-        [HttpDelete]
-        [Route("excluirMovimento/id")]
-        [Authorize]
-        public async Task<ActionResult<bool>> ExcluirMovimentoFinanceiro([FromQuery] IEnumerable<Guid> id)
-        {
-            var result = await _appServiceHandler.ExcluirMovimentoFinanceiro(id);
-
-            if (!result)
-            {
-                _uow.Rollback();
-                return BadRequest(new { Message = $"Falha ao excluir o(s) movimento(s)." });
-            }
-
-            _uow.Commit();
-            return Ok(result);
-        }
-
-        [HttpDelete]
-        [Route("excluirMovimento/data")]
-        [Authorize]
-        public async Task<ActionResult<bool>> ExcluirMovimentoFinanceiro([FromQuery] DateTime data)
-        {
-            var result = await _appServiceHandler.ExcluirMovimentoFinanceiro(data).ConfigureAwait(false);
-
-            if (!result)
-            {
-                _uow.Rollback();
-                return BadRequest(new { Message = $"Falha ao excluir o movimento de {data}." });
-            }
-
-            _uow.Commit();
-            return Ok(result);
         }
     }
 }

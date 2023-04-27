@@ -22,7 +22,7 @@ namespace MinhasFinancas.Infra.Data.Configurations
 
             builder.HasOne(p => p.Login)
                    .WithOne()
-                   .HasForeignKey<Login>(f => f.Id);
+                   .HasForeignKey<Login>(f => f.UsuarioId);
         }
     }
 }

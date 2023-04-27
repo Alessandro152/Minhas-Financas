@@ -32,13 +32,12 @@ namespace MinhasFinancas.Domain.Cliente.Handlers
                 return Result.Fail<Entidade>(validation.Errors.Select(s => s.ErrorMessage));
 
             if (await _repositoryAdapter.GetUsuario(message.Email) != null)
-                Result.Fail($"Usuário com e-mail {message.Email} já cadastrado");
+                return Result.Fail($"Usuário com e-mail {message.Email} já cadastrado");
 
-            var login = new Login(Guid.NewGuid(), message.Email, message.Senha);
             var usuario = new Usuario(Guid.NewGuid(), message.Nome, message.Email);
+            usuario.AddLogin(message.Email, message.Senha);
 
             await _usuarioRepository.InsertAsync(usuario);
-            await _usuarioRepository.InsertAsync(login);
 
             return usuario;
         }
@@ -51,9 +50,14 @@ namespace MinhasFinancas.Domain.Cliente.Handlers
             if (!validation.IsValid)
                 return Result.Fail(validation.Errors.Select(s => s.ErrorMessage));
 
-            await _usuarioRepository.UpdateAsync(new Usuario(message.UsuarioId, 
-                                                             message.Nome, 
-                                                             message.Email));
+            var usuario = await _repositoryAdapter.GetUsuarioById(message.UsuarioId);
+
+            if(usuario is null)
+                return Result.Fail($"Usuário com e-mail {message.UsuarioId} não encontrado");
+
+            usuario.Editar(message.Nome, message.Email);
+            await _usuarioRepository.UpdateAsync(usuario);
+
             return true;
         }
     }
