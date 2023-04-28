@@ -19,6 +19,10 @@ namespace MinhasFinancas.Infra.Data.Configurations
             builder.Property(p => p.Password)
                    .HasMaxLength(6)
                    .IsRequired();
+
+            builder.HasOne(p => p.Usuario)
+                   .WithOne()
+                   .HasForeignKey<Login>(p => p.UsuarioId);
         }
     }
 }

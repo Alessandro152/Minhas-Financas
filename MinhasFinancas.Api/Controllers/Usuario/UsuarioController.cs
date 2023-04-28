@@ -27,11 +27,11 @@ namespace MinhasFinancas.Api.Controllers.Usuario
         /// <summary>
         /// Realiza o login do usuário
         /// </summary>
-        [HttpGet("acesso")]
+        [HttpPost("acesso")]
         [ProducesResponseType(typeof(UsuarioCredencialViewModel), 200)]
         [ProducesResponseType(typeof(UsuarioCredencialViewModel), 404)]
         [AllowAnonymous]
-        public async Task<IActionResult> Login([FromRoute] LoginViewModel request)
+        public async Task<IActionResult> Login([FromBody] LoginViewModel request)
         {
             var result = await _usuarioAppService.Login(request);
             

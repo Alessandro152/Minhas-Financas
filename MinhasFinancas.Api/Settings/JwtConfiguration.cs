@@ -12,13 +12,12 @@ namespace MinhasFinancas.Api.Settings
         {
             //Autenticacao Jwt
             var key = Encoding.ASCII.GetBytes(Setting.Secret);
-            services
-                .AddAuthentication(opt =>
+            services.AddAuthentication(opt =>
             {
                 opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             })
-                .AddJwtBearer(opt =>
+            .AddJwtBearer(opt =>
             {
                 opt.RequireHttpsMetadata = false;
                 opt.SaveToken = true;
