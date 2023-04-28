@@ -8,5 +8,6 @@ namespace MinhasFinancas.ViewModel.ViewModels
         public string Titulo { get; set; }
         public DateTime Data { get; set; }
         public int Tipo { get; set; }
+        public Guid usuarioId { get; set; }
     }
 }

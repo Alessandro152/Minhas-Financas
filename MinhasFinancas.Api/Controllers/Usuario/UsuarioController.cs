@@ -50,31 +50,24 @@ namespace MinhasFinancas.Api.Controllers.Usuario
         [Route("{usuarioId}/financas")]
         [ProducesResponseType(typeof(IEnumerable<MovimentoFinanceiroViewModel>), 200)]
         [ProducesResponseType(typeof(MovimentoFinanceiroViewModel), 404)]
-        [Authorize]
-        public async Task<ActionResult<MovimentoFinanceiroViewModel>> GetAllFinancas(Guid usuarioId)
-        {
-            var result = await _financasAppService.GetAllFinancas(usuarioId);
-
-            if (result is null)
-                return NotFound();
-
-            return Ok(result);
-        }
+        public async Task<IActionResult> GetAllFinancas(Guid usuarioId)
+            => (IActionResult) await _financasAppService.GetAllFinancas(usuarioId);
 
         /// <summary>
         /// Realiza o cadastro de um novo usuário
         /// </summary>
         [HttpPost("cadastrarUsuario")]
-        [ProducesResponseType(typeof(Result<Guid>), 201)]
-        [ProducesResponseType(typeof(Result<IError>), 400)]
+        [ProducesResponseType(typeof(Result<UsuarioViewModel>), 201)]
+        [ProducesResponseType(typeof(Result<IReason>), 400)]
         [AllowAnonymous]
         public async Task<IActionResult> CadastrarUsuario([FromBody] NewUsuarioViewModel request)
         {
             var result = await _usuarioAppService.CadastrarUsuario(request);
-            if (result.IsFailed)
-                return BadRequest(result.Errors);
 
-            return Created("", result.Value);
+            if (result.IsFailed)
+                return BadRequest(result.Reasons);
+
+            return Created(string.Empty, result.Value);
         }
 
         /// <summary>
@@ -86,8 +79,9 @@ namespace MinhasFinancas.Api.Controllers.Usuario
         public async Task<IActionResult> AlterarCadastro(Guid usuarioId, [FromBody] UpdateUsuarioViewModel request)
         {
             var result = await _usuarioAppService.AlterarCadastroUsuario(usuarioId, request);
+
             if (result.IsFailed)
-                return BadRequest(result.Errors);
+                return BadRequest(result.Reasons);
 
             return Ok(result.Value);
         }

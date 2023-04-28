@@ -29,7 +29,7 @@ namespace MinhasFinancas.Domain.Cliente.Handlers
 
             var validation = message.IsValid();
             if (!validation.IsValid)
-                return Result.Fail<Entidade>(validation.Errors.Select(s => s.ErrorMessage));
+                return Result.Fail(validation.Errors.Select(s => s.ErrorMessage));
 
             if (await _repositoryAdapter.GetUsuario(message.Email) != null)
                 return Result.Fail($"Usuário com e-mail {message.Email} já cadastrado");
@@ -56,6 +56,7 @@ namespace MinhasFinancas.Domain.Cliente.Handlers
                 return Result.Fail($"Usuário com e-mail {message.UsuarioId} não encontrado");
 
             usuario.Editar(message.Nome, message.Email);
+
             await _usuarioRepository.UpdateAsync(usuario);
 
             return true;

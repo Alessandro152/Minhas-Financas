@@ -1,6 +1,8 @@
-﻿using FluentResults;
+﻿using AutoMapper;
+using FluentResults;
 using MinhasFinancas.Application.Interface;
 using MinhasFinancas.Domain.Commands.Usuarios;
+using MinhasFinancas.Domain.Core.Shared;
 using MinhasFinancas.Infra.Interface;
 using MinhasFinancas.ViewModel.ViewModels;
 using System;
@@ -13,14 +15,20 @@ namespace MinhasFinancas.Application.AppServices
         private readonly IBusHandler _bus;
         private readonly IUsuarioQueryRepository _usuarioQueryRepository;
         private readonly ITokenAppService _tokenService;
+        private readonly IUnitOfWork _uow;
+        private readonly IMapper _mapper;
 
         public UsuarioAppService(IBusHandler bus,
                                  ITokenAppService tokenService,
-                                 IUsuarioQueryRepository usuarioQueryRepository)
+                                 IUsuarioQueryRepository usuarioQueryRepository,
+                                 IUnitOfWork uow,
+                                 IMapper mapper)
         {
             _bus = bus;
             _tokenService = tokenService;
             _usuarioQueryRepository = usuarioQueryRepository;
+            _uow = uow;
+            _mapper = mapper;
         }
 
         public async Task<Result<bool>> AlterarCadastroUsuario(Guid usuarioId, UpdateUsuarioViewModel request)
@@ -29,12 +37,15 @@ namespace MinhasFinancas.Application.AppServices
             {
                 var command = new UpdateUsuarioCommand(usuarioId, request.Nome, request.Email);
                 var result = await _bus.SendCommand<UpdateUsuarioCommand, Result<bool>>(command);
-                if (result.IsSuccess)
+
+                if (result.IsFailed)
                 {
-                    //TODO - gerenciar com unit of work commitar ou rollback
+                    _uow.Rollback();
+                    return result.ToResult();
                 }
 
-                return result;
+                _uow.Commit();
+                return result.ToResult<bool>();
             }
             catch (Exception ex)
             {
@@ -42,19 +53,25 @@ namespace MinhasFinancas.Application.AppServices
             }
         }
 
-        public async Task<Result<Guid>> CadastrarUsuario(NewUsuarioViewModel usuario)
+        public async Task<Result<UsuarioViewModel>> CadastrarUsuario(NewUsuarioViewModel usuario)
         {
             try
             {
                 var command = new NewUsuarioCommand(usuario.Nome, usuario.Email, usuario.Senha);
                 var result = await _bus.SendCommand(command);
 
-                //TODO - Tratar o controle de transacao aqui
-                return result.ToResult<Guid>();
+                if (result.IsFailed)
+                {
+                    _uow.Rollback();
+                    return result.ToResult();
+                }
+
+                _uow.Commit();
+                return _mapper.Map<Entidade, UsuarioViewModel>(result.Value);
             }
             catch (Exception ex)
             {
-                //TODO - Jogar o rollback aqui
+                _uow.Rollback();
                 throw ex;
             }
         }
