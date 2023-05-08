@@ -1,7 +1,4 @@
-﻿using MinhasFinancas.Domain.Commands.Usuarios;
-using MinhasFinancas.Domain.Commands.Usuarios.Validations;
-
-namespace MinhasFinancas.Domain.Cliente.Validations
+﻿namespace MinhasFinancas.Domain.Commands.Usuarios.Validations
 {
     public class NewUsuarioValidation : UsuarioValidation<NewUsuarioCommand>
     {
@@ -9,6 +6,7 @@ namespace MinhasFinancas.Domain.Cliente.Validations
         {
             ValidarNome();
             ValidarEmail();
+            ValidarSenha();
         }
     }
 }

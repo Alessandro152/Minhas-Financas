@@ -12,7 +12,7 @@ namespace MinhasFinancas.Infra.Data
 
         public DbSet<Login> Login { get; set; }
         public DbSet<Usuario> Usuarios { get; set; }
-        public DbSet<MovimentoFinanceiro> Valores { get; set; }
+        public DbSet<MovimentoFinanceiro> MovimentoFinanceiro { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
             => modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());

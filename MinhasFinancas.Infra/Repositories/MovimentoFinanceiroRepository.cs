@@ -1,7 +1,6 @@
 ﻿using MinhasFinancas.Domain.Entidades;
 using MinhasFinancas.Domain.Interface;
 using MinhasFinancas.Infra.Data;
-using System.Threading.Tasks;
 
 namespace MinhasFinancas.Infra.Repositories
 {
@@ -14,10 +13,17 @@ namespace MinhasFinancas.Infra.Repositories
             _context = context;
         }
 
-        public async Task<bool> GravarMovimentoFinanceiro(MovimentoFinanceiro entity)
+        public void Add(MovimentoFinanceiro entity)
+            => _context.MovimentoFinanceiro.AddAsync(entity);
+
+        public void Delete(MovimentoFinanceiro entity)
         {
-            await _context.Valores.AddAsync(entity);
-            return true;
+            throw new System.NotImplementedException();
+        }
+
+        public void Update(MovimentoFinanceiro entity)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

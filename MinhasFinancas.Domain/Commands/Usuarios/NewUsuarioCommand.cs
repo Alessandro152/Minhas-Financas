@@ -1,8 +1,8 @@
 ﻿using FluentResults;
 using FluentValidation.Results;
 using MediatR;
-using MinhasFinancas.Domain.Cliente.Validations;
 using MinhasFinancas.Domain.Commands.Abstract;
+using MinhasFinancas.Domain.Commands.Usuarios.Validations;
 using MinhasFinancas.Domain.Core.Shared;
 
 namespace MinhasFinancas.Domain.Commands.Usuarios

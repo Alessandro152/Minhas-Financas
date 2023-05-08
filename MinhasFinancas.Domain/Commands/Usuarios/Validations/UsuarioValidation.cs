@@ -10,7 +10,8 @@ namespace MinhasFinancas.Domain.Commands.Usuarios.Validations
         {
             RuleFor(c => c.UsuarioId)
                 .NotNull()
-                .WithMessage("");
+                .WithMessage(DomainResource.CampoObrigatorioValidationError)
+                .WithName("Id");
         }
 
         protected void ValidarNome()
@@ -30,6 +31,15 @@ namespace MinhasFinancas.Domain.Commands.Usuarios.Validations
                 .NotEmpty()
                 .EmailAddress()
                 .WithMessage(DomainResource.UsuarioEmailValidationError);
+        }
+
+        protected void ValidarSenha()
+        {
+            RuleFor(c => c.Senha)
+                .NotNull()
+                .NotEmpty()
+                .MaximumLength(6)
+                .WithMessage(DomainResource.UsuarioSenhaValidationError);
         }
     }
 }

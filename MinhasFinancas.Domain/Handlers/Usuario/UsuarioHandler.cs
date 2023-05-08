@@ -37,7 +37,7 @@ namespace MinhasFinancas.Domain.Cliente.Handlers
             var usuario = new Usuario(Guid.NewGuid(), message.Nome, message.Email);
             usuario.AddLogin(message.Email, message.Senha);
 
-            await _usuarioRepository.InsertAsync(usuario);
+            _usuarioRepository.Add(usuario);
 
             return usuario;
         }
@@ -57,7 +57,7 @@ namespace MinhasFinancas.Domain.Cliente.Handlers
 
             usuario.Editar(message.Nome, message.Email);
 
-            await _usuarioRepository.UpdateAsync(usuario);
+            _usuarioRepository.Update(usuario);
 
             return true;
         }

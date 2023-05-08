@@ -20,7 +20,7 @@ namespace MinhasFinancas.Infra.Repositories
         public async IAsyncEnumerable<MovimentoFinanceiroViewModel> GetAll(DateTime data, int tipo)
         {
             var lista = new List<UpdateMovimentoFinanceiroViewModel>();
-            var result = await _context.Valores
+            var result = await _context.MovimentoFinanceiro
                                        .Where(x => x.Data.ToShortDateString() == data.ToShortDateString() && (int)x.Tipo == tipo)
                                        .ToArrayAsync();
 
@@ -38,7 +38,7 @@ namespace MinhasFinancas.Infra.Repositories
 
         public async IAsyncEnumerable<MovimentoFinanceiroViewModel> GetAllFinancas(Guid usuarioId)
         {
-            var result = await _context.Valores
+            var result = await _context.MovimentoFinanceiro
                                        .Where(x => x.ClienteId == usuarioId && x.Data.Month == DateTime.Now.Month)
                                        .ToListAsync();
 

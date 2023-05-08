@@ -26,14 +26,9 @@ namespace MinhasFinancas.Domain.Handlers.Financas
 
             var entity = new MovimentoFinanceiro(Guid.NewGuid(), request.Valor, request.Titulo, request.Data, request.Tipo, request.ClienteId);
 
-            var result = await _financasRepositorio.GravarMovimentoFinanceiro(entity);
+             _financasRepositorio.Add(entity);
 
-            if (!result)
-            {
-                //TODO - Implementar domain notification
-            }
-
-            return Result.Ok();
+            return entity;
         }
 
         public async Task<Result<Entidade>> Handle(UpdateMovimentoFinanceiroCommand request, CancellationToken cancellationToken)

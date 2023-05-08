@@ -1,7 +1,6 @@
 ﻿using MinhasFinancas.Domain.Entidades;
 using MinhasFinancas.Domain.Interface;
 using MinhasFinancas.Infra.Data;
-using System.Threading.Tasks;
 
 namespace MinhasFinancas.Infra.Repositories
 {
@@ -14,10 +13,15 @@ namespace MinhasFinancas.Infra.Repositories
             _context = context;
         }
 
-        public async Task UpdateAsync(Usuario entity)
+        public void Add(Usuario entity)
+            => _context.Usuarios.Add(entity);
+
+        public void Update(Usuario entity)
             => _context.Usuarios.Update(entity);
 
-        public async Task InsertAsync(Usuario entity)
-            => await _context.Usuarios.AddAsync(entity);
+        public void Delete(Usuario entity)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }
