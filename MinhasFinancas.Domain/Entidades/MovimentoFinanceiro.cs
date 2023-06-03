@@ -6,25 +6,25 @@ namespace MinhasFinancas.Domain.Entidades
 {
     public class MovimentoFinanceiro : Entidade
     {
-        protected MovimentoFinanceiro()
-        {
+        protected MovimentoFinanceiro() { }
 
-        }
-
-        public MovimentoFinanceiro(Guid id, decimal valor, string titulo, DateTime data, TipoMovimentoEnum tipo, Guid clienteId)
+        public MovimentoFinanceiro(decimal valor, 
+                                   string descricao, 
+                                   DateTime data, 
+                                   TipoMovimentoEnum tipo, 
+                                   int usuarioId)
         {
-            Id = id;
             Valor = valor;
-            Titulo = titulo;
+            Descricao = descricao;
             Data = data.Date;
             Tipo = tipo;
-            ClienteId = clienteId;
+            UsuarioId = usuarioId;
         }
 
         public decimal Valor { get; }
-        public string Titulo { get; }
+        public string Descricao { get; }
         public DateTime Data { get; }
         public TipoMovimentoEnum Tipo { get; }
-        public Guid ClienteId { get; }
+        public int UsuarioId { get; }
     }
 }

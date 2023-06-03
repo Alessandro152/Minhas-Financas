@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MinhasFinancas.Application.Interface;
+using MinhasFinancas.Domain.Enum;
 using MinhasFinancas.Infra.Data;
 using MinhasFinancas.ViewModel.ViewModels;
 using System;
@@ -17,29 +18,12 @@ namespace MinhasFinancas.Infra.Repositories
             _context = context;
         }
 
-        public async IAsyncEnumerable<MovimentoFinanceiroViewModel> GetAll(DateTime data, int tipo)
-        {
-            var lista = new List<UpdateMovimentoFinanceiroViewModel>();
-            var result = await _context.MovimentoFinanceiro
-                                       .Where(x => x.Data.ToShortDateString() == data.ToShortDateString() && (int)x.Tipo == tipo)
-                                       .ToArrayAsync();
-
-            foreach (var item in result)
-            {
-                yield return new MovimentoFinanceiroViewModel
-                {
-                    Id = item.Id,
-                    Valor = item.Valor,
-                    Titulo = item.Titulo,
-                    Data = item.Data
-                };
-            }
-        }
-
-        public async IAsyncEnumerable<MovimentoFinanceiroViewModel> GetAllFinancas(Guid usuarioId)
+        public async IAsyncEnumerable<MovimentoFinanceiroViewModel> GetReceitasByData(int idUsuario, DateTime data)
         {
             var result = await _context.MovimentoFinanceiro
-                                       .Where(x => x.ClienteId == usuarioId && x.Data.Month == DateTime.Now.Month)
+                                       .Where(x => x.UsuarioId == idUsuario && 
+                                              x.Data.Month == data.Month &&
+                                              x.Tipo == TipoMovimentoEnum.Receita)
                                        .ToListAsync();
 
             foreach (var item in result)
@@ -48,7 +32,45 @@ namespace MinhasFinancas.Infra.Repositories
                 {
                     Id = item.Id,
                     Valor = item.Valor,
-                    Titulo = item.Titulo,
+                    Descricao = item.Descricao,
+                    Data = item.Data
+                };
+            }
+        }
+
+        public async IAsyncEnumerable<MovimentoFinanceiroViewModel> GetDespesasByData(int idUsuario, DateTime data)
+        {
+            var result = await _context.MovimentoFinanceiro
+                                       .Where(x => x.UsuarioId == idUsuario && 
+                                              x.Data.Month == data.Month &&
+                                              x.Tipo == TipoMovimentoEnum.Despesa)
+                                       .ToListAsync();
+
+            foreach (var item in result)
+            {
+                yield return new MovimentoFinanceiroViewModel
+                {
+                    Id = item.Id,
+                    Valor = item.Valor,
+                    Descricao = item.Descricao,
+                    Data = item.Data
+                };
+            }
+        }
+
+        public async IAsyncEnumerable<MovimentoFinanceiroViewModel> GetByUsuarioId(int usuarioId)
+        {
+            var result = await _context.MovimentoFinanceiro
+                                       .Where(x => x.UsuarioId == usuarioId)
+                                       .ToListAsync();
+
+            foreach (var item in result)
+            {
+                yield return new MovimentoFinanceiroViewModel
+                {
+                    Id = item.Id,
+                    Valor = item.Valor,
+                    Descricao = item.Descricao,
                     Data = item.Data
                 };
             }

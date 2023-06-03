@@ -14,10 +14,10 @@ namespace MinhasFinancas.Infra.Repositories
         }
 
         public void Add(Usuario entity)
-            => _context.Usuarios.Add(entity);
+            => _context.Usuarios.AddAsync(entity);
 
         public void Update(Usuario entity)
-            => _context.Usuarios.Update(entity);
+            => _context.Update(entity);
 
         public void Delete(Usuario entity)
         {

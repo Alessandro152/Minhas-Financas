@@ -3,11 +3,10 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MinhasFinancas.Application.Interface;
 using MinhasFinancas.ViewModel.ViewModels;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace MinhasFinancas.Api.Controllers.Usuario
+namespace MinhasFinancas.Api.Controllers.Usuarios
 {
     [ApiController]
     [Route("api/usuarios")]
@@ -25,38 +24,20 @@ namespace MinhasFinancas.Api.Controllers.Usuario
         }
 
         /// <summary>
-        /// Realiza o login do usuário
+        /// Retornar todos os lançamentos financeiros de um usuário
         /// </summary>
-        [HttpPost("acesso")]
-        [ProducesResponseType(typeof(UsuarioCredencialViewModel), 200)]
-        [ProducesResponseType(typeof(UsuarioCredencialViewModel), 404)]
-        [AllowAnonymous]
-        public async Task<IActionResult> Login([FromBody] LoginViewModel request)
-        {
-            var result = await _usuarioAppService.Login(request);
-            
-            if(result is null)
-                return NotFound();
-
-            return Ok(result);
-        }
-
-        /// <summary>
-        /// Retornar todos os lançamentos de um usuário
-        /// </summary>
-        /// <param name="usuarioId">id do usuário</param>
-        /// <returns>Uma Lista com todos os lançamentos financeiros do usuário</returns>
-        [HttpGet]
-        [Route("{usuarioId}/financas")]
+        /// <param name="idUsuario">Id do usuário</param>
+        /// <returns>Uma lista de lançamentos financeiros</returns>
+        [HttpGet("{idUsuario}")]
         [ProducesResponseType(typeof(IEnumerable<MovimentoFinanceiroViewModel>), 200)]
         [ProducesResponseType(typeof(MovimentoFinanceiroViewModel), 404)]
-        public async Task<IActionResult> GetAllFinancas(Guid usuarioId)
-            => (IActionResult) await _financasAppService.GetAllFinancas(usuarioId);
+        public async Task<IActionResult> GetAllFinancas(int idUsuario)
+            => Ok(await _financasAppService.GetByUsuarioId(idUsuario));
 
         /// <summary>
         /// Realiza o cadastro de um novo usuário
         /// </summary>
-        [HttpPost("cadastrarUsuario")]
+        [HttpPost]
         [ProducesResponseType(typeof(Result<UsuarioViewModel>), 201)]
         [ProducesResponseType(typeof(Result<IReason>), 400)]
         [AllowAnonymous]
@@ -73,10 +54,10 @@ namespace MinhasFinancas.Api.Controllers.Usuario
         /// <summary>
         /// Altera o cadastro do usuário
         /// </summary>
-        [HttpPatch("{usuarioId}/editar")]
+        [HttpPatch("{usuarioId}")]
         [ProducesResponseType(typeof(Result<bool>), 200)]
         [ProducesResponseType(typeof(Result<IError>), 400)]
-        public async Task<IActionResult> AlterarCadastro(Guid usuarioId, [FromBody] UpdateUsuarioViewModel request)
+        public async Task<IActionResult> AlterarCadastro(int usuarioId, [FromBody] UpdateUsuarioViewModel request)
         {
             var result = await _usuarioAppService.AlterarCadastroUsuario(usuarioId, request);
 

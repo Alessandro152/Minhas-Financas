@@ -34,7 +34,7 @@ namespace MinhasFinancas.Domain.Cliente.Handlers
             if (await _repositoryAdapter.GetUsuario(message.Email) != null)
                 return Result.Fail($"Usuário com e-mail {message.Email} já cadastrado");
 
-            var usuario = new Usuario(Guid.NewGuid(), message.Nome, message.Email);
+            var usuario = new Usuario(message.Nome, message.Email);
             usuario.AddLogin(message.Email, message.Senha);
 
             _usuarioRepository.Add(usuario);

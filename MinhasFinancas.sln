@@ -33,7 +33,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MinhasFinancas.CrossCutting
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3.2 - Infra", "3.2 - Infra", "{8635CAD6-7E06-4625-AAC4-5030552F903A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MinhasFinancas.ViewModel", "MinhasFinancas.ViewModel\MinhasFinancas.ViewModel.csproj", "{F6C2F0BE-1CC5-4D89-8E35-AC5FF8B1ED46}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MinhasFinancas.ViewModel", "MinhasFinancas.ViewModel\MinhasFinancas.ViewModel.csproj", "{F6C2F0BE-1CC5-4D89-8E35-AC5FF8B1ED46}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

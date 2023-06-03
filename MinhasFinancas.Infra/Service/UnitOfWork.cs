@@ -1,25 +1,25 @@
-﻿using MinhasFinancas.Infra.Data;
-using MinhasFinancas.Infra.Interface;
+﻿using MinhasFinancas.Application.Interface;
+using MinhasFinancas.Infra.Data;
+using System;
 
 namespace MinhasFinancas.Infra.Service
 {
-    public class UnitOfWork : IUnitOfWork
+    public class UnitOfWork : IUnitOfWork, IDisposable
     {
-        private readonly DataContext _context;
-
         public UnitOfWork(DataContext context)
         {
-            _context = context;
+            Context = context;
         }
+
+        public DataContext Context { get; }
 
         public void Commit()
-        {
-            _context.SaveChangesAsync();
-        }
+            => Context.SaveChangesAsync();
 
         public void Rollback()
-        {
-            //GC Act
-        }
+            => Dispose();
+
+        public void Dispose()
+            => GC.SuppressFinalize(this);
     }
 }

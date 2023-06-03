@@ -12,7 +12,6 @@ using MinhasFinancas.Domain.Financas.Commands;
 using MinhasFinancas.Domain.Handlers.Financas;
 using MinhasFinancas.Domain.Interface;
 using MinhasFinancas.Infra.Adapter;
-using MinhasFinancas.Infra.Interface;
 using MinhasFinancas.Infra.Repositories;
 using MinhasFinancas.Infra.Service;
 using System;
@@ -26,25 +25,25 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddMediatR(AppDomain.CurrentDomain.GetAssemblies());
 
             //Application
-            services.AddScoped<IUsuarioAppService, UsuarioAppService>();
-            services.AddScoped<IFinancasAppService, FinancasAppService>();
-            services.AddScoped<ITokenBuilder, TokenBuilder>();
-            services.AddScoped<ITokenAppService, TokenAppService>();
+            services.AddTransient<IUsuarioAppService, UsuarioAppService>();
+            services.AddTransient<IFinancasAppService, FinancasAppService>();
+            services.AddTransient<ITokenBuilder, TokenBuilder>();
+            services.AddTransient<ITokenAppService, TokenAppService>();
 
             //Domain
-            services.AddScoped<IBusHandler, BusHandler>();
-            services.AddScoped<IRequestHandler<NewUsuarioCommand, Result<Entidade>>, UsuarioHandler>();
-            services.AddScoped<IRequestHandler<UpdateUsuarioCommand, Result<bool>>, UsuarioHandler>();
-            services.AddScoped<IRequestHandler<NewMovimentoFinanceiroCommand, Result<Entidade>>, MovimentoFinanceiroHandler>();
-            services.AddScoped<IRequestHandler<UpdateMovimentoFinanceiroCommand, Result<Entidade>>, MovimentoFinanceiroHandler>();
+            services.AddTransient<IBusHandler, BusHandler>();
+            services.AddTransient<IRequestHandler<NewUsuarioCommand, Result<Entidade>>, UsuarioHandler>();
+            services.AddTransient<IRequestHandler<UpdateUsuarioCommand, Result<bool>>, UsuarioHandler>();
+            services.AddTransient<IRequestHandler<NewMovimentoFinanceiroCommand, Result<Entidade>>, MovimentoFinanceiroHandler>();
+            services.AddTransient<IRequestHandler<UpdateMovimentoFinanceiroCommand, Result<Entidade>>, MovimentoFinanceiroHandler>();
 
             //Infra
-            services.AddScoped<IUsuarioRepository, UsuarioRepository>();
-            services.AddScoped<IUsuarioQueryRepository, UsuarioQueryRepository>();
-            services.AddScoped<IMovimentoFinanceiroRepository, MovimentoFinanceiroRepository>();
-            services.AddScoped<IFinancasQueryRepository, FinancasQueryRepository>();
-            services.AddScoped<IUnitOfWork, UnitOfWork>();
-            services.AddScoped<IRepositoryAdapter, UsuarioRepositoryAdapter>();
+            services.AddTransient<IUsuarioRepository, UsuarioRepository>();
+            services.AddTransient<IUsuarioQueryRepository, UsuarioQueryRepository>();
+            services.AddTransient<IMovimentoFinanceiroRepository, MovimentoFinanceiroRepository>();
+            services.AddTransient<IFinancasQueryRepository, FinancasQueryRepository>();
+            services.AddTransient<IUnitOfWork, UnitOfWork>();
+            services.AddTransient<IRepositoryAdapter, UsuarioRepositoryAdapter>();
 
             return services;
         }

@@ -22,13 +22,12 @@ namespace MinhasFinancas.Api.Controllers.Financas
             _appServiceHandler = appServiceHandler;
         }
 
-        [HttpGet]
-        [Route("receitas")]
+        [HttpGet("{idUsuario}/receitas")]
         [ProducesResponseType(typeof(IEnumerable<MovimentoFinanceiroViewModel>), 200)]
         [ProducesResponseType(typeof(IEnumerable<MovimentoFinanceiroViewModel>), 404)]
-        public async Task<IActionResult> AllReceitas([FromQuery] DateTime data)
+        public async Task<IActionResult> GetReceitasByData(int idUsuario, [FromQuery] DateTime data)
         {
-            var result = await _appServiceHandler.GetAllReceitas(data.Date);
+            var result = await _appServiceHandler.GetReceitasByData(idUsuario, data.Date);
 
             if (result is null)
                 return NotFound();
@@ -36,13 +35,12 @@ namespace MinhasFinancas.Api.Controllers.Financas
             return Ok(result);
         }
 
-        [HttpGet]
-        [Route("despesas")]
+        [HttpGet("{idUsuario}/despesas")]
         [ProducesResponseType(typeof(IEnumerable<MovimentoFinanceiroViewModel>), 200)]
         [ProducesResponseType(typeof(IEnumerable<MovimentoFinanceiroViewModel>), 404)]
-        public async Task<IActionResult> AllDespesas([FromQuery] DateTime data)
+        public async Task<IActionResult> GetDespesasByData(int idUsuario, [FromQuery] DateTime data)
         {
-            var result = await _appServiceHandler.GetAllDespesas(data.Date);
+            var result = await _appServiceHandler.GetDespesasByData(idUsuario, data.Date);
 
             if (result is null)
                 return NotFound();
@@ -51,12 +49,11 @@ namespace MinhasFinancas.Api.Controllers.Financas
         }
 
         [HttpPost]
-        [Route("salvarMovimento")]
         [ProducesResponseType(typeof(NewMovimentoFinanceiroViewModel), 201)]
         [ProducesResponseType(typeof(Result<IReason>), 400)]
-        public async Task<IActionResult> GravarMovimentoFinanceiro([FromBody] NewMovimentoFinanceiroViewModel request)
+        public async Task<IActionResult> Adicionar([FromBody] NewMovimentoFinanceiroViewModel request)
         {
-            var result = await _appServiceHandler.GravarMovimentoFinanceiro(request);
+            var result = await _appServiceHandler.Adicionar(request);
 
             if (result.IsFailed)
                 return BadRequest(result.Reasons);
@@ -64,13 +61,12 @@ namespace MinhasFinancas.Api.Controllers.Financas
             return Created("", result.Value);
         }
 
-        [HttpPut]
-        [Route("{idMovimentoFinanceiro}/atualizarMovimento")]
+        [HttpPut("{idMovimentoFinanceiro}")]
         [ProducesResponseType(typeof(bool), 200)]
         [ProducesResponseType(typeof(Result<IReason>), 400)]
-        public async Task<IActionResult> AtualizarMovimentoFinanceiro(Guid idMovimentoFinanceiro, [FromBody] UpdateMovimentoFinanceiroViewModel dados)
+        public async Task<IActionResult> Atualizar(int idMovimentoFinanceiro, [FromBody] UpdateMovimentoFinanceiroViewModel dados)
         {
-            var result = await _appServiceHandler.AtualizarMovimentoFinanceiro(idMovimentoFinanceiro, dados);
+            var result = await _appServiceHandler.Atualizar(idMovimentoFinanceiro, dados);
 
             if (result.IsFailed)
                 return BadRequest(result.Reasons);

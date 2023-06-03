@@ -3,7 +3,6 @@ using FluentResults;
 using MinhasFinancas.Application.Interface;
 using MinhasFinancas.Domain.Commands.Usuarios;
 using MinhasFinancas.Domain.Core.Shared;
-using MinhasFinancas.Infra.Interface;
 using MinhasFinancas.ViewModel.ViewModels;
 using System;
 using System.Threading.Tasks;
@@ -31,7 +30,7 @@ namespace MinhasFinancas.Application.AppServices
             _mapper = mapper;
         }
 
-        public async Task<Result<bool>> AlterarCadastroUsuario(Guid usuarioId, UpdateUsuarioViewModel request)
+        public async Task<Result<bool>> AlterarCadastroUsuario(int usuarioId, UpdateUsuarioViewModel request)
         {
             try
             {
@@ -55,25 +54,17 @@ namespace MinhasFinancas.Application.AppServices
 
         public async Task<Result<UsuarioViewModel>> CadastrarUsuario(NewUsuarioViewModel usuario)
         {
-            try
-            {
-                var command = new NewUsuarioCommand(usuario.Nome, usuario.Email, usuario.Senha);
-                var result = await _bus.SendCommand(command);
+            var command = new NewUsuarioCommand(usuario.Nome, usuario.Email, usuario.Senha);
+            var result = await _bus.SendCommand(command);
 
-                if (result.IsFailed)
-                {
-                    _uow.Rollback();
-                    return result.ToResult();
-                }
-
-                _uow.Commit();
-                return _mapper.Map<Entidade, UsuarioViewModel>(result.Value);
-            }
-            catch (Exception ex)
+            if (result.IsFailed)
             {
                 _uow.Rollback();
-                throw ex;
+                return result.ToResult();
             }
+
+            _uow.Commit();
+            return _mapper.Map<Entidade, UsuarioViewModel>(result.Value);
         }
 
         public async Task<UsuarioCredencialViewModel> Login(LoginViewModel request)

@@ -1,4 +1,4 @@
-﻿namespace MinhasFinancas.Infra.Interface
+﻿namespace MinhasFinancas.Application.Interface
 {
     public interface IUnitOfWork
     {

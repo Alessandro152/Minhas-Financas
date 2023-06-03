@@ -1,7 +1,6 @@
-﻿using MinhasFinancas.Domain.Entidades;
+﻿using MinhasFinancas.Application.Interface;
+using MinhasFinancas.Domain.Entidades;
 using MinhasFinancas.Domain.Interface;
-using MinhasFinancas.Infra.Interface;
-using System;
 using System.Threading.Tasks;
 
 namespace MinhasFinancas.Infra.Adapter
@@ -21,7 +20,7 @@ namespace MinhasFinancas.Infra.Adapter
         public async Task<Usuario> GetUsuario(string email)
             => await _usuarioQueryRepository.GetUsuario(email);
 
-        public async Task<Usuario> GetUsuarioById(Guid usuarioId)
+        public async Task<Usuario> GetUsuarioById(int usuarioId)
             => await _usuarioQueryRepository.GetUsuarioById(usuarioId);
 
     }

@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using MinhasFinancas.Domain.Entidades;
 
-namespace MinhasFinancas.Infra.Data.Configurations
+namespace MinhasFinancas.Infra.SqlServer
 {
     public class UsuarioConfiguration : IEntityTypeConfiguration<Usuario>
     {

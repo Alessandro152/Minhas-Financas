@@ -4,6 +4,6 @@ namespace MinhasFinancas.Domain.Core.Shared
 {
     public abstract class Entidade
     {
-        public Guid Id { get; protected set; }
+        public int Id { get; protected set; }
     }
 }

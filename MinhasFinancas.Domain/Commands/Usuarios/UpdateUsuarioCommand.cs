@@ -9,7 +9,7 @@ namespace MinhasFinancas.Domain.Commands.Usuarios
 {
     public class UpdateUsuarioCommand : UsuarioCommand, IRequest<Result<bool>>
     {
-        public UpdateUsuarioCommand(Guid usuarioId, string nome, string email)
+        public UpdateUsuarioCommand(int usuarioId, string nome, string email)
         {
             UsuarioId = usuarioId;
             Nome = nome;

@@ -38,6 +38,7 @@ namespace MinhasFinancas.Domain.Commands.Usuarios.Validations
             RuleFor(c => c.Senha)
                 .NotNull()
                 .NotEmpty()
+                .MinimumLength(6)
                 .MaximumLength(6)
                 .WithMessage(DomainResource.UsuarioSenhaValidationError);
         }

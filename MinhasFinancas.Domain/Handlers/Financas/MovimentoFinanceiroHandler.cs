@@ -24,7 +24,11 @@ namespace MinhasFinancas.Domain.Handlers.Financas
         {
             if (request is null) return default;
 
-            var entity = new MovimentoFinanceiro(Guid.NewGuid(), request.Valor, request.Titulo, request.Data, request.Tipo, request.ClienteId);
+            var entity = new MovimentoFinanceiro(request.Valor, 
+                                                 request.Descricao, 
+                                                 request.Data, 
+                                                 request.Tipo, 
+                                                 request.UsuarioId);
 
              _financasRepositorio.Add(entity);
 

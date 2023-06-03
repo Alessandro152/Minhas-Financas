@@ -7,9 +7,8 @@ namespace MinhasFinancas.Domain.Entidades
     {
         protected Usuario(){}
 
-        public Usuario(Guid id, string nome, string email)
+        public Usuario(string nome, string email)
         {
-            Id = id;
             Nome = nome;
             Email = email;
         }
@@ -19,7 +18,7 @@ namespace MinhasFinancas.Domain.Entidades
         public virtual Login Login { get; private set; }
 
         public void AddLogin(string email, string senha)
-            => Login = new Login(Guid.NewGuid(), email, senha, Id);
+            => Login = new Login(email, senha, Id);
 
         public void Editar(string nome, string email)
         {

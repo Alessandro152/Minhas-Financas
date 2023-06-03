@@ -11,6 +11,6 @@ namespace MinhasFinancas.Application.Interface
 
         Task<UsuarioCredencialViewModel> Login(LoginViewModel dados);
 
-        Task<Result<bool>> AlterarCadastroUsuario(Guid id, UpdateUsuarioViewModel dados);
+        Task<Result<bool>> AlterarCadastroUsuario(int id, UpdateUsuarioViewModel dados);
     }
 }

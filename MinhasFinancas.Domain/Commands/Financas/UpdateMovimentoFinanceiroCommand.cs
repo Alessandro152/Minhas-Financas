@@ -9,15 +9,13 @@ namespace MinhasFinancas.Domain.Financas.Commands
 {
     public class UpdateMovimentoFinanceiroCommand : FinancasCommand, IRequest<Result<Entidade>>
     {
-        public UpdateMovimentoFinanceiroCommand(Guid id, decimal valor, string titulo, DateTime data, TipoMovimentoEnum tipo)
+        public UpdateMovimentoFinanceiroCommand(int id, decimal valor, string titulo, DateTime data, TipoMovimentoEnum tipo)
         {
             Id = id;
             Valor = valor;
-            Titulo = titulo;
+            Descricao = titulo;
             Data = data;
             Tipo = tipo;
         }
-
-        public Guid Id { get; }
     }
 }
