@@ -35,6 +35,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3.2 - Infra", "3.2 - Infra"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MinhasFinancas.ViewModel", "MinhasFinancas.ViewModel\MinhasFinancas.ViewModel.csproj", "{F6C2F0BE-1CC5-4D89-8E35-AC5FF8B1ED46}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MinhasFinancas.Infra.SqlServer", "MinhasFinancas.Infra.SqlServer\MinhasFinancas.Infra.SqlServer.csproj", "{E6D49759-6150-4C30-9749-FB1987A53750}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -77,6 +79,10 @@ Global
 		{F6C2F0BE-1CC5-4D89-8E35-AC5FF8B1ED46}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F6C2F0BE-1CC5-4D89-8E35-AC5FF8B1ED46}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F6C2F0BE-1CC5-4D89-8E35-AC5FF8B1ED46}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E6D49759-6150-4C30-9749-FB1987A53750}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E6D49759-6150-4C30-9749-FB1987A53750}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E6D49759-6150-4C30-9749-FB1987A53750}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E6D49759-6150-4C30-9749-FB1987A53750}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -93,6 +99,7 @@ Global
 		{97F6F6A0-9C63-41A5-84CF-1243881CB2CE} = {B7BDB4C5-1947-4885-B435-5CEC0946B7F5}
 		{8635CAD6-7E06-4625-AAC4-5030552F903A} = {AC43FEA4-F61D-48E0-83A6-0922DC4840C3}
 		{F6C2F0BE-1CC5-4D89-8E35-AC5FF8B1ED46} = {925E76E7-E33F-4084-B794-0B3161163DD8}
+		{E6D49759-6150-4C30-9749-FB1987A53750} = {8635CAD6-7E06-4625-AAC4-5030552F903A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {4C757DB5-E179-4A42-B116-B2BF9D5C9BA4}

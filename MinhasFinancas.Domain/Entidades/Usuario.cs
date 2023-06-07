@@ -15,6 +15,7 @@ namespace MinhasFinancas.Domain.Entidades
 
         public string Nome { get; private set; }
         public string Email { get; private set; }
+
         public virtual Login Login { get; private set; }
 
         public void AddLogin(string email, string senha)

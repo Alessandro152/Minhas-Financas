@@ -69,21 +69,14 @@ namespace MinhasFinancas.Application.AppServices
 
         public async Task<UsuarioCredencialViewModel> Login(LoginViewModel request)
         {
-            try
-            {
-                var usuario = await _usuarioQueryRepository.Logar(request);
-                if (usuario is null) return default;
+            var usuario = await _usuarioQueryRepository.Logar(request);
+            if (usuario is null) return default;
 
-                return new UsuarioCredencialViewModel
-                {
-                    Usuario = usuario,
-                    Token = _tokenService.GenerateToken(usuario)
-                };
-            }
-            catch (Exception ex)
+            return new UsuarioCredencialViewModel
             {
-                throw ex;
-            }
+                Usuario = usuario,
+                Token = _tokenService.GenerateToken(usuario)
+            };
         }
     }
 }

@@ -6,6 +6,10 @@ using System.Threading.Tasks;
 
 namespace MinhasFinancas.Api.Controllers.Logins
 {
+    [ApiController]
+    [Route("api/credenciais")]
+    [Authorize]
+    [Produces("application/json")]
     public class LoginController : ControllerBase
     {
         private readonly IUsuarioAppService _usuarioAppService;

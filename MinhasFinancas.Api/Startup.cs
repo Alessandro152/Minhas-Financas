@@ -4,8 +4,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using MinhasFinancas.Api.Extensions;
 using MinhasFinancas.Api.Settings;
 using MinhasFinancas.Infra.Data;
+using MinhasFinancas.Infra.SqlServer.Contexts;
 
 namespace MinhasFinancas.Api
 {
@@ -29,7 +31,7 @@ namespace MinhasFinancas.Api
 
             services.Injector();
 
-            services.AddDbContext<DataContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Aircooled")));
+            services.AddDbContext<DataContext, SqlServerContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Aircooled").Decrypt()));
 
             services.SwaggerGenerator();
 

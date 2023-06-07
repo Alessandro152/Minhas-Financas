@@ -17,6 +17,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MinhasFinancas.CrossCutting.Ioc\MinhasFinancas.CrossCutting.Ioc.csproj" />
+    <ProjectReference Include="..\MinhasFinancas.Infra.SqlServer\MinhasFinancas.Infra.SqlServer.csproj" />
   </ItemGroup>
 
 

@@ -4,9 +4,9 @@ using System.Reflection;
 
 namespace MinhasFinancas.Infra.Data
 {
-    public class DataContext : DbContext
+    public abstract class DataContext : DbContext
     {
-        public DataContext(DbContextOptions<DataContext> options) : base(options)
+        public DataContext(DbContextOptions options) : base(options)
         {
         }
 

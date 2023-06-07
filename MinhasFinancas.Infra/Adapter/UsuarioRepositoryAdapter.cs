@@ -14,8 +14,8 @@ namespace MinhasFinancas.Infra.Adapter
             _usuarioQueryRepository = usuarioQueryRepository;
         }
 
-        public async Task<bool> GetLogin(string email, string passWord)
-            => await _usuarioQueryRepository.GetLogin(email, passWord);
+        public async Task<bool> ExistLogin(string email, string passWord)
+            => await _usuarioQueryRepository.ExistLogin(email, passWord);
 
         public async Task<Usuario> GetUsuario(string email)
             => await _usuarioQueryRepository.GetUsuario(email);

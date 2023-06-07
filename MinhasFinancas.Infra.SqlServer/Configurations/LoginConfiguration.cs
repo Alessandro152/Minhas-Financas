@@ -2,13 +2,14 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using MinhasFinancas.Domain.Entidades;
 
-namespace MinhasFinancas.Infra.Data.Configurations
+namespace MinhasFinancas.Infra.SqlServer.Configurations
 {
     public class LoginConfiguration : IEntityTypeConfiguration<Login>
     {
         public void Configure(EntityTypeBuilder<Login> builder)
         {
-            builder.Property(p => p.Id);
+            builder.Property(p => p.Id)
+                   .ValueGeneratedOnAdd();
 
             builder.HasKey(k => k.Id);
 
@@ -23,9 +24,7 @@ namespace MinhasFinancas.Infra.Data.Configurations
             builder.Property(p => p.UsuarioId)
                    .IsRequired();
 
-            builder.HasOne(p => p.Usuario)
-                   .WithOne(p => p.Login)
-                   .HasForeignKey<Login>(p => p.UsuarioId);
+            builder.ToTable("movfin_login");
         }
     }
 }
