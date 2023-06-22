@@ -1,10 +1,9 @@
 ﻿using FluentResults;
 using MediatR;
 using MinhasFinancas.Domain.Core.Shared;
-using MinhasFinancas.Domain.Entidades;
+using MinhasFinancas.Domain.Entidades.Financas;
 using MinhasFinancas.Domain.Financas.Commands;
 using MinhasFinancas.Domain.Interface;
-using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -24,20 +23,28 @@ namespace MinhasFinancas.Domain.Handlers.Financas
         {
             if (request is null) return default;
 
-            var entity = new MovimentoFinanceiro(request.Valor, 
-                                                 request.Descricao, 
-                                                 request.Data, 
-                                                 request.Tipo, 
+            var entity = new MovimentoFinanceiro(request.Descricao,
+                                                 request.DataVencimento,
+                                                 request.Tipo,
                                                  request.UsuarioId);
 
-             _financasRepositorio.Add(entity);
+            entity.AdicionarValores(request.Valor, request.Pago, request.Recebido);
+
+            _financasRepositorio.Add(entity);
 
             return entity;
         }
 
         public async Task<Result<Entidade>> Handle(UpdateMovimentoFinanceiroCommand request, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            if (request is null) return default;
+
+            var entity = new MovimentoFinanceiro(request.Descricao,
+                                                 request.DataVencimento,
+                                                 request.Tipo,
+                                                 request.UsuarioId);
+
+            return entity;
         }
     }
 }

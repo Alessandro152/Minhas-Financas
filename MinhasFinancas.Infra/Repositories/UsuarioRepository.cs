@@ -1,4 +1,4 @@
-﻿using MinhasFinancas.Domain.Entidades;
+﻿using MinhasFinancas.Domain.Entidades.Usuarios;
 using MinhasFinancas.Domain.Interface;
 using MinhasFinancas.Infra.Data;
 

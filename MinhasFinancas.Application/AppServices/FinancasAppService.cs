@@ -1,5 +1,6 @@
 ﻿using FluentResults;
 using MinhasFinancas.Application.Interface;
+using MinhasFinancas.Domain.Core.Enums;
 using MinhasFinancas.Domain.Enum;
 using MinhasFinancas.Domain.Financas.Commands;
 using MinhasFinancas.ViewModel.ViewModels;
@@ -30,6 +31,8 @@ namespace MinhasFinancas.Application.AppServices
                                                             request.Descricao,
                                                             request.Data,
                                                             (TipoMovimentoEnum)request.Tipo,
+                                                            request.Pago ? SimNaoEnum.Sim : SimNaoEnum.Nao,
+                                                            request.Recebido ? SimNaoEnum.Sim : SimNaoEnum.Nao,
                                                             request.UsuarioId);
 
             var result = await _bus.SendCommand(command);
@@ -68,7 +71,7 @@ namespace MinhasFinancas.Application.AppServices
         public async Task<IAsyncEnumerable<MovimentoFinanceiroViewModel>> GetDespesasByData(int idUsuario, DateTime data)
             => await Task.FromResult(_financasQueryRepository.GetDespesasByData(idUsuario, data));
 
-        public async Task<IAsyncEnumerable<MovimentoFinanceiroViewModel>> GetByUsuarioId(int usuarioId)
+        public async Task<IAsyncEnumerable<MovimentoFinanceiroViewModel>> GetById(int usuarioId)
             => await Task.FromResult(_financasQueryRepository.GetByUsuarioId(usuarioId));
     }
 }

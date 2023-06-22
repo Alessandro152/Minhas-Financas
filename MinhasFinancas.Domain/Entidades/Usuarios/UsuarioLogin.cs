@@ -1,12 +1,12 @@
 ﻿using MinhasFinancas.Domain.Core.Shared;
 
-namespace MinhasFinancas.Domain.Entidades
+namespace MinhasFinancas.Domain.Entidades.Usuarios
 {
-    public class Login : Entidade
+    public class UsuarioLogin : Entidade
     {
-        protected Login(){}
+        protected UsuarioLogin(){}
 
-        public Login(string email, string password, int usuarioId)
+        public UsuarioLogin(string email, string password, int usuarioId)
         {
             Email = email;
             Senha = password;

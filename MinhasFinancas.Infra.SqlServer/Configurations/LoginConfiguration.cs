@@ -1,12 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using MinhasFinancas.Domain.Entidades;
+using MinhasFinancas.Domain.Entidades.Usuarios;
 
 namespace MinhasFinancas.Infra.SqlServer.Configurations
 {
-    public class LoginConfiguration : IEntityTypeConfiguration<Login>
+    public class LoginConfiguration : IEntityTypeConfiguration<UsuarioLogin>
     {
-        public void Configure(EntityTypeBuilder<Login> builder)
+        public void Configure(EntityTypeBuilder<UsuarioLogin> builder)
         {
             builder.Property(p => p.Id)
                    .ValueGeneratedOnAdd();
@@ -18,7 +18,7 @@ namespace MinhasFinancas.Infra.SqlServer.Configurations
                    .IsRequired();
 
             builder.Property(p => p.Senha)
-                   .HasMaxLength(6)
+                   .HasMaxLength(50)
                    .IsRequired();
 
             builder.Property(p => p.UsuarioId)

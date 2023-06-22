@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MinhasFinancas.Infra.Data;
+using MinhasFinancas.Infra.Extensions;
 using System.Reflection;
 
 namespace MinhasFinancas.Infra.SqlServer.Contexts
@@ -10,8 +11,16 @@ namespace MinhasFinancas.Infra.SqlServer.Contexts
         {
         }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-            => modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+        protected override void OnConfiguring(DbContextOptionsBuilder options)
+        {
+            if (!options.IsConfigured)
+                options.UseSqlServer(Secret.ConnectionString.Decrypt());
+        }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+        }
     }
 }

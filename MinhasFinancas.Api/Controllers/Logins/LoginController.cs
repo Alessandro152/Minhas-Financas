@@ -8,7 +8,6 @@ namespace MinhasFinancas.Api.Controllers.Logins
 {
     [ApiController]
     [Route("api/credenciais")]
-    [Authorize]
     [Produces("application/json")]
     public class LoginController : ControllerBase
     {
@@ -25,7 +24,6 @@ namespace MinhasFinancas.Api.Controllers.Logins
         [HttpPost]
         [ProducesResponseType(typeof(UsuarioCredencialViewModel), 200)]
         [ProducesResponseType(typeof(UsuarioCredencialViewModel), 404)]
-        [AllowAnonymous]
         public async Task<IActionResult> Login([FromBody] LoginViewModel request)
         {
             var result = await _usuarioAppService.Login(request);

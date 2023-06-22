@@ -1,13 +1,11 @@
-﻿using MinhasFinancas.Domain.Entidades;
-using System;
+﻿using MinhasFinancas.Domain.Entidades.Usuarios;
 using System.Threading.Tasks;
 
 namespace MinhasFinancas.Domain.Interface
 {
     public interface IRepositoryAdapter
     {
-        Task<Usuario> GetUsuario(string email);
-        Task<bool> ExistLogin(string email, string passWord);
-        Task<Usuario> GetUsuarioById(int usuarioId);
+        Task<Usuario> GetUsuarioByEmail(string email);
+        Task<Usuario> GetById(int usuarioId);
     }
 }

@@ -21,8 +21,9 @@ namespace MinhasFinancas.Infra.Repositories
         public async IAsyncEnumerable<MovimentoFinanceiroViewModel> GetReceitasByData(int idUsuario, DateTime data)
         {
             var result = await _context.MovimentoFinanceiro
+                                       .Include(i => i.MovimentoFinanceiroValores)
                                        .Where(x => x.UsuarioId == idUsuario && 
-                                              x.Data.Month == data.Month &&
+                                              x.DataVencimento.Month == data.Month &&
                                               x.Tipo == TipoMovimentoEnum.Receita)
                                        .ToListAsync();
 
@@ -31,9 +32,12 @@ namespace MinhasFinancas.Infra.Repositories
                 yield return new MovimentoFinanceiroViewModel
                 {
                     Id = item.Id,
-                    Valor = item.Valor,
+                    Valores = item.MovimentoFinanceiroValores.Select(valores => new MovimentoFinanceiroValoresViewModel 
+                    { 
+                        Valor = valores.Valor
+                    }),
                     Descricao = item.Descricao,
-                    Data = item.Data
+                    Data = item.DataVencimento
                 };
             }
         }
@@ -42,7 +46,7 @@ namespace MinhasFinancas.Infra.Repositories
         {
             var result = await _context.MovimentoFinanceiro
                                        .Where(x => x.UsuarioId == idUsuario && 
-                                              x.Data.Month == data.Month &&
+                                              x.DataVencimento.Month == data.Month &&
                                               x.Tipo == TipoMovimentoEnum.Despesa)
                                        .ToListAsync();
 
@@ -51,9 +55,12 @@ namespace MinhasFinancas.Infra.Repositories
                 yield return new MovimentoFinanceiroViewModel
                 {
                     Id = item.Id,
-                    Valor = item.Valor,
+                    Valores = item.MovimentoFinanceiroValores.Select(valores => new MovimentoFinanceiroValoresViewModel
+                    {
+                        Valor = valores.Valor
+                    }),
                     Descricao = item.Descricao,
-                    Data = item.Data
+                    Data = item.DataVencimento
                 };
             }
         }
@@ -69,9 +76,12 @@ namespace MinhasFinancas.Infra.Repositories
                 yield return new MovimentoFinanceiroViewModel
                 {
                     Id = item.Id,
-                    Valor = item.Valor,
+                    Valores = item.MovimentoFinanceiroValores.Select(valores => new MovimentoFinanceiroValoresViewModel
+                    {
+                        Valor = valores.Valor
+                    }),
                     Descricao = item.Descricao,
-                    Data = item.Data
+                    Data = item.DataVencimento
                 };
             }
         }

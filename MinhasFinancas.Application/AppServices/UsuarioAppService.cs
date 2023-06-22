@@ -30,7 +30,7 @@ namespace MinhasFinancas.Application.AppServices
             _mapper = mapper;
         }
 
-        public async Task<Result<bool>> AlterarCadastroUsuario(int usuarioId, UpdateUsuarioViewModel request)
+        public async Task<Result<bool>> Atualizar(int usuarioId, UpdateUsuarioViewModel request)
         {
             try
             {
@@ -52,7 +52,7 @@ namespace MinhasFinancas.Application.AppServices
             }
         }
 
-        public async Task<Result<UsuarioViewModel>> CadastrarUsuario(NewUsuarioViewModel usuario)
+        public async Task<Result<UsuarioViewModel>> Adicionar(NewUsuarioViewModel usuario)
         {
             var command = new NewUsuarioCommand(usuario.Nome, usuario.Email, usuario.Senha);
             var result = await _bus.SendCommand(command);
@@ -69,13 +69,25 @@ namespace MinhasFinancas.Application.AppServices
 
         public async Task<UsuarioCredencialViewModel> Login(LoginViewModel request)
         {
-            var usuario = await _usuarioQueryRepository.Logar(request);
+            var usuario = await _usuarioQueryRepository.Login(request);
             if (usuario is null) return default;
 
             return new UsuarioCredencialViewModel
             {
                 Usuario = usuario,
                 Token = _tokenService.GenerateToken(usuario)
+            };
+        }
+
+        public async Task<UsuarioViewModel> GetById(int idUsuario)
+        {
+            var result = await _usuarioQueryRepository.GetById(idUsuario);
+
+            return new UsuarioViewModel
+            {
+                Id = result.Id,
+                Nome = result.Nome,
+                Email = result.Email
             };
         }
     }

@@ -1,5 +1,6 @@
-﻿using MinhasFinancas.Application.Interface;
-using MinhasFinancas.Domain.Entidades;
+﻿using AutoMapper;
+using MinhasFinancas.Application.Interface;
+using MinhasFinancas.Domain.Entidades.Usuarios;
 using MinhasFinancas.Domain.Interface;
 using System.Threading.Tasks;
 
@@ -8,20 +9,18 @@ namespace MinhasFinancas.Infra.Adapter
     public class UsuarioRepositoryAdapter : IRepositoryAdapter
     {
         private readonly IUsuarioQueryRepository _usuarioQueryRepository;
+        private readonly IMapper _mapper;
 
-        public UsuarioRepositoryAdapter(IUsuarioQueryRepository usuarioQueryRepository)
+        public UsuarioRepositoryAdapter(IUsuarioQueryRepository usuarioQueryRepository, IMapper mapper)
         {
             _usuarioQueryRepository = usuarioQueryRepository;
+            _mapper = mapper;
         }
 
-        public async Task<bool> ExistLogin(string email, string passWord)
-            => await _usuarioQueryRepository.ExistLogin(email, passWord);
+        public async Task<Usuario> GetUsuarioByEmail(string email)
+            => _mapper.Map<Usuario>(await _usuarioQueryRepository.GetUsuarioByEmail(email));
 
-        public async Task<Usuario> GetUsuario(string email)
-            => await _usuarioQueryRepository.GetUsuario(email);
-
-        public async Task<Usuario> GetUsuarioById(int usuarioId)
-            => await _usuarioQueryRepository.GetUsuarioById(usuarioId);
-
+        public async Task<Usuario> GetById(int usuarioId)
+            => _mapper.Map<Usuario>(await _usuarioQueryRepository.GetById(usuarioId));
     }
 }

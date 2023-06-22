@@ -2,9 +2,9 @@
 using MediatR;
 using MinhasFinancas.Domain.Commands.Usuarios;
 using MinhasFinancas.Domain.Core.Shared;
-using MinhasFinancas.Domain.Entidades;
+using MinhasFinancas.Domain.Entidades.Usuarios;
+using MinhasFinancas.Domain.Extensions;
 using MinhasFinancas.Domain.Interface;
-using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -31,11 +31,11 @@ namespace MinhasFinancas.Domain.Cliente.Handlers
             if (!validation.IsValid)
                 return Result.Fail(validation.Errors.Select(s => s.ErrorMessage));
 
-            if (await _repositoryAdapter.GetUsuario(message.Email) != null)
+            if (await _repositoryAdapter.GetUsuarioByEmail(message.Email) != null)
                 return Result.Fail($"Usuário com e-mail {message.Email} já cadastrado");
 
             var usuario = new Usuario(message.Nome, message.Email);
-            usuario.AddLogin(message.Email, message.Senha);
+            usuario.AddLogin(message.Email, message.Senha.Encrypt());
 
             _usuarioRepository.Add(usuario);
 
@@ -50,7 +50,7 @@ namespace MinhasFinancas.Domain.Cliente.Handlers
             if (!validation.IsValid)
                 return Result.Fail(validation.Errors.Select(s => s.ErrorMessage));
 
-            var usuario = await _repositoryAdapter.GetUsuarioById(message.UsuarioId);
+            var usuario = await _repositoryAdapter.GetById(message.UsuarioId);
 
             if(usuario is null)
                 return Result.Fail($"Usuário com e-mail {message.UsuarioId} não encontrado");

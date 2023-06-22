@@ -1,7 +1,6 @@
 ﻿using MinhasFinancas.Domain.Core.Shared;
-using System;
 
-namespace MinhasFinancas.Domain.Entidades
+namespace MinhasFinancas.Domain.Entidades.Usuarios
 {
     public class Usuario : Entidade
     {
@@ -16,10 +15,10 @@ namespace MinhasFinancas.Domain.Entidades
         public string Nome { get; private set; }
         public string Email { get; private set; }
 
-        public virtual Login Login { get; private set; }
+        public virtual UsuarioLogin Login { get; private set; }
 
         public void AddLogin(string email, string senha)
-            => Login = new Login(email, senha, Id);
+            => Login = new UsuarioLogin(email, senha, Id);
 
         public void Editar(string nome, string email)
         {

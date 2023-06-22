@@ -12,6 +12,6 @@ namespace MinhasFinancas.Application.Interface
         Task<Result<bool>> Atualizar(int idMovimentoFinanceiro, UpdateMovimentoFinanceiroViewModel dados);
         Task<IAsyncEnumerable<MovimentoFinanceiroViewModel>> GetReceitasByData(int idUsuario, DateTime data);
         Task<IAsyncEnumerable<MovimentoFinanceiroViewModel>> GetDespesasByData(int idUsuario, DateTime data);
-        Task<IAsyncEnumerable<MovimentoFinanceiroViewModel>> GetByUsuarioId(int usuarioId);
+        Task<IAsyncEnumerable<MovimentoFinanceiroViewModel>> GetById(int usuarioId);
     }
 }

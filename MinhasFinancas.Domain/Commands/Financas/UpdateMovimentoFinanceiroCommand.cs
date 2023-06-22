@@ -14,7 +14,7 @@ namespace MinhasFinancas.Domain.Financas.Commands
             Id = id;
             Valor = valor;
             Descricao = titulo;
-            Data = data;
+            DataVencimento = data;
             Tipo = tipo;
         }
     }

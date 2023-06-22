@@ -1,12 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using MinhasFinancas.Domain.Entidades;
+using MinhasFinancas.Domain.Entidades.Usuarios;
 
 namespace MinhasFinancas.Infra.Data.Configurations
 {
-    public class LoginConfiguration : IEntityTypeConfiguration<Login>
+    public class LoginConfiguration : IEntityTypeConfiguration<UsuarioLogin>
     {
-        public void Configure(EntityTypeBuilder<Login> builder)
+        public void Configure(EntityTypeBuilder<UsuarioLogin> builder)
         {
             builder.Property(p => p.Id);
 
@@ -25,7 +25,7 @@ namespace MinhasFinancas.Infra.Data.Configurations
 
             builder.HasOne(p => p.Usuario)
                    .WithOne(p => p.Login)
-                   .HasForeignKey<Login>(p => p.UsuarioId);
+                   .HasForeignKey<UsuarioLogin>(p => p.UsuarioId);
         }
     }
 }

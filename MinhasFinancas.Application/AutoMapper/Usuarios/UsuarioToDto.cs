@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using MinhasFinancas.Domain.Entidades;
+using MinhasFinancas.Domain.Entidades.Usuarios;
 using MinhasFinancas.ViewModel.ViewModels;
 
 namespace MinhasFinancas.Application.AutoMapper.Usuarios
@@ -8,7 +8,7 @@ namespace MinhasFinancas.Application.AutoMapper.Usuarios
     {
         public UsuarioToDto()
         {
-            CreateMap<Usuario, UsuarioViewModel>();
+            CreateMap<Usuario, UsuarioViewModel>().ReverseMap();
         }
     }
 }

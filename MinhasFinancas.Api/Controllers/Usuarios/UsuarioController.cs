@@ -10,7 +10,7 @@ namespace MinhasFinancas.Api.Controllers.Usuarios
 {
     [ApiController]
     [Route("api/usuarios")]
-    [Authorize]
+    //[Authorize]
     [Produces("application/json")]
     public class UsuarioController : ControllerBase
     {
@@ -29,10 +29,21 @@ namespace MinhasFinancas.Api.Controllers.Usuarios
         /// <param name="idUsuario">Id do usuário</param>
         /// <returns>Uma lista de lançamentos financeiros</returns>
         [HttpGet("{idUsuario}")]
+        [ProducesResponseType(typeof(UsuarioViewModel), 200)]
+        [ProducesResponseType(typeof(UsuarioViewModel), 404)]
+        public async Task<IActionResult> GetById(int idUsuario)
+            => Ok(await _usuarioAppService.GetById(idUsuario));
+
+        /// <summary>
+        /// Retornar todos os lançamentos financeiros de um usuário
+        /// </summary>
+        /// <param name="idUsuario">Id do usuário</param>
+        /// <returns>Uma lista de lançamentos financeiros</returns>
+        [HttpGet("{idUsuario}/financas")]
         [ProducesResponseType(typeof(IEnumerable<MovimentoFinanceiroViewModel>), 200)]
         [ProducesResponseType(typeof(MovimentoFinanceiroViewModel), 404)]
-        public async Task<IActionResult> GetAllFinancas(int idUsuario)
-            => Ok(await _financasAppService.GetByUsuarioId(idUsuario));
+        public async Task<IActionResult> GetFinancasById(int idUsuario)
+            => Ok(await _financasAppService.GetById(idUsuario));
 
         /// <summary>
         /// Realiza o cadastro de um novo usuário
@@ -41,9 +52,9 @@ namespace MinhasFinancas.Api.Controllers.Usuarios
         [ProducesResponseType(typeof(Result<UsuarioViewModel>), 201)]
         [ProducesResponseType(typeof(Result<IReason>), 400)]
         [AllowAnonymous]
-        public async Task<IActionResult> CadastrarUsuario([FromBody] NewUsuarioViewModel request)
+        public async Task<IActionResult> Cadastrar([FromBody] NewUsuarioViewModel request)
         {
-            var result = await _usuarioAppService.CadastrarUsuario(request);
+            var result = await _usuarioAppService.Adicionar(request);
 
             if (result.IsFailed)
                 return BadRequest(result.Reasons);
@@ -59,7 +70,7 @@ namespace MinhasFinancas.Api.Controllers.Usuarios
         [ProducesResponseType(typeof(Result<IError>), 400)]
         public async Task<IActionResult> AlterarCadastro(int usuarioId, [FromBody] UpdateUsuarioViewModel request)
         {
-            var result = await _usuarioAppService.AlterarCadastroUsuario(usuarioId, request);
+            var result = await _usuarioAppService.Atualizar(usuarioId, request);
 
             if (result.IsFailed)
                 return BadRequest(result.Reasons);
