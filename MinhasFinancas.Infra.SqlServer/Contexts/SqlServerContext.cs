@@ -14,7 +14,7 @@ namespace MinhasFinancas.Infra.SqlServer.Contexts
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {
             if (!options.IsConfigured)
-                options.UseSqlServer(Secret.ConnectionString.Decrypt());
+                options.UseSqlServer(BancoDadosConfig.ConnectionString.Decrypt());
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
