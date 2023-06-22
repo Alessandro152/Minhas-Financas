@@ -1,5 +1,5 @@
 ﻿using MinhasFinancas.Domain.Entidades.Financas;
-using MinhasFinancas.Domain.Interface;
+using MinhasFinancas.Domain.Interface.Repositories;
 using MinhasFinancas.Infra.Data;
 
 namespace MinhasFinancas.Infra.Repositories

@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using MinhasFinancas.Application.Interface;
 using MinhasFinancas.Domain.Entidades.Usuarios;
-using MinhasFinancas.Domain.Interface;
+using MinhasFinancas.Domain.Interface.Adapters;
 using System.Threading.Tasks;
 
 namespace MinhasFinancas.Infra.Adapter

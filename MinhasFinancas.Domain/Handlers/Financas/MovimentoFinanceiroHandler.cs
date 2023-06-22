@@ -3,7 +3,7 @@ using MediatR;
 using MinhasFinancas.Domain.Core.Shared;
 using MinhasFinancas.Domain.Entidades.Financas;
 using MinhasFinancas.Domain.Financas.Commands;
-using MinhasFinancas.Domain.Interface;
+using MinhasFinancas.Domain.Interface.Repositories;
 using System.Threading;
 using System.Threading.Tasks;
 

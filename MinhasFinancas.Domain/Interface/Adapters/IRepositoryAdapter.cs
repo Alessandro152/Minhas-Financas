@@ -1,7 +1,7 @@
 ﻿using MinhasFinancas.Domain.Entidades.Usuarios;
 using System.Threading.Tasks;
 
-namespace MinhasFinancas.Domain.Interface
+namespace MinhasFinancas.Domain.Interface.Adapters
 {
     public interface IRepositoryAdapter
     {

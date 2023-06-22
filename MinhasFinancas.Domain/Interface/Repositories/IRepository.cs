@@ -1,4 +1,4 @@
-﻿namespace MinhasFinancas.Domain.Interface
+﻿namespace MinhasFinancas.Domain.Interface.Repositories
 {
     public interface IRepository<T> where T : class
     {
