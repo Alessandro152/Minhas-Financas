@@ -28,6 +28,7 @@ namespace Microsoft.Extensions.DependencyInjection
             //Application
             services.AddTransient<IUsuarioAppService, UsuarioAppService>();
             services.AddTransient<IFinancasAppService, FinancasAppService>();
+            services.AddTransient<ILoginAppService, LoginUsuarioAppService>();
             services.AddTransient<ITokenBuilder, TokenBuilder>();
             services.AddTransient<ITokenAppService, TokenAppService>();
 

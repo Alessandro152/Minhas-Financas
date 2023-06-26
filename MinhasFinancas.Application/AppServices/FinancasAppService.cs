@@ -71,7 +71,7 @@ namespace MinhasFinancas.Application.AppServices
         public async Task<IAsyncEnumerable<MovimentoFinanceiroViewModel>> GetDespesasByData(int idUsuario, DateTime data)
             => await Task.FromResult(_financasQueryRepository.GetDespesasByData(idUsuario, data));
 
-        public async Task<IAsyncEnumerable<MovimentoFinanceiroViewModel>> GetById(int usuarioId)
+        public async Task<IAsyncEnumerable<MovimentoFinanceiroViewModel>> GetByUsuarioId(int usuarioId)
             => await Task.FromResult(_financasQueryRepository.GetByUsuarioId(usuarioId));
     }
 }

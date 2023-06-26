@@ -10,7 +10,7 @@ namespace MinhasFinancas.Api.Controllers.Usuarios
 {
     [ApiController]
     [Route("api/usuarios")]
-    //[Authorize]
+    [Authorize]
     [Produces("application/json")]
     public class UsuarioController : ControllerBase
     {
@@ -24,10 +24,10 @@ namespace MinhasFinancas.Api.Controllers.Usuarios
         }
 
         /// <summary>
-        /// Retornar todos os lançamentos financeiros de um usuário
+        /// Retornar os dados de um usuário
         /// </summary>
         /// <param name="idUsuario">Id do usuário</param>
-        /// <returns>Uma lista de lançamentos financeiros</returns>
+        /// <returns>As informaçõe de um usuário</returns>
         [HttpGet("{idUsuario}")]
         [ProducesResponseType(typeof(UsuarioViewModel), 200)]
         [ProducesResponseType(typeof(UsuarioViewModel), 404)]
@@ -38,16 +38,18 @@ namespace MinhasFinancas.Api.Controllers.Usuarios
         /// Retornar todos os lançamentos financeiros de um usuário
         /// </summary>
         /// <param name="idUsuario">Id do usuário</param>
-        /// <returns>Uma lista de lançamentos financeiros</returns>
+        /// <returns>Uma lista de lançamentos financeiros de um usuário</returns>
         [HttpGet("{idUsuario}/financas")]
         [ProducesResponseType(typeof(IEnumerable<MovimentoFinanceiroViewModel>), 200)]
         [ProducesResponseType(typeof(MovimentoFinanceiroViewModel), 404)]
         public async Task<IActionResult> GetFinancasById(int idUsuario)
-            => Ok(await _financasAppService.GetById(idUsuario));
+            => Ok(await _financasAppService.GetByUsuarioId(idUsuario));
 
         /// <summary>
         /// Realiza o cadastro de um novo usuário
         /// </summary>
+        /// <param name="request">Body com os parâmetros para cadastrar um novo usuário</param>
+        /// <returns>Um usuário criado</returns>
         [HttpPost]
         [ProducesResponseType(typeof(Result<UsuarioViewModel>), 201)]
         [ProducesResponseType(typeof(Result<IReason>), 400)]
@@ -63,8 +65,11 @@ namespace MinhasFinancas.Api.Controllers.Usuarios
         }
 
         /// <summary>
-        /// Altera o cadastro do usuário
+        /// Altera os dados de um usuário
         /// </summary>
+        /// <param name="usuarioId">Id do usuário</param>
+        /// <param name="request">Body com os parâmetros para alteração cadastral do usuário</param>
+        /// <returns>True caso tenha sucesso na alteração cadastral</returns>
         [HttpPatch("{usuarioId}")]
         [ProducesResponseType(typeof(Result<bool>), 200)]
         [ProducesResponseType(typeof(Result<IError>), 400)]

@@ -27,14 +27,10 @@ namespace MinhasFinancas.Infra.Repositories
             => _mapper.Map<UsuarioViewModel>(await _context.Usuarios.FirstOrDefaultAsync(x => x.Id == usuarioId));
 
         public async Task<UsuarioViewModel> Login(LoginViewModel request)
-            => await _context.Login.Where(x => x.Email == request.Email && x.Senha.Decrypt() == request.Password)
-                                            .Include(i => i.Usuario)
-                                            .Select(consulta => new UsuarioViewModel
-                                            {
-                                                Id = consulta.Id,
-                                                Nome = consulta.Usuario.Nome,
-                                                Email = consulta.Email
-                                            })
-                                            .FirstOrDefaultAsync();
+            => _mapper.Map<UsuarioViewModel>(await _context.UsuarioLogin
+                                                           .AsNoTracking()
+                                                           .Include(i => i.Usuario)
+                                                           .Where(x => x.Email == request.Email && x.Senha == request.Password.Encrypt())
+                                                           .FirstOrDefaultAsync());
     }
 }

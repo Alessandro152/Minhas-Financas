@@ -11,7 +11,7 @@ namespace MinhasFinancas.Infra.Data
         {
         }
 
-        public DbSet<UsuarioLogin> Login { get; set; }
+        public DbSet<UsuarioLogin> UsuarioLogin { get; set; }
         public DbSet<Usuario> Usuarios { get; set; }
         public DbSet<MovimentoFinanceiro> MovimentoFinanceiro { get; set; }
 

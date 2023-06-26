@@ -13,18 +13,15 @@ namespace MinhasFinancas.Application.AppServices
     {
         private readonly IBusHandler _bus;
         private readonly IUsuarioQueryRepository _usuarioQueryRepository;
-        private readonly ITokenAppService _tokenService;
         private readonly IUnitOfWork _uow;
         private readonly IMapper _mapper;
 
         public UsuarioAppService(IBusHandler bus,
-                                 ITokenAppService tokenService,
                                  IUsuarioQueryRepository usuarioQueryRepository,
                                  IUnitOfWork uow,
                                  IMapper mapper)
         {
             _bus = bus;
-            _tokenService = tokenService;
             _usuarioQueryRepository = usuarioQueryRepository;
             _uow = uow;
             _mapper = mapper;
@@ -67,28 +64,7 @@ namespace MinhasFinancas.Application.AppServices
             return _mapper.Map<Entidade, UsuarioViewModel>(result.Value);
         }
 
-        public async Task<UsuarioCredencialViewModel> Login(LoginViewModel request)
-        {
-            var usuario = await _usuarioQueryRepository.Login(request);
-            if (usuario is null) return default;
-
-            return new UsuarioCredencialViewModel
-            {
-                Usuario = usuario,
-                Token = _tokenService.GenerateToken(usuario)
-            };
-        }
-
         public async Task<UsuarioViewModel> GetById(int idUsuario)
-        {
-            var result = await _usuarioQueryRepository.GetById(idUsuario);
-
-            return new UsuarioViewModel
-            {
-                Id = result.Id,
-                Nome = result.Nome,
-                Email = result.Email
-            };
-        }
+            => await _usuarioQueryRepository.GetById(idUsuario);
     }
 }

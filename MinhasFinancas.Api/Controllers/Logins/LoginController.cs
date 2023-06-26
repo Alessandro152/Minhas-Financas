@@ -7,26 +7,28 @@ using System.Threading.Tasks;
 namespace MinhasFinancas.Api.Controllers.Logins
 {
     [ApiController]
-    [Route("api/credenciais")]
+    [Route("api/autenticacao")]
     [Produces("application/json")]
     public class LoginController : ControllerBase
     {
-        private readonly IUsuarioAppService _usuarioAppService;
+        private readonly ILoginAppService _loginAppService;
 
-        public LoginController(IUsuarioAppService usuarioAppService)
+        public LoginController(ILoginAppService loginAppService)
         {
-            _usuarioAppService = usuarioAppService;
+            _loginAppService = loginAppService;
         }
 
         /// <summary>
-        /// Realiza o login do usuário
+        /// Realiza o login de um usuário
         /// </summary>
+        /// <param name="request">Body com os parâmetros para autenticação</param>
+        /// <returns>Usuário autenticado</returns>
         [HttpPost]
-        [ProducesResponseType(typeof(UsuarioCredencialViewModel), 200)]
-        [ProducesResponseType(typeof(UsuarioCredencialViewModel), 404)]
+        [ProducesResponseType(typeof(UsuarioLoginViewModel), 200)]
+        [ProducesResponseType(typeof(UsuarioLoginViewModel), 404)]
         public async Task<IActionResult> Login([FromBody] LoginViewModel request)
         {
-            var result = await _usuarioAppService.Login(request);
+            var result = await _loginAppService.Login(request);
 
             if (result is null)
                 return NotFound();

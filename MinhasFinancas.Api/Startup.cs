@@ -5,7 +5,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MinhasFinancas.Api.Settings;
 using MinhasFinancas.Infra.Data;
-using MinhasFinancas.Infra.SqlServer;
 using MinhasFinancas.Infra.SqlServer.Contexts;
 
 namespace MinhasFinancas.Api
@@ -15,11 +14,9 @@ namespace MinhasFinancas.Api
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
-            BancoDadosConfig = new BancoDadosConfig(configuration);
         }
 
         public IConfiguration Configuration { get; }
-        public BancoDadosConfig BancoDadosConfig { get; set; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)

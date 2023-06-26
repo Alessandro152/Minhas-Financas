@@ -9,6 +9,10 @@ namespace MinhasFinancas.Application.AutoMapper.Usuarios
         public UsuarioToDto()
         {
             CreateMap<Usuario, UsuarioViewModel>().ReverseMap();
+            CreateMap<UsuarioLogin, UsuarioViewModel>()
+                .ForMember(vm => vm.Id, x => x.MapFrom(a => a.Id))
+                .ForMember(vm => vm.Nome, x => x.MapFrom(a => a.Usuario.Nome))
+                .ForMember(vm => vm.Email, x => x.MapFrom(a => a.Email));
         }
     }
 }
