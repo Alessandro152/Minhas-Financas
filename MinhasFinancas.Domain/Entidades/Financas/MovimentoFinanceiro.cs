@@ -14,7 +14,6 @@ namespace MinhasFinancas.Domain.Entidades.Financas
         public MovimentoFinanceiro()
         {
             _movimentoFinanceiroValores = new List<MovimentoFinanceiroValores>();
-
         }
 
         public MovimentoFinanceiro(string descricao, 

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace MinhasFinancas.Api.Controllers.Logins
 {
     [ApiController]
-    [Route("api/autenticacao")]
+    [Route("api/autenticacoes")]
     [Produces("application/json")]
     public class LoginController : ControllerBase
     {

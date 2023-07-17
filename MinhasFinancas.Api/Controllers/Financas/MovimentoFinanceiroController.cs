@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace MinhasFinancas.Api.Controllers.Financas
 {
     [Controller]
-    [Route("api/financas")]
+    [Route("api/movimentos-financeiro")]
     [Produces("application/json")]
     [Authorize]
     public class MovimentoFinanceiroController : ControllerBase
@@ -73,5 +73,7 @@ namespace MinhasFinancas.Api.Controllers.Financas
 
             return Ok(result.Value);
         }
+
+        //TODO - Excluir um movimento financeiro
     }
 }

@@ -23,6 +23,9 @@ namespace MinhasFinancas.Domain.Handlers.Financas
         {
             if (request is null) return default;
 
+            //TODO - Incluir validação de command
+            //TODO - Validar se o usuário existe
+
             var entity = new MovimentoFinanceiro(request.Descricao,
                                                  request.DataVencimento,
                                                  request.Tipo,
@@ -39,6 +42,10 @@ namespace MinhasFinancas.Domain.Handlers.Financas
         {
             if (request is null) return default;
 
+            //TODO - Incluir validação de command
+            //TODO - Validar se o usuário existe
+            //TODO - Ajustar edição
+
             var entity = new MovimentoFinanceiro(request.Descricao,
                                                  request.DataVencimento,
                                                  request.Tipo,
@@ -46,5 +53,7 @@ namespace MinhasFinancas.Domain.Handlers.Financas
 
             return entity;
         }
+
+        //TODO - Excluir um movimento financeiro
     }
 }

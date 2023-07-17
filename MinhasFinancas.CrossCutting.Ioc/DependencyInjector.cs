@@ -1,7 +1,6 @@
 ﻿using FluentResults;
 using MediatR;
 using MinhasFinancas.Application.AppServices;
-using MinhasFinancas.Application.Builders;
 using MinhasFinancas.Application.Interface;
 using MinhasFinancas.Application.Services;
 using MinhasFinancas.CrossCutting.Bus;
@@ -13,6 +12,7 @@ using MinhasFinancas.Domain.Handlers.Financas;
 using MinhasFinancas.Domain.Interface.Adapters;
 using MinhasFinancas.Domain.Interface.Repositories;
 using MinhasFinancas.Infra.Adapter;
+using MinhasFinancas.Infra.Builders;
 using MinhasFinancas.Infra.Repositories;
 using MinhasFinancas.Infra.Service;
 using System;

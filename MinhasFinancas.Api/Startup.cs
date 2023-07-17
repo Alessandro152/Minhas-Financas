@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MinhasFinancas.Api.Settings;
 using MinhasFinancas.Infra.Data;
+using MinhasFinancas.Infra.SqlServer;
 using MinhasFinancas.Infra.SqlServer.Contexts;
 
 namespace MinhasFinancas.Api
@@ -14,6 +15,8 @@ namespace MinhasFinancas.Api
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+
+            BancoDadosConfig.ConnectionString = configuration.GetConnectionString("Sql");
         }
 
         public IConfiguration Configuration { get; }

@@ -27,7 +27,7 @@ namespace MinhasFinancas.Api.Controllers.Usuarios
         /// Retornar os dados de um usuário
         /// </summary>
         /// <param name="idUsuario">Id do usuário</param>
-        /// <returns>As informaçõe de um usuário</returns>
+        /// <returns>As informações de um usuário</returns>
         [HttpGet("{idUsuario}")]
         [ProducesResponseType(typeof(UsuarioViewModel), 200)]
         [ProducesResponseType(typeof(UsuarioViewModel), 404)]
@@ -82,5 +82,7 @@ namespace MinhasFinancas.Api.Controllers.Usuarios
 
             return Ok(result.Value);
         }
+
+        //TODO - Excluir um usuário
     }
 }

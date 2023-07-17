@@ -62,5 +62,9 @@ namespace MinhasFinancas.Domain.Cliente.Handlers
 
             return true;
         }
+
+        //TODO - Exluir usuário
+
+        //TODO - Editar dados de login
     }
 }
